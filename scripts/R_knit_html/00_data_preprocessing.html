@@ -1487,6 +1487,7 @@ border-radius: 0px;
 <div id="loading-packages" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Loading Packages</h1>
 <pre class="r"><code>library(readxl)
+library(tidyr)
 library(dplyr)
 library(stringr)
 library(purrr)</code></pre>
@@ -1501,7 +1502,7 @@ directory</h2>
 </div>
 <div id="read-data" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Read data</h2>
-<pre class="r"><code>df_raw &lt;- read_excel(&quot;../data/input/MRI_codebook_raw.xlsx&quot;, 
+<pre class="r"><code>df_raw &lt;- read_excel(&quot;../data/raw/MRI_codebook_raw.xlsx&quot;, 
                       sheet = &quot;coder1_YH&quot;, 
                       na = c(&quot;NA&quot;, &quot;NR&quot;, &quot;.&quot;)) %&gt;% 
   # Retain rows where EX_Identifier is missing or not marked as &quot;EX&quot;
@@ -1618,100 +1619,53 @@ variable_dict &lt;- do.call(rbind, lapply(col_names, classify_variable))
 
 # View variable dictionary
 print(variable_dict)</code></pre>
-<pre><code>##                     variable prefix                                  category
-## 1                      id_es    id_                  Categorical - Identifier
-## 2             chr_authorname   chr_                                 Character
-## 3                   id_study    id_                  Categorical - Identifier
-## 4                chr_country   chr_                                 Character
-## 5                     is_USA    is_    Categorical - Binary (0/1) with labels
-## 6               chr_language   chr_                                 Character
-## 7                 is_English    is_    Categorical - Binary (0/1) with labels
-## 8          is_school_context    is_    Categorical - Binary (0/1) with labels
-## 9                 is_article    is_    Categorical - Binary (0/1) with labels
-## 10                    is_RCT    is_    Categorical - Binary (0/1) with labels
-## 11                 id_sample    id_                  Categorical - Identifier
-## 12              id_condition    id_                  Categorical - Identifier
-## 13                cat_M_type   cat_         Categorical - multi-level factor)
-## 14                cat_R_type   cat_         Categorical - multi-level factor)
-## 15        cat_condition_type   cat_         Categorical - multi-level factor)
-## 16        chr_condition_name   chr_                                 Character
-## 17                 chr_grade   chr_                                 Character
-## 18              is_secondary    is_    Categorical - Binary (0/1) with labels
-## 19                   ave_age   ave_            Numeric - Average / mean value
-## 20       pct_struggle_reader   pct_         Numeric - Percentage / proportion
-## 21            pct_disability   pct_         Numeric - Percentage / proportion
-## 22                pct_lowSES   pct_         Numeric - Percentage / proportion
-## 23                   pct_SLL   pct_         Numeric - Percentage / proportion
-## 24                   pct_boy   pct_         Numeric - Percentage / proportion
-## 25              pct_minority   pct_         Numeric - Percentage / proportion
-## 26               is_scripted    is_    Categorical - Binary (0/1) with labels
-## 27            is_small_group    is_    Categorical - Binary (0/1) with labels
-## 28           is_school_staff    is_    Categorical - Binary (0/1) with labels
-## 29          num_dosage_total   num_                          Numeric - number
-## 30    num_dosage_session_num   num_                          Numeric - number
-## 31 num_dosage_session_length   num_                          Numeric - number
-## 32               is_fidelity    is_    Categorical - Binary (0/1) with labels
-## 33          chr_measure_name   chr_                                 Character
-## 34            is_measure_std    is_    Categorical - Binary (0/1) with labels
-## 35                 m_pre_int     m_                   Numeric - Outcome: mean
-## 36                sd_pre_int    sd_     Numeric - Outcome: standard deviation
-## 37                 n_pre_int     n_            Numeric - Outcome: sample size
-## 38                m_post_int     m_                   Numeric - Outcome: mean
-## 39               sd_post_int    sd_     Numeric - Outcome: standard deviation
-## 40                n_post_int     n_            Numeric - Outcome: sample size
-## 41                 m_delayed     m_                   Numeric - Outcome: mean
-## 42                sd_delayed    sd_     Numeric - Outcome: standard deviation
-## 43                 n_delayed     n_            Numeric - Outcome: sample size
-## 44        num_month_of_delay   num_                          Numeric - number
-## 45                r_pre_post     r_ Numeric - Outcome: correlation (pre-post)
-## 46               r_pre_delay     r_ Numeric - Outcome: correlation (pre-post)
-##            data_level
-## 1   Effect size level
-## 2         Study level
-## 3         Study level
-## 4         Study level
-## 5         Study level
-## 6         Study level
-## 7         Study level
-## 8         Study level
-## 9         Study level
-## 10        Study level
-## 11       Sample level
-## 12 Intervention level
-## 13 Intervention level
-## 14 Intervention level
-## 15 Intervention level
-## 16 Intervention level
-## 17       Sample level
-## 18       Sample level
-## 19       Sample level
-## 20       Sample level
-## 21       Sample level
-## 22       Sample level
-## 23       Sample level
-## 24       Sample level
-## 25       Sample level
-## 26 Intervention level
-## 27 Intervention level
-## 28 Intervention level
-## 29 Intervention level
-## 30 Intervention level
-## 31 Intervention level
-## 32 Intervention level
-## 33  Effect size level
-## 34  Effect size level
-## 35  Effect size level
-## 36  Effect size level
-## 37  Effect size level
-## 38  Effect size level
-## 39  Effect size level
-## 40  Effect size level
-## 41  Effect size level
-## 42  Effect size level
-## 43  Effect size level
-## 44  Effect size level
-## 45  Effect size level
-## 46  Effect size level</code></pre>
+<pre><code>##                     variable prefix                                  category         data_level
+## 1                      id_es    id_                  Categorical - Identifier  Effect size level
+## 2             chr_authorname   chr_                                 Character        Study level
+## 3                   id_study    id_                  Categorical - Identifier        Study level
+## 4                chr_country   chr_                                 Character        Study level
+## 5                     is_USA    is_    Categorical - Binary (0/1) with labels        Study level
+## 6               chr_language   chr_                                 Character        Study level
+## 7                 is_English    is_    Categorical - Binary (0/1) with labels        Study level
+## 8          is_school_context    is_    Categorical - Binary (0/1) with labels        Study level
+## 9                 is_article    is_    Categorical - Binary (0/1) with labels        Study level
+## 10                    is_RCT    is_    Categorical - Binary (0/1) with labels        Study level
+## 11                 id_sample    id_                  Categorical - Identifier       Sample level
+## 12              id_condition    id_                  Categorical - Identifier Intervention level
+## 13                cat_M_type   cat_         Categorical - multi-level factor) Intervention level
+## 14                cat_R_type   cat_         Categorical - multi-level factor) Intervention level
+## 15        cat_condition_type   cat_         Categorical - multi-level factor) Intervention level
+## 16        chr_condition_name   chr_                                 Character Intervention level
+## 17                 chr_grade   chr_                                 Character       Sample level
+## 18              is_secondary    is_    Categorical - Binary (0/1) with labels       Sample level
+## 19                   ave_age   ave_            Numeric - Average / mean value       Sample level
+## 20       pct_struggle_reader   pct_         Numeric - Percentage / proportion       Sample level
+## 21            pct_disability   pct_         Numeric - Percentage / proportion       Sample level
+## 22                pct_lowSES   pct_         Numeric - Percentage / proportion       Sample level
+## 23                   pct_SLL   pct_         Numeric - Percentage / proportion       Sample level
+## 24                   pct_boy   pct_         Numeric - Percentage / proportion       Sample level
+## 25              pct_minority   pct_         Numeric - Percentage / proportion       Sample level
+## 26               is_scripted    is_    Categorical - Binary (0/1) with labels Intervention level
+## 27            is_small_group    is_    Categorical - Binary (0/1) with labels Intervention level
+## 28           is_school_staff    is_    Categorical - Binary (0/1) with labels Intervention level
+## 29          num_dosage_total   num_                          Numeric - number Intervention level
+## 30    num_dosage_session_num   num_                          Numeric - number Intervention level
+## 31 num_dosage_session_length   num_                          Numeric - number Intervention level
+## 32               is_fidelity    is_    Categorical - Binary (0/1) with labels Intervention level
+## 33          chr_measure_name   chr_                                 Character  Effect size level
+## 34            is_measure_std    is_    Categorical - Binary (0/1) with labels  Effect size level
+## 35                     m_pre     m_                   Numeric - Outcome: mean  Effect size level
+## 36                    sd_pre    sd_     Numeric - Outcome: standard deviation  Effect size level
+## 37                     n_pre     n_            Numeric - Outcome: sample size  Effect size level
+## 38                    m_post     m_                   Numeric - Outcome: mean  Effect size level
+## 39                   sd_post    sd_     Numeric - Outcome: standard deviation  Effect size level
+## 40                    n_post     n_            Numeric - Outcome: sample size  Effect size level
+## 41                 m_delayed     m_                   Numeric - Outcome: mean  Effect size level
+## 42                sd_delayed    sd_     Numeric - Outcome: standard deviation  Effect size level
+## 43                 n_delayed     n_            Numeric - Outcome: sample size  Effect size level
+## 44      num_month_of_delayed   num_                          Numeric - number  Effect size level
+## 45                r_pre_post     r_ Numeric - Outcome: correlation (pre-post)  Effect size level
+## 46               r_pre_delay     r_ Numeric - Outcome: correlation (pre-post)  Effect size level</code></pre>
 <pre class="r"><code># Clean temporary variables (all except final results)
 rm(list = setdiff(ls(), c(&quot;df_raw&quot;, &quot;variable_dict&quot;)))</code></pre>
 </div>
@@ -1777,7 +1731,10 @@ es_level_vars        &lt;- variable_dict %&gt;% filter(data_level == &quot;Effec
 df_clean_study       &lt;- df_clean %&gt;% select(any_of(study_level_vars)) %&gt;% filter(!is.na(id_study))
 df_clean_sample       &lt;- df_clean %&gt;% select(any_of(sample_level_vars)) %&gt;% filter(!is.na(id_sample))
 df_clean_intervention &lt;- df_clean %&gt;% select(id_sample, any_of(c(intervention_level_vars))) %&gt;% filter(!is.na(id_condition))
-df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_vars))) %&gt;% filter(!is.na(id_es)) %&gt;% filter(!is.na(id_es))</code></pre>
+df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_condition_type,
+                                             any_of(c(es_level_vars))) %&gt;% filter(!is.na(id_es)) %&gt;% filter(!is.na(id_es))</code></pre>
+<pre class="r"><code>df_clean_es &lt;- df_clean_es %&gt;%
+  fill(id_sample, id_condition, cat_condition_type, .direction = &quot;down&quot;)</code></pre>
 <pre class="r"><code>skimr::skim(df_clean_study)</code></pre>
 <table>
 <caption>Data summary</caption>
@@ -2469,7 +2426,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 </tr>
 <tr class="odd">
 <td align="left">Number of columns</td>
-<td align="left">16</td>
+<td align="left">18</td>
 </tr>
 <tr class="even">
 <td align="left">_______________________</td>
@@ -2481,7 +2438,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">3</td>
+<td align="left">5</td>
 </tr>
 <tr class="odd">
 <td align="left">factor</td>
@@ -2502,15 +2459,15 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="22%" />
-<col width="13%" />
+<col width="24%" />
+<col width="12%" />
 <col width="18%" />
 <col width="5%" />
 <col width="5%" />
-<col width="8%" />
-<col width="12%" />
+<col width="7%" />
+<col width="11%" />
 <col width="14%" />
 </colgroup>
 <thead>
@@ -2528,12 +2485,32 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <tbody>
 <tr class="odd">
 <td align="left">id_sample</td>
-<td align="right">114</td>
-<td align="right">0.59</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
 <td align="right">3</td>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">58</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">id_condition</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">134</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">cat_condition_type</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">4</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -2590,9 +2567,9 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="20%" />
+<col width="21%" />
 <col width="10%" />
 <col width="14%" />
 <col width="7%" />
@@ -2634,7 +2611,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▅▇▆▇</td>
 </tr>
 <tr class="even">
-<td align="left">m_pre_int</td>
+<td align="left">m_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
 <td align="right">78.82</td>
@@ -2647,7 +2624,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td align="left">sd_pre_int</td>
+<td align="left">sd_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
 <td align="right">8.20</td>
@@ -2660,7 +2637,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td align="left">n_pre_int</td>
+<td align="left">n_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
 <td align="right">61.73</td>
@@ -2673,7 +2650,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td align="left">m_post_int</td>
+<td align="left">m_post</td>
 <td align="right">18</td>
 <td align="right">0.93</td>
 <td align="right">81.86</td>
@@ -2686,7 +2663,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td align="left">sd_post_int</td>
+<td align="left">sd_post</td>
 <td align="right">18</td>
 <td align="right">0.93</td>
 <td align="right">7.76</td>
@@ -2699,7 +2676,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td align="left">n_post_int</td>
+<td align="left">n_post</td>
 <td align="right">16</td>
 <td align="right">0.94</td>
 <td align="right">67.94</td>
@@ -2738,7 +2715,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, any_of(c(es_level_
 <td align="left">▇▅▁▃▂</td>
 </tr>
 <tr class="even">
-<td align="left">num_month_of_delay</td>
+<td align="left">num_month_of_delayed</td>
 <td align="right">236</td>
 <td align="right">0.14</td>
 <td align="right">3.16</td>
@@ -2822,12 +2799,124 @@ df_moderator &lt;- df_clean_sample %&gt;%
 <pre><code>## Warning in left_join(., df_clean_study, by = &quot;id_study&quot;): Detected an unexpected many-to-many relationship between `x` and `y`.
 ## ℹ Row 21 of `x` matches multiple rows in `y`.
 ## ℹ Row 1 of `y` matches multiple rows in `x`.
-## ℹ If a many-to-many relationship is expected, set `relationship =
-##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
+## ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
 </div>
-<div id="df_data" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> “df_data”</h2>
+<div id="df_es" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> df_es</h2>
+<p>“df_es_pre” “df_es_post” “df_es_delay”</p>
+<pre class="r"><code># Select common columns 
+common_cols &lt;- c(&quot;id_sample&quot;, &quot;id_condition&quot;, &quot;cat_condition_type&quot;, &quot;id_es&quot;, &quot;chr_measure_name&quot;, &quot;is_measure_std&quot;)
+
+# Create each timepoint-specific dataframe
+df_temp_pre &lt;- df_clean_es %&gt;%
+  select(all_of(common_cols), m_pre, sd_pre, n_pre)
+
+df_temp_post &lt;- df_clean_es %&gt;%
+  select(all_of(common_cols), m_post, sd_post, n_post)
+
+df_temp_delayed &lt;- df_clean_es %&gt;%
+  select(all_of(common_cols), m_delayed, sd_delayed, n_delayed, num_month_of_delayed)</code></pre>
+<pre class="r"><code># Function to match intervention vs control within each sample
+match_int_vs_ctl &lt;- function(df_long) {
+  
+  # Split into intervention and control groups
+  df_int &lt;- df_long %&gt;% filter(cat_condition_type != &quot;ctl&quot;)
+  df_ctl &lt;- df_long %&gt;% filter(cat_condition_type == &quot;ctl&quot;)
+  
+  # For each id_sample, match intervention rows with control rows
+  df_matched &lt;- df_int %&gt;%
+    group_split(id_sample) %&gt;%
+    map_dfr(function(int_group) {
+      
+      sample_id &lt;- unique(int_group$id_sample)
+      ctl_group &lt;- df_ctl %&gt;% filter(id_sample == sample_id)
+      
+      if (nrow(ctl_group) == 0) return(NULL)  # skip if no control
+      
+      # Try matching by measure name
+      joined &lt;- int_group %&gt;%
+        left_join(ctl_group, by = c(&quot;id_sample&quot;, &quot;chr_measure_name&quot;), suffix = c(&quot;_int&quot;, &quot;_ctl&quot;))
+      
+      # If control match is missing, match by row order (fallback)
+      unmatched &lt;- joined %&gt;% filter(is.na(id_condition_ctl))
+      
+      if (nrow(unmatched) &gt; 0) {
+        fallback_matches &lt;- bind_cols(
+          unmatched %&gt;% select(ends_with(&quot;_int&quot;)),
+          ctl_group[1:nrow(unmatched), ] %&gt;% rename_with(~ paste0(.x, &quot;_ctl&quot;))
+        )
+        matched &lt;- joined %&gt;% filter(!is.na(id_condition_ctl))
+        joined &lt;- bind_rows(matched, fallback_matches)
+      }
+      
+      return(joined)
+    })
+  
+  return(df_matched)
+}</code></pre>
+<p>Apply the function to all 3 timepoint datasets</p>
+<pre class="r"><code># Pre-test
+df_es_pre &lt;- match_int_vs_ctl(df_temp_pre) </code></pre>
+<pre><code>## Warning in left_join(., ctl_group, by = c(&quot;id_sample&quot;, &quot;chr_measure_name&quot;), : Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## ℹ Row 1 of `x` matches multiple rows in `y`.
+## ℹ Row 1 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
+<pre class="r"><code># Post-test
+df_es_post &lt;- match_int_vs_ctl(df_temp_post)</code></pre>
+<pre><code>## Warning in left_join(., ctl_group, by = c(&quot;id_sample&quot;, &quot;chr_measure_name&quot;), : Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## ℹ Row 1 of `x` matches multiple rows in `y`.
+## ℹ Row 1 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
+<pre class="r"><code># Delayed-test
+df_es_delayed &lt;- match_int_vs_ctl(df_temp_delayed)</code></pre>
+<pre><code>## Warning in left_join(., ctl_group, by = c(&quot;id_sample&quot;, &quot;chr_measure_name&quot;), : Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## Detected an unexpected many-to-many relationship between `x` and `y`.
+## ℹ Row 1 of `x` matches multiple rows in `y`.
+## ℹ Row 1 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
+<pre class="r"><code># Keep df_es_pre as the main table, remove irrelevant columns
+df_es_combined &lt;- df_es_pre %&gt;%
+  select(-is_measure_std_ctl)
+
+# Manually select columns from post and delayed tables
+df_post_selected &lt;- df_es_post %&gt;%
+  select(starts_with(&quot;m_&quot;), starts_with(&quot;sd_&quot;), starts_with(&quot;n_&quot;))
+
+df_delayed_selected &lt;- df_es_delayed %&gt;%
+  select(starts_with(&quot;m_&quot;), starts_with(&quot;sd_&quot;), starts_with(&quot;n_&quot;), starts_with(&quot;num_&quot;))
+
+# Bind all together
+df_es_combined &lt;- bind_cols(df_es_combined, df_post_selected, df_delayed_selected)</code></pre>
 </div>
+</div>
+<div id="write.csv" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> write.csv</h1>
+<pre class="r"><code># List of all target data frames and their names
+dfs_to_save &lt;- list(
+  df_clean = df_clean,
+  df_clean_es = df_clean_es,
+  df_clean_intervention = df_clean_intervention,
+  df_clean_sample = df_clean_sample,
+  df_clean_study = df_clean_study,
+  df_es_pre = df_es_pre,
+  df_es_post = df_es_post,
+  df_es_delayed = df_es_delayed,
+  df_moderator = df_moderator,
+  df_es_combined = df_es_combined
+)
+
+# Write each as a CSV to the &quot;data/process/&quot; folder
+purrr::iwalk(dfs_to_save, ~ {
+  write.csv(.x, file = paste0(&quot;../data/processed/&quot;, .y, &quot;.csv&quot;), row.names = FALSE)
+})</code></pre>
 </div>
 
 

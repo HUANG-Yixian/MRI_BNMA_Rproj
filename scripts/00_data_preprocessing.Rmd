@@ -2,15 +2,14 @@
 title: "Data PreProcessing"
 author: "Yixian Huang"
 output:
-  output_dir: "./R/R_knit_html"
-  word_document:
-    toc: yes
   html_document:
     toc: yes
     number_sections: yes
     toc_float:
       collapsed: yes
       smooth_scroll: yes
+  word_document:
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Loading Packages 
 ```{r, warning=FALSE, message = FALSE}
 library(readxl)
+library(tidyr)
 library(dplyr)
 library(stringr)
 library(purrr)
@@ -34,7 +34,7 @@ rprojroot::find_rstudio_root_file()
 
 ## Read data
 ```{r}
-df_raw <- read_excel("../data/input/MRI_codebook_raw.xlsx", 
+df_raw <- read_excel("../data/raw/MRI_codebook_raw.xlsx", 
                       sheet = "coder1_YH", 
                       na = c("NA", "NR", ".")) %>% 
   # Retain rows where EX_Identifier is missing or not marked as "EX"
@@ -210,7 +210,13 @@ es_level_vars        <- variable_dict %>% filter(data_level == "Effect size leve
 df_clean_study       <- df_clean %>% select(any_of(study_level_vars)) %>% filter(!is.na(id_study))
 df_clean_sample       <- df_clean %>% select(any_of(sample_level_vars)) %>% filter(!is.na(id_sample))
 df_clean_intervention <- df_clean %>% select(id_sample, any_of(c(intervention_level_vars))) %>% filter(!is.na(id_condition))
-df_clean_es           <- df_clean %>% select(id_sample, any_of(c(es_level_vars))) %>% filter(!is.na(id_es)) %>% filter(!is.na(id_es))
+df_clean_es           <- df_clean %>% select(id_sample, id_condition, cat_condition_type,
+                                             any_of(c(es_level_vars))) %>% filter(!is.na(id_es)) %>% filter(!is.na(id_es))
+```
+
+```{r}
+df_clean_es <- df_clean_es %>%
+  fill(id_sample, id_condition, cat_condition_type, .direction = "down")
 ```
 
 ```{r}
@@ -259,8 +265,115 @@ df_moderator <- df_clean_sample %>%
   left_join(df_clean_study, by = "id_study") %>%
   left_join(df_intervention_summary, by = "id_sample")
 ```
+## df_es
+"df_es_pre"
+"df_es_post"
+"df_es_delay"
+```{r}
+# Select common columns 
+common_cols <- c("id_sample", "id_condition", "cat_condition_type", "id_es", "chr_measure_name", "is_measure_std")
 
-## "df_data"
+# Create each timepoint-specific dataframe
+df_temp_pre <- df_clean_es %>%
+  select(all_of(common_cols), m_pre, sd_pre, n_pre)
 
+df_temp_post <- df_clean_es %>%
+  select(all_of(common_cols), m_post, sd_post, n_post)
+
+df_temp_delayed <- df_clean_es %>%
+  select(all_of(common_cols), m_delayed, sd_delayed, n_delayed, num_month_of_delayed)
+```
+
+```{r}
+# Function to match intervention vs control within each sample
+match_int_vs_ctl <- function(df_long) {
+  
+  # Split into intervention and control groups
+  df_int <- df_long %>% filter(cat_condition_type != "ctl")
+  df_ctl <- df_long %>% filter(cat_condition_type == "ctl")
+  
+  # For each id_sample, match intervention rows with control rows
+  df_matched <- df_int %>%
+    group_split(id_sample) %>%
+    map_dfr(function(int_group) {
+      
+      sample_id <- unique(int_group$id_sample)
+      ctl_group <- df_ctl %>% filter(id_sample == sample_id)
+      
+      if (nrow(ctl_group) == 0) return(NULL)  # skip if no control
+      
+      # Try matching by measure name
+      joined <- int_group %>%
+        left_join(ctl_group, by = c("id_sample", "chr_measure_name"), suffix = c("_int", "_ctl"))
+      
+      # If control match is missing, match by row order (fallback)
+      unmatched <- joined %>% filter(is.na(id_condition_ctl))
+      
+      if (nrow(unmatched) > 0) {
+        fallback_matches <- bind_cols(
+          unmatched %>% select(ends_with("_int")),
+          ctl_group[1:nrow(unmatched), ] %>% rename_with(~ paste0(.x, "_ctl"))
+        )
+        matched <- joined %>% filter(!is.na(id_condition_ctl))
+        joined <- bind_rows(matched, fallback_matches)
+      }
+      
+      return(joined)
+    })
+  
+  return(df_matched)
+}
+```
+
+Apply the function to all 3 timepoint datasets
+```{r}
+# Pre-test
+df_es_pre <- match_int_vs_ctl(df_temp_pre) 
+
+# Post-test
+df_es_post <- match_int_vs_ctl(df_temp_post)
+
+# Delayed-test
+df_es_delayed <- match_int_vs_ctl(df_temp_delayed)
+```
+
+```{r}
+# Keep df_es_pre as the main table, remove irrelevant columns
+df_es_combined <- df_es_pre %>%
+  select(-is_measure_std_ctl)
+
+# Manually select columns from post and delayed tables
+df_post_selected <- df_es_post %>%
+  select(starts_with("m_"), starts_with("sd_"), starts_with("n_"))
+
+df_delayed_selected <- df_es_delayed %>%
+  select(starts_with("m_"), starts_with("sd_"), starts_with("n_"), starts_with("num_"))
+
+# Bind all together
+df_es_combined <- bind_cols(df_es_combined, df_post_selected, df_delayed_selected)
+```
+
+
+# write.csv
+```{r}
+# List of all target data frames and their names
+dfs_to_save <- list(
+  df_clean = df_clean,
+  df_clean_es = df_clean_es,
+  df_clean_intervention = df_clean_intervention,
+  df_clean_sample = df_clean_sample,
+  df_clean_study = df_clean_study,
+  df_es_pre = df_es_pre,
+  df_es_post = df_es_post,
+  df_es_delayed = df_es_delayed,
+  df_moderator = df_moderator,
+  df_es_combined = df_es_combined
+)
+
+# Write each as a CSV to the "data/process/" folder
+purrr::iwalk(dfs_to_save, ~ {
+  write.csv(.x, file = paste0("../data/processed/", .y, ".csv"), row.names = FALSE)
+})
+```
 
 

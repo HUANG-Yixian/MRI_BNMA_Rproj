@@ -1,0 +1,163 @@
+"id_sample","id_condition","cat_M_type","cat_R_type","cat_condition_type","chr_condition_name","is_scripted","is_small_group","is_school_staff","num_dosage_total","num_dosage_session_num","num_dosage_session_length","is_fidelity"
+"101","101Ncm","N","cm","1","Intervention group","Yes (Including CAI)","small group (3–7 students)","School Staff",3000,25,120,"Reported"
+"101","101cm",NA,"cm","ctl","Control group","Yes (Including CAI)","small group (3–7 students)","School Staff",3000,25,120,"Reported"
+"102","102c",NA,"c","1","MWR","Yes (Including CAI)","small group (3–7 students)","Research Staff",1600,40,40,"Reported"
+"102","102GTc","GT","c","2","MWR+MB","Yes (Including CAI)","small group (3–7 students)","Research Staff",1600,40,40,"Reported"
+"102","102bau",NA,NA,"ctl","BAU",NA,NA,NA,NA,NA,NA,NA
+"103","103c",NA,"c","2","MWR only","Yes (Including CAI)","small group (3–7 students)","Research Staff",840,24,35,"Reported"
+"103","103Tc","T","c","1","MWR + MB","Yes (Including CAI)","small group (3–7 students)","Research Staff",960,24,40,"Reported"
+"103","103bau",NA,NA,"ctl","BAU",NA,NA,NA,NA,NA,NA,NA
+"104","104NTm","NT","m","1","RCS + AR","Yes (Including CAI)","small group (3–7 students)","Research Staff",360,12,30,"Reported"
+"104","104Nm","N","m","2","RCS","Yes (Including CAI)","small group (3–7 students)","School Staff",360,12,30,"Reported"
+"104","104Gcm","G","cm","ctl","RN","Yes (Including CAI)","small group (3–7 students)","School Staff",360,12,30,"Reported"
+"105","105Gm","G","m","1","T - Process Goal","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"105","105Gm","G","m","2","T - Product Goal","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"105","105m",NA,"m","ctl","C -general goal","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"107","107Tm","T","m","1","RS + Complex Attribution","No / Not reported","small group (3–7 students)","Research Staff",NA,5,NA,"Not reported"
+"107","107Tm","T","m","2","RS+Attribution","No / Not reported","small group (3–7 students)","Research Staff",NA,5,NA,"Not reported"
+"107","107m",NA,"m","3","Attribution C (Control)","No / Not reported","small group (3–7 students)","Research Staff",NA,5,NA,"Not reported"
+"107","107bau",NA,NA,"ctl","RS Control","No / Not reported","small group (3–7 students)","Research Staff",NA,5,NA,"Not reported"
+"108","108Ncm","N","cm","1","Int.  n = 462","No / Not reported","classroom/ large group","School Staff",7448.1,540,41.3783333333333,"Reported"
+"108","108bau",NA,NA,"ctl","Con.  n = 389",NA,NA,NA,NA,NA,NA,NA
+"109_1","109_1Ncm","N","cm","1","Grade 6 Int. 605","No / Not reported","classroom/ large group","School Staff",9519.525,720,52.88625,"Reported"
+"109_1","109_1bau",NA,NA,"ctl","Grade 6 Con. 530",NA,NA,NA,NA,NA,NA,NA
+"109_2","109_2Ncm","N","cm","1","Grade 9 Int. 593","No / Not reported","classroom/ large group","School Staff",9519.525,720,52.88625,"Reported"
+"109_2","109_2bau",NA,NA,"ctl","Grade 9 Con. 535",NA,NA,NA,NA,NA,NA,NA
+"110","110NVGm","NVG","m","1","TLS-e-mail （motivation)","No / Not reported","classroom/ large group","School Staff",1860,6,60,"Not reported"
+"110","110m",NA,"m","2","TLS-only","No / Not reported","classroom/ large group","School Staff",1800,6,60,"Not reported"
+"110","110bau",NA,NA,"ctl","Control group",NA,NA,NA,NA,NA,NA,NA
+"111","111Nm","N","m","1","CORI","No / Not reported","classroom/ large group","School Staff",4000,80,50,"Not reported"
+"111","111bau",NA,NA,"ctl","Control",NA,NA,NA,NA,NA,NA,NA
+"112","112Nm","N","m","1","PBL + ‘Who reads this’","Yes (Including CAI)","classroom/ large group","School Staff",NA,40,NA,"Reported"
+"112","112m",NA,"m","ctl","Control = ‘Who reads this’",NA,NA,NA,NA,NA,NA,NA
+"113","113Nm","N","m","1","CORI (5t, 2school)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"113","113m",NA,"m","2","SI (7t, 2school)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"113","113bau",NA,NA,"ctl","TI (3t, 1school)",NA,NA,NA,NA,NA,NA,NA
+"114","114Ncm","N","cm","1","IG (CORI adapted)","No / Not reported","classroom/ large group","School Staff",10800,120,45,"Not reported"
+"114","114bau",NA,NA,"ctl","Control Group",NA,NA,NA,NA,NA,NA,NA
+"115","115NVm","NV","m","1","ERCI (103)","No / Not reported","classroom/ large group","School Staff",4050,90,45,"Reported"
+"115","115bau",NA,NA,"ctl","BAU (113)",NA,NA,NA,NA,NA,NA,NA
+"117","117Nm","N","m","1","CORI (4)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"117","117m",NA,"m","ctl","SI (6)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"118","118Nm","N","m","1","CORI (9)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"118","118Nm","N","m","2","SI (11)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"118","118bau","N",NA,"ctl","TI (4)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"119","119NGcm","NG","cm","1","RT Goal","No / Not reported","small group (3–7 students)","School Staff",720,8,90,"Reported"
+"119","119Ncm","N","cm","2","RT Practice","No / Not reported","small group (3–7 students)","School Staff",720,8,90,"Reported"
+"119","119bau",NA,NA,"ctl","Control",NA,NA,NA,NA,NA,NA,NA
+"120","120NGm","NG","m","1","MORE","No / Not reported","classroom/ large group","School Staff",600,10,60,"Reported"
+"120","120bau",NA,NA,"ctl","TI",NA,NA,NA,NA,NA,NA,NA
+"121","121NGm","NG","m","1","Int1 –  jigsaw approach","No / Not reported","small group (3–7 students)","School Staff",300,5,60,"Not reported"
+"121","121Nm","N","m","2","Int2 – drama approach","No / Not reported","small group (3–7 students)","School Staff",300,5,60,"Not reported"
+"121","121bau",NA,NA,"ctl","Control group – Direct instruction with teacher-led whole-class practices.",NA,NA,NA,NA,NA,NA,NA
+"123","123Nm","N","m","1","USHER (Sequence A)","No / Not reported","classroom/ large group","School Staff",1187.5,25,47.5,"Reported"
+"123","123bau",NA,NA,"ctl","BAU",NA,NA,NA,NA,NA,NA,NA
+"124","124Nm","N","m","1","CG n = 168","No / Not reported","classroom/ large group","School Staff",640,16,40,"Reported"
+"124","124bau",NA,NA,"ctl","EG n = 174",NA,NA,NA,NA,NA,NA,NA
+"125_1","125_1Nm","N","m","1","CORI,Grade 3,Pond","No / Not reported","classroom/ large group","School Staff",9000,150,60,"Reported"
+"125_1","125_1m",NA,"m","ctl","TI,Grade 3,Pond","No / Not reported","classroom/ large group","School Staff",NA,NA,NA,NA
+"125_2","125_2Nm","N","m","1","CORI,Grade 3,Volcano","No / Not reported","classroom/ large group","School Staff",9000,150,60,"Reported"
+"125_2","125_2m",NA,"m","ctl","TI,Grade 3,Volcano","No / Not reported","classroom/ large group","School Staff",NA,NA,NA,NA
+"125_3","125_3Nm","N","m","1","CORI,Grade 5,Pond","No / Not reported","classroom/ large group","School Staff",7200,120,60,"Reported"
+"125_3","125_3m",NA,"m","ctl","TI,Grade 5,Pond","No / Not reported","classroom/ large group","School Staff",NA,NA,NA,NA
+"125_4","125_4Nm","N","m","1","CORI,Grade 5,Volcano","No / Not reported","classroom/ large group","School Staff",7200,120,60,"Reported"
+"125_4","125_4m",NA,"m","ctl","TI,Grade 5,Volcano","No / Not reported","classroom/ large group","School Staff",NA,NA,NA,NA
+"126_1","126_1Ncm","N","cm","1","CORI (Low)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"126_1","126_1cm",NA,"cm","ctl","TI (Low)","No / Not reported","classroom/ large group","School Staff",5400,60,90,NA
+"126_2","126_2Ncm","N","cm","1","CORI (High)","No / Not reported","classroom/ large group","School Staff",5400,60,90,"Reported"
+"126_2","126_2cm",NA,"cm","ctl","TI (High)","No / Not reported","classroom/ large group","School Staff",5400,60,90,NA
+"127_7","127_7Nm","N","m","1","SEM-R,   East, G7","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_7","127_7m",NA,"m","ctl","Control, East, G7",NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","N","m","1","SEM-R,   East, G8","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_8","127_8m",NA,"m","ctl","Control, East, G8",NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","N","m","1","SEM-R,   West, G6","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_6","127_6m",NA,"m","ctl","Control, West G6",NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","N","m","1","SEM-R,   West, G7","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_7","127_7m",NA,"m","ctl","Control, West G7",NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","N","m","1","SEM-R,   West, G8","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_8","127_8m",NA,"m","ctl","Control, West, G8",NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","N","m","1","SEM-R,   South, G6","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_6","127_6m",NA,"m","ctl","Control, South, G6",NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","N","m","1","SEM-R,   South, G7","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_7","127_7m",NA,"m","ctl","Control, South, G7",NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","N","m","1","SEM-R,   South, G8","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_8","127_8m",NA,"m","ctl","Control, South, G8",NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","N","m","1","SEM-R,   North, G6","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_6","127_6m",NA,"m","ctl","Control, North G6",NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","N","m","1","SEM-R,   North, G7","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_7","127_7m",NA,"m","ctl","Control, North G7",NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","N","m","1","SEM-R,   North, G8","No / Not reported","classroom/ large group","School Staff",6800,160,42.5,"Reported"
+"127_8","127_8m",NA,"m","ctl","Control, North, G8",NA,NA,NA,NA,NA,NA,NA
+"128","128NVcm","NV","cm","1","CORI (time 1-2)","No / Not reported","classroom/ large group","School Staff",1800,20,90,"Reported"
+"128","128m",NA,"m","ctl","TI (time 1-2)",NA,"classroom/ large group","School Staff",1800,20,90,NA
+"129_1","129_1Nm","N","m","1","CORI (Grade3)","No / Not reported","classroom/ large group","School Staff",7650,85,90,"Reported"
+"129_1","129_1m",NA,"m","ctl","Traditional (Grade3)","No / Not reported",NA,"School Staff",NA,NA,NA,NA
+"129_2","129_2Nm","N","m","1","CORI (Grade5)","No / Not reported","classroom/ large group","School Staff",7650,85,90,"Reported"
+"129_2","129_2m",NA,"m","ctl","Traditional (Grade 5)","No / Not reported",NA,"School Staff",NA,NA,NA,NA
+"130","130Nm","N","m","1","Intervention","No / Not reported","classroom/ large group","Research Staff",405,9,45,"Reported"
+"130","130bau",NA,NA,"ctl","Control (BAU)",NA,NA,NA,NA,NA,NA,NA
+"131","131Vm","V","m","1","specific strategy value information","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"131","131Vm","V","m","2","general strategy value information","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"131","131Vm","V","m","3","specific plus general + strategy value information","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"131","131m",NA,"m","ctl","no strategy value information (instructional control)","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"132","132Vm","V","m","1","specific strategy value","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"132","132Tm","T","m","ctl","strategy effectiveness feedback","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"132","132VTm","VT","m","2","strategy value plus effectiveness feedback (combined)","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Reported"
+"133","133NGc","NG","c","1","CORI + RAVE-O + Wilson Reading Program","Yes (Including CAI)","small group (3–7 students)","School Staff",2400,25,120,"Reported"
+"133","133c",NA,"c","ctl","incentives + RAVE-O + Wilson Reading Program","Yes (Including CAI)","small group (3–7 students)","School Staff",2400,25,120,"Reported"
+"135","135NVGcm","NVG","cm","1","Fusion (year 1)","Yes (Including CAI)","small group (3–7 students)","School Staff",9000,180,50,"Reported"
+"135","135m",NA,"m","ctl","Comparison - Corrective Reading(year1)",NA,"small group (3–7 students)","School Staff",NA,NA,NA,"Reported"
+"136","136m",NA,"m","1","Fading only","Yes (Including CAI)","small group (3–7 students)","Research Staff",420,12,35,"Not reported"
+"136","136VTm","VT","m","2","Feedback only","Yes (Including CAI)","small group (3–7 students)","Research Staff",420,12,35,"Not reported"
+"136","136VTm","VT","m","3","Fading + feedback","Yes (Including CAI)","small group (3–7 students)","Research Staff",420,12,35,"Not reported"
+"136","136m",NA,"m","ctl","No fading/feedback","Yes (Including CAI)","small group (3–7 students)","Research Staff",420,12,35,"Not reported"
+"137","137Nm","N","m","1","Strategy Instruction","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Not reported"
+"137","137NVTm","NVT","m","2","Strategy Feedback","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Not reported"
+"137","137m",NA,"m","ctl","Control","Yes (Including CAI)","small group (3–7 students)","Research Staff",525,15,35,"Not reported"
+"138","138Nm","N","m","1","DE (Developmental Education) - CORI","No / Not reported","classroom/ large group","School Staff",2880,64,45,"Not reported"
+"138","138m",NA,"m","ctl","PI (Programmatic Instruction)","No / Not reported","classroom/ large group","School Staff",2880,64,45,"Not reported"
+"139","139NGTcm","NGT","cm","1","Cognitive + Motivational","No / Not reported","small group (3–7 students)","Research Staff",900,20,45,"Reported"
+"139","139cm",NA,"cm","ctl","Cognitive-Only","No / Not reported","small group (3–7 students)","Research Staff",900,20,45,"Reported"
+"140_1","140_1Ncm","N","cm","1","Experimental (coopeative learning)","No / Not reported","classroom/ large group","School Staff",1080,24,45,"Not reported"
+"140_1","140_1bau",NA,NA,"ctl","Comparison","No / Not reported","classroom/ large group","School Staff",1080,24,45,"Not reported"
+"140_2","140_2Ncm","N","cm","1","Experimental (coopeative learning)","No / Not reported","classroom/ large group","School Staff",1080,24,45,"Not reported"
+"140_2","140_2bau",NA,NA,"ctl","Comparison","No / Not reported","classroom/ large group","School Staff",1080,24,45,"Not reported"
+"141","141NTm","NT","m","1","RCS + AR (7 groups)","Yes (Including CAI)","small group (3–7 students)","Research Staff",360,12,30,"Reported"
+"141","141Nm","N","m","2","RCS (7 groups)","Yes (Including CAI)","small group (3–7 students)","School Staff",360,12,30,"Reported"
+"141","141cm",NA,"cm","ctl","RN (7 groups)","Yes (Including CAI)","small group (3–7 students)","School Staff",360,12,30,"Reported"
+"142_1","142_1Tm","T","m","1","SUAT - poor readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"142_1","142_1Tm","T","m","2","SIAT - poor readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"142_1","142_1m",NA,"m","ctl","ST - poor readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"142_2","142_2Tm","T","m","1","SUAT - ave. readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"142_2","142_2Tm","T","m","2","SIAT - ave. readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"142_2","142_2m",NA,"m","ctl","ST - ave. readers","Yes (Including CAI)","small group (3–7 students)","Research Staff",540,9,60,"Not reported"
+"143","143Nm","N","m","1","Stra + Att, Teacher1","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"143","143NGTm","NGT","m","2","Stra only, Teacher1","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"143","143bau",NA,NA,"ctl","Control, Teacher1","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"143","143Nm","N","m","1","Stra + Att, Teacher2","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"143","143GTm","GT","m","2","Stra only, Teacher2","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"143","143bau",NA,NA,"ctl","Control, Teacher2","No / Not reported","classroom/ large group","School Staff",1600,40,40,"Not reported"
+"145","145NGm","NG","m","1","experimental REM","No / Not reported","classroom/ large group","Research Staff",2160,36,60,"Not reported"
+"145","145bau",NA,NA,"ctl","control",NA,NA,NA,NA,NA,NA,NA
+"146","146NVGTm","NVGT","m","1","Strat + CSR + MSR","Yes (Including CAI)","classroom/ large group","School Staff",900,20,45,"Reported"
+"146","146NVm","NV","m","2","Strat + CSR","Yes (Including CAI)","classroom/ large group","School Staff",900,20,45,"Reported"
+"146","146m",NA,"m","3","Strat","Yes (Including CAI)","classroom/ large group","School Staff",900,20,45,"Reported"
+"146","146bau",NA,NA,"ctl","Control",NA,NA,NA,NA,NA,NA,NA
+"147","147m",NA,"m","ctl","Comparison",NA,NA,NA,NA,NA,NA,NA
+"147","147NVm","NV","m","1","RT","No / Not reported","classroom/ large group","Research Staff",630,14,45,"Reported"
+"147","147NVGTm","NVGT","m","2","RT + SRL","No / Not reported","classroom/ large group","Research Staff",630,14,45,"Reported"
+"148","148Nm","N","m","ctl","RT","No / Not reported","classroom/ large group","Research Staff",630,45,14,"Reported"
+"148","148NVGm","NVG","m","1","RT + SIP (pretest sig.)","No / Not reported","classroom/ large group","Research Staff",630,45,14,"Reported"
+"148","148NVGm","NVG","m","2","RT + ORP","No / Not reported","classroom/ large group","Research Staff",630,45,14,"Reported"
+"148","148NGm","NG","m","3","RT + SRL","No / Not reported","classroom/ large group","Research Staff",630,45,14,"Reported"
+"149","149NGm","NG","m","1","TWA + SRL","No / Not reported","small group (3–7 students)","Research Staff",260,13,20,"Reported"
+"149","149Nm","N","m","ctl","RQ (reciprocal)","No / Not reported","small group (3–7 students)","Research Staff",260,13,20,"Reported"
+"150","150bau",NA,NA,"ctl","Control",NA,NA,NA,NA,NA,NA,NA
+"150","150cm",NA,"cm","1","TB","No / Not reported","small group (3–7 students)","Research Staff",533.96,15,35.5973333333333,"Reported"
+"150","150Gcm","G","cm","2","TB + EF","No / Not reported","small group (3–7 students)","Research Staff",550.13,14.73,37.3475899524779,"Reported"
+"151","151NVGm","NVG","m","1","Guided Reading","No / Not reported","small group (3–7 students)","Research Staff",1200,20,60,"Reported"
+"151","151Nm","N","m","ctl","Explicit Comp. Proc","No / Not reported","small group (3–7 students)","Research Staff",1200,20,60,"Reported"
+"152","152Nm","N","m","1","Treatment","No / Not reported","classroom/ large group","School Staff",2025,90,22.5,"Reported"
+"152","152m",NA,"m","ctl","Control",NA,NA,NA,NA,NA,NA,NA
+"153","153Nm","N","m","1","Treatment (n = 23)","No / Not reported","classroom/ large group","School Staff",2250,90,25,"Reported"
+"153","153m",NA,"m","ctl","Comparison (n = 23)",NA,NA,NA,NA,NA,NA,NA
