@@ -1,0 +1,361 @@
+---
+title: "BNMA ES Calc & Aggre"
+author: "Yixian Huang"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE)
+```
+
+```{r}
+library(metafor)
+# library(psych)
+# library(plyr)
+library(dplyr)
+library(readxl)     # For reading excel files
+```
+
+# Data Preparation
+```{r}
+rm(list=ls())
+IGRMdata <- read_excel("/Users/yh_mac24/Desktop/BNMA data processing/[1] Raw Data/[RAW] MRI Codebook and Raw Data.xlsx", sheet = "clean_data")  %>%
+  filter(ConditionType != "ctl",     ## delete ctl rows (changed from long format to parallel format) -- using Excel Vlookup
+         EX_Identifier != "EX")      ## Excluded data
+
+# Assign NA
+IGRMdata[IGRMdata=="NA"] <- NA
+IGRMdata[IGRMdata=="NR"] <- NA
+
+IGRMdata <- IGRMdata %>%
+  dplyr::mutate(across(c(m_pre_int,  sd_pre_int,   n_pre_int,
+                  m_post_int,  sd_post_int, n_post_int,
+                  m_pre_ctl, sd_pre_ctl,  n_pre_ctl,
+                  m_post_ctl, sd_post_ctl, n_post_ctl,
+                  m_diff, sd_diff, n_diff,
+                  r_pre_post
+                  ), as.numeric))
+str(IGRMdata)
+head(IGRMdata)
+```
+
+# Individual ES Calc 
+Type..
+1. IGrm (2 groups): m_pre_int,  sd_pre_int,   n_pre_int
+                    m_post_int,  sd_post_int, n_post_int
+                    m_pre_ctl, sd_pre_ctl,  n_pre_ctl
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+                    
+2. RM (1 group):    m_diff, sd_diff, r_pre_post, n_diff
+
+3. IG (2 groups):   m_post_int,  sd_post_int, n_post_int
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+
+## Create Blank variables                    
+```{r}
+# Expect that we will have those types of ES
+# For IG only
+IGRMdata$delta.IG.pre <- NA
+IGRMdata$v.IG.pre <- NA
+IGRMdata$delta.IG.post <- NA
+IGRMdata$v.IG.post <- NA
+
+# For IGrm
+IGRMdata$delta.IGrm<- NA
+IGRMdata$v.IGrm<- NA
+
+# To get IGrm, you need ... 
+IGRMdata$delta.IGrm.ctl<- NA
+IGRMdata$v.IGrm.ctl<- NA
+IGRMdata$delta.IGrm.tx<- NA
+IGRMdata$v.IGrm.tx<- NA
+
+```
+
+## T test to check sig.
+1. IGrm (2 groups): m_pre_int,  sd_pre_int,   n_pre_int
+                    m_post_int,  sd_post_int, n_post_int
+                    m_pre_ctl, sd_pre_ctl,  n_pre_ctl
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+```{r}
+library(BSDA)
+# pretest diff.
+IGRMdata <- IGRMdata %>%
+  rowwise() %>%
+  mutate(
+    # PRETEST
+    t_pre = BSDA::tsum.test(mean.x = m_pre_int, s.x = sd_pre_int, n.x = n_pre_int,
+                            mean.y = m_pre_ctl, s.y = sd_pre_ctl, n.y = n_pre_ctl,
+                            var.equal = TRUE)$statistic,
+    t.p_pre = BSDA::tsum.test(mean.x = m_pre_int, s.x = sd_pre_int, n.x = n_pre_int,
+                              mean.y = m_pre_ctl, s.y = sd_pre_ctl, n.y = n_pre_ctl,
+                              var.equal = TRUE)$p.value,
+    t.sig_pre = ifelse(t.p_pre < 0.05, TRUE, FALSE), 
+
+    # POSTTEST
+    t_post = BSDA::tsum.test(mean.x = m_post_int, s.x = sd_post_int, n.x = n_post_int,
+                             mean.y = m_post_ctl, s.y = sd_post_ctl, n.y = n_post_ctl,
+                             var.equal = TRUE)$statistic,
+    t.p_post = BSDA::tsum.test(mean.x = m_post_int, s.x = sd_post_int, n.x = n_post_int,
+                               mean.y = m_post_ctl, s.y = sd_post_ctl, n.y = n_post_ctl,
+                               var.equal = TRUE)$p.value,
+    t.sig_post = ifelse(t.p_post < 0.05, TRUE, FALSE)
+  ) %>%
+  ungroup()
+```
+
+
+## Type 3 IG (descriptive data) 
+3. IG (2 groups):   m_post_int,  sd_post_int, n_post_int
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+
+### IG posttest only
+```{r}
+#post-test difference
+IGRMdata <- escalc(measure = "SMD",
+                  m1i=m_post_int, sd1i = sd_post_int, n1i=n_post_int,
+                  m2i=m_post_ctl, sd2i = sd_post_ctl, n2i=n_post_ctl,
+                  data=IGRMdata,
+                  replace = FALSE,
+                  var.names = c("delta.IG.post", "v.IG.post"),
+                  vtype = "LS2")
+```
+
+## Type 1: IGrm (descriptive data) 
+1. IGrm (2 groups): m_pre_int,  sd_pre_int,   n_pre_int
+                    m_post_int,  sd_post_int, n_post_int
+                    m_pre_ctl, sd_pre_ctl,  n_pre_ctl
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+### s2.Pre.Pooled
+```{r}
+# First, we'll pool the -test variances for the and groups ultimately to obtain s.pre.pooled
+IGRMdata$s2.Pre.Pooled <- with(IGRMdata,
+                              ((sd_pre_int^2)*(n_pre_int - 1) +
+                              (sd_pre_ctl^2)*(n_pre_ctl - 1)) /
+                              (n_pre_int + n_pre_ctl - 2))
+IGRMdata$s.Pre.Pooled <- with(IGRMdata, sqrt(s2.Pre.Pooled))
+```
+
+### delta.IGrm 
+```{r}
+# Next calculate the delta.IGrm for each group
+IGRMdata <- escalc(measure = "SMCR",
+                    m1i=m_post_int, 
+                    m2i=m_pre_int,
+                    sd1i = s.Pre.Pooled,
+                    ni=n_post_int,
+                    ri=r_pre_post,
+                    data=IGRMdata,
+                    var.names = c("delta.IGrm.tx", "v.IGrm.tx"),
+                    vtype = "LS2")
+
+IGRMdata <- escalc(measure = "SMCR",
+                    m1i=m_post_ctl, 
+                    m2i=m_pre_ctl,
+                    sd1i = s.Pre.Pooled,
+                    ni=n_post_ctl, 
+                    ri=r_pre_post,
+                    data= IGRMdata,
+                    var.names = c("delta.IGrm.ctl", "v.IGrm.ctl"),
+                    vtype = "LS2")
+
+# Calculate the effect size estimate, its variance
+IGRMdata <- within(IGRMdata,{
+                   delta.IGrm = delta.IGrm.tx - delta.IGrm.ctl
+                   v.IGrm = v.IGrm.tx + v.IGrm.ctl
+                   })
+
+```
+
+## Combine delta.IGrm & delta.post
+```{r}
+# COMBINE IG & IGrm
+IGRMdata$final.delta <- IGRMdata$delta.IG.post
+IGRMdata$final.v <- IGRMdata$v.IG.post
+
+IGRMdata$final.se <- sqrt(IGRMdata$final.v)
+IGRMdata$final.n.total <- IGRMdata$n_post_int + IGRMdata$n_post_ctl
+
+IGRMdata_post <- IGRMdata %>% filter(!is.na(final.delta)) # remove pretest only
+```
+
+## Outlier - residual 
+```{r}
+res <- rma(yi = final.delta, vi = final.v, data = IGRMdata_post, method = "REML")
+
+inf <- influence(res)
+IGRMdata_post$cook.d <- inf$inf$cook.d
+IGRMdata_post$rstudent <- inf$inf$rstudent
+
+filter(IGRMdata_post, cook.d > 4/nrow(IGRMdata_post) )
+filter(IGRMdata_post, abs(rstudent) > 2.5)
+
+hist(IGRMdata_post$rstudent, main = "Histogram of Studentized Residuals", xlab = "Studentized Residuals")
+
+
+```
+
+## > write.csv < Raw ES
+
+```{r}
+# IGRMdata_post<- filter(IGRMdata_post, cook.d <= 4/nrow(IGRMdata_post) )
+
+write.csv(IGRMdata_post, file = "[OUTPUT] ES Calc.csv", row.names = FALSE)
+head(IGRMdata_post)
+```
+
+# Aggregated ES
+## Store details in a list
+```{r, EVAL = FALSE}
+ES_summary_list <- list()
+
+for (id in unique(IGRMdata_post$ConditionID)){
+  subset_data <- subset(IGRMdata_post, ConditionID == id)
+  
+  RE_pooled <- rma(yi = final.delta,
+                  vi = final.v,
+                  test = "knha", #"knha"
+                  data=subset_data,
+                  method = "REML") # REML
+  
+  ES_summary_list[[id]] <- RE_pooled
+}
+
+# Check report 
+# ES_summary_list[["152-VGm"]]
+ES_summary_list[["152-VG_R"]]
+```
+
+## Store aggregated ES in a table
+```{r}
+ES_summary_table <- data.frame(
+  ConditionID = character(),
+  tau2 = numeric(),
+  I2 = numeric(),
+  H2 = numeric(),
+  QE = numeric(),
+  QEp = numeric(),
+  delta.agg = numeric(),
+  se = numeric(),
+  df = numeric(),
+  tval = numeric(),
+  ci.lb = numeric(),
+  ci.ub = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (id in unique(IGRMdata_post$ConditionID)) {
+  subset_data <- subset(IGRMdata_post, ConditionID == id)
+  
+  RE_pooled <- rma(yi = final.delta,
+                   vi = final.v,
+                   test = "knha", # knha
+                   data = subset_data,
+                   method = "REML") # REML or FE
+  
+  extracted_data <- data.frame(
+    ConditionID = id,  # 当前循环的 ConditionID
+    tau2 = ifelse(!is.null(RE_pooled$tau2), RE_pooled$tau2, NA),
+    I2 = ifelse(!is.null(RE_pooled$I2), RE_pooled$I2, NA),
+    H2 = ifelse(!is.null(RE_pooled$H2), RE_pooled$H2, NA),
+    QE = ifelse(!is.null(RE_pooled$QE), RE_pooled$QE, NA),
+    QEp = ifelse(!is.null(RE_pooled$QEp), RE_pooled$QEp, NA),
+    delta.agg = RE_pooled$b,
+    se = RE_pooled$se,
+    df = RE_pooled$df, 
+    pval = RE_pooled$pval,
+    ci.lb = RE_pooled$ci.lb,
+    ci.ub = RE_pooled$ci.ub,
+    stringsAsFactors = FALSE
+  )
+  
+  # 将提取的数据追加到 summary_table
+  ES_summary_table <- rbind(ES_summary_table, extracted_data)
+}
+```
+
+## > write.csv < Aggre ES
+```{r}
+write.csv(ES_summary_table, file = "[OUTPUT] ES Aggregate.csv", row.names = FALSE)
+```
+
+# Data Combine for BNMA requirment (By condition ID)
+## prepare codes data
+Note. The difference between ConditionID and Comparison is that - ConditionID include both int and ctl groups, while ConditionID exclude ctl groups.
+```{r}
+# Prepare BNMA code data
+codes_data <- read_excel("/Users/yh_mac24/Desktop/BNMA data processing/[1] Raw Data/[RAW] MRI Codebook and Raw Data.xlsx", sheet = "clean_mod") %>%
+       filter(EX_Identifier != "EX") %>%  
+       distinct(ConditionID, .keep_all = TRUE) %>% 
+       #one row per condition
+       select(SampleID, ConditionID, ConditionType, treatment)
+```
+
+
+```{r}
+matched_data <- merge(codes_data, ES_summary_table , 
+                      by = "ConditionID", all.x = TRUE, all.y = FALSE) 
+# DELETE invalid groups after removing outliers
+# Logic. ALL int has a ES value. Only ctl groups are allowed to have no ES value. 
+filter(matched_data, (ConditionType != "ctl" & is.na(delta.agg)))
+matched_data <- filter(matched_data, 
+                       !(ConditionType != "ctl" & is.na(delta.agg)))
+```
+
+## impute min_se for ctl group
+```{r}
+matched_data <- matched_data %>%
+  group_by(SampleID) %>%
+  mutate(
+    min_se = min(se, na.rm = TRUE),  # 计算每组的最小 SE 值
+    se_inpute = ifelse(is.na(se), min_se - 0.00001, se)  # 填充 NA 值为最小值减去 0.001
+  ) # %>%
+#  select(-min_se)  # 删除临时列
+```
+
+## procude BNMA processing data
+```{r}
+BNMA_code_data <- matched_data %>%
+   select(SampleID, delta.agg, se_inpute, treatment, tau2, ConditionID) %>%
+   rename(
+          study = SampleID,      
+          diff = delta.agg,      
+          std.err = se_inpute,
+          treatment = treatment)
+
+```
+
+## final Check
+```{r}
+result <- BNMA_code_data %>%
+          group_by(study) %>%
+          summarise(
+            has_one_na = sum(is.na(diff)) == 1,           # 检查是否有且只有一个 NA
+            has_value = sum(!is.na(diff)) > 0,           # 检查是否至少有一个数值
+            unique_treatments_count = n_distinct(treatment), # 统计 treatment 的唯一值数量
+            has_unique_treatments = unique_treatments_count >= 2 # 是否有至少两种不重复的 treatment
+          ) %>%
+          mutate(valid = has_one_na & has_value & has_unique_treatments) # 三个条件都满足
+
+( invalid_studies <-filter(result, !valid) )
+
+```
+
+## > write.csv < BNMA ES
+```{r}
+write.csv(BNMA_code_data, "[OUTPUT] BNMA_code_and_ES.csv", row.names = FALSE)
+```
+
+

@@ -1,0 +1,266 @@
+---
+title: "Data PreProcessing"
+author: "Yixian Huang"
+output:
+  output_dir: "./R/R_knit_html"
+  word_document:
+    toc: yes
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading Packages 
+```{r, warning=FALSE, message = FALSE}
+library(readxl)
+library(dplyr)
+library(stringr)
+library(purrr)
+```
+
+# Data Import and Cleaning
+## check working directory
+```{r, echo=FALSE}
+rm(list=ls())
+rprojroot::find_rstudio_root_file()
+```
+
+## Read data
+```{r}
+df_raw <- read_excel("../data/input/MRI_codebook_raw.xlsx", 
+                      sheet = "coder1_YH", 
+                      na = c("NA", "NR", ".")) %>% 
+  # Retain rows where EX_Identifier is missing or not marked as "EX"
+  filter(is.na(EX_Identifier) | EX_Identifier != "EX") %>% 
+  # Exclude temporary or coding-only variables not relevant for analysis
+  select(-starts_with("rm_"), -starts_with("EX_"))
+```
+
+## Data Recoding
+### pct_struggle_reader ~ 20%
+```{r}
+df_raw <- df_raw %>%
+  mutate(pct_struggle_reader = case_when(
+    as.character(pct_struggle_reader) == "mixed" ~ 0.2,
+    TRUE ~ as.numeric(pct_struggle_reader)
+  ))
+```
+
+### Characters to binary variable
+chr_country -> is_USA
+chr_language -> is_English
+chr_grade -> is_secondary
+```{r}
+df_raw <- df_raw %>%
+  mutate(
+    # Grade-based classification
+    is_secondary = case_when(
+      is.na(chr_grade) ~ NA_character_,
+      str_detect(chr_grade, "\\b(6|7|8|9|10)\\b") ~ "1 = Secondary",
+      TRUE ~ "0 = Elementary"
+    ),
+
+    # Country-based classification
+    is_USA = case_when(
+      is.na(chr_country) ~ NA_character_,
+      chr_country == "USA" ~ "1 = USA",
+      TRUE ~ "0 = non-USA"
+    ),
+
+    # Language-based classification
+    is_English = case_when(
+      is.na(chr_language) ~ NA_character_,
+      chr_language == "English" ~ "1 = English",
+      TRUE ~ "0 = non-English"
+    )
+  )%>%
+  relocate(is_secondary, .after = chr_grade) %>%
+  relocate(is_USA, .after = chr_country) %>%
+  relocate(is_English, .after = chr_language)
+```
+
+# Variable Dictionary 
+```{r}
+# Step 1: Extract all variable names
+col_names <- names(df_raw)
+
+# Step 2: Define prefix dictionary
+prefix_dict <- list(
+  "id_"  = "Categorical - Identifier",
+  "pct_" = "Numeric - Percentage / proportion",
+  "ave_" = "Numeric - Average / mean value",
+  "is_"  = "Categorical - Binary (0/1) with labels",
+  "cat_" = "Categorical - multi-level factor)",
+  "chr_" = "Character",
+  "num_" = "Numeric - number",
+  "m_"   = "Numeric - Outcome: mean",
+  "sd_"  = "Numeric - Outcome: standard deviation",
+  "n_"   = "Numeric - Outcome: sample size",
+  "r_"   = "Numeric - Outcome: correlation (pre-post)"
+)
+
+# Step 3: Define data levels by variable ranges
+study_vars        <- col_names[which(col_names == "chr_authorname") : which(col_names == "is_RCT")]
+sample_vars       <- c("id_sample",
+                      col_names[which(col_names == "chr_grade") : which(col_names == "pct_minority")])
+intervention_vars <- c(col_names[which(col_names == "id_sample") : which(col_names == "chr_condition_name")],
+                      col_names[which(col_names == "is_scripted") : which(col_names == "is_fidelity")])
+es_vars           <- c("id_es", 
+                       col_names[which(col_names == "chr_measure_name") : which(col_names == "r_pre_delay")])
+
+# Step 4: Classification function
+classify_variable <- function(var) {
+  # Match prefix
+  matched_prefix <- NA
+  matched_cat <- "Unclassified"
+  for (p in names(prefix_dict)) {
+    if (startsWith(var, p)) {
+      matched_prefix <- p
+      matched_cat <- prefix_dict[[p]]
+      break
+    }
+  }
+
+  # Match data level
+  level <- case_when(
+    var %in% study_vars        ~ "Study level",
+    var %in% sample_vars       ~ "Sample level",
+    var %in% intervention_vars ~ "Intervention level",
+    var %in% es_vars           ~ "Effect size level",
+    TRUE                       ~ "Unclassified"
+  )
+
+  return(data.frame(variable = var, prefix = matched_prefix, category = matched_cat, data_level = level))
+}
+
+# Step 5: Apply to all variables
+variable_dict <- do.call(rbind, lapply(col_names, classify_variable))
+
+# View variable dictionary
+print(variable_dict)
+
+# Clean temporary variables (all except final results)
+rm(list = setdiff(ls(), c("df_raw", "variable_dict")))
+```
+
+# Data formatting
+### Clean binary (is_) variables (originally formatted as "0/1 = label")
+```{r}
+# Step 1: Identify binary label variables using variable_dict
+binary_vars <- variable_dict %>%
+  filter(prefix == "is_") %>%
+  pull(variable)
+
+# Step 2: Clean and convert to labeled factor
+df_clean <- df_raw %>%
+  mutate(across(all_of(binary_vars), ~ {
+    x <- as.character(.x)
+    x[is.na(x)] <- ""
+
+    # Split into numeric and label part
+    split <- stringr::str_split_fixed(x, "=", 2)
+    num <- trimws(split[, 1])
+    lbl <- trimws(split[, 2])
+
+    # Construct unique levels and label map
+    lab_map <- unique(data.frame(num, lbl)) %>%
+               filter(num != "") %>%
+               distinct()
+
+    factor(num, levels = lab_map$num, labels = lab_map$lbl)
+  }))
+```
+
+### Validate variable classes
+```{r}
+# Apply R data classes based on variable dictionary
+df_clean <- df_clean %>%
+  mutate(across(
+    .cols = variable_dict$variable[variable_dict$data_type == "numeric"],
+    .fns  = as.numeric
+  )) %>%
+  mutate(across(
+    .cols = variable_dict$variable[variable_dict$data_type == "categorical"],
+    .fns  = as.factor
+  )) %>%
+  mutate(across(
+    .cols = variable_dict$variable[variable_dict$data_type == "character"],
+    .fns  = as.character
+  ))
+```
+
+# Separate data by hierarchical levels
+Study - Sample - Condition - ES
+## Separate data
+```{r}
+## Extract variable names by level
+study_level_vars     <- variable_dict %>% filter(data_level == "Study level") %>% pull(variable)
+sample_level_vars     <- variable_dict %>% filter(data_level == "Sample level") %>% pull(variable)
+intervention_level_vars <- variable_dict %>% filter(data_level == "Intervention level") %>% pull(variable)
+es_level_vars        <- variable_dict %>% filter(data_level == "Effect size level") %>% pull(variable)
+
+## Subset data frames
+df_clean_study       <- df_clean %>% select(any_of(study_level_vars)) %>% filter(!is.na(id_study))
+df_clean_sample       <- df_clean %>% select(any_of(sample_level_vars)) %>% filter(!is.na(id_sample))
+df_clean_intervention <- df_clean %>% select(id_sample, any_of(c(intervention_level_vars))) %>% filter(!is.na(id_condition))
+df_clean_es           <- df_clean %>% select(id_sample, any_of(c(es_level_vars))) %>% filter(!is.na(id_es)) %>% filter(!is.na(id_es))
+```
+
+```{r}
+skimr::skim(df_clean_study)
+skimr::skim(df_clean_sample)
+skimr::skim(df_clean_intervention)
+skimr::skim(df_clean_es)
+```
+# Prepare Final dfs
+## "df_moderators"
+One sample id per line 
+combine df_study, df_sample, df_intervention into one flie
+```{r}
+# Step 0: Define mode function
+mode_or_unclassified <- function(x) {
+  x <- na.omit(x)
+  if (length(x) == 0) return(NA_character_)
+  tab <- table(x)
+  if (length(tab) == 1) return(names(tab)[1])
+  if (length(tab) > 1 && all(tab == max(tab))) return("unclassified")
+  return(names(which.max(tab)))
+}
+
+# Step 1: Filter and summarize intervention-level data
+df_intervention_summary <- df_clean_intervention %>%
+  filter(cat_condition_type != "ctl") %>%
+  select(id_sample, matches("^is_|^num_")) %>%
+  group_by(id_sample) %>%
+  summarise(
+    across(
+      .cols = matches("^num_"),
+      .fns = ~ mean(.x, na.rm = TRUE),
+      .names = "mean_{.col}"
+    ),
+    across(
+      .cols = matches("^is_"),
+      .fns = ~ mode_or_unclassified(.x),
+      .names = "mode_{.col}"
+    ),
+    .groups = "drop"
+  )
+
+# Step 2: Merge all levels to construct df_moderator
+df_moderator <- df_clean_sample %>%
+  mutate(id_study = substr(id_sample, 1, 3)) %>%
+  left_join(df_clean_study, by = "id_study") %>%
+  left_join(df_intervention_summary, by = "id_sample")
+```
+
+## "df_data"
+
+
+

@@ -1,0 +1,147 @@
+---
+title: "3 BNMA ES Aggr"
+author: "Yixian Huang"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+```{r message = FALSE}
+#GLOBAL Setting
+options(scipen = 999)  
+options(digits = 6) 
+
+#Library
+library(metafor)
+library(clubSandwich)
+library(dplyr)
+library(tidyverse)  
+library(readxl)
+library(robumeta)
+
+```
+
+# Data Preparation
+Prepare IGRM data (By ComparisionID) and BNMA data (By ConditionID)
+```{r message = FALSE}
+rm(list=ls())
+ES_raw <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[2] ES Prep & Aggregate/[OUTPUT] ES Calc.csv")  %>% 
+            select(ConditionID, final.delta, final.se, esid)
+ES_agg <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[2] ES Prep & Aggregate/[OUTPUT] ES Aggregate.csv")  %>% 
+            select(ConditionID, delta.agg, se) %>% 
+            rename(final.delta = delta.agg,
+                   final.se = se)
+ES_raw$final.v <- ES_raw$final.se*ES_raw$final.se
+ES_agg$final.v <- ES_agg$final.se*ES_agg$final.se
+
+MOD_condition1 <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[3] Pub Bias & Mod Prep/[OUTPUT] Condition Mod Imputed.csv")
+MOD_condition2 <- read_excel("/Users/yh_mac24/Desktop/BNMA data processing/[1] Raw Data/[RAW] MRI Codebook and Raw Data.xlsx", 
+                      sheet = "clean_mod") %>% 
+                      filter(EX_Identifier != "EX") %>% 
+                      select(ConditionID, treatment, esid)
+
+merge_mod <- merge(MOD_condition2, MOD_condition1, by = "ConditionID", all.x = TRUE)
+
+merge_study <- merge(ES_agg, merge_mod, by = "ConditionID", all.x = TRUE) %>% 
+  distinct(ConditionID, .keep_all = TRUE)
+merge_rawES <- merge(ES_raw, merge_mod, by = "esid", all.x = TRUE, all.y = FALSE) 
+
+```
+
+# Publication Bias
+## Raw Data
+### Funnel Plot
+```{r}
+ES_PBtest <- ES_agg
+
+PB_model_PP   <-  rma(yi = final.delta, vi = final.v, data = ES_PBtest, method = "REML") # from PP
+PB_model_TS   <- rma(yi = final.delta, vi = final.v, data=ES_PBtest, test = "knha") # from Tesha
+
+### SET UP THIS #### 
+# Which model to plot?
+PB_test <- PB_model_TS
+
+funnel(PB_test)
+#plot the contour enhanced funnel plot
+funnel(PB_test, #the random effects results from rma
+       level = c(90, 95, 99), #sig levels
+       shade=c("white", "gray55", "gray75"), #colors in plot
+       # refline = 0, #center on 0 effect
+       legend = TRUE)
+
+ranktest(PB_test)
+#Eggers' test with standard errors
+regtest(PB_test, predictor = "se")
+#using RMA
+# "I'm going to stop using regtest because there's no real need"
+rma(yi = final.delta, mod = ~ final.se, vi = final.v, data=ES_PBtest, test = "knha")
+```
+
+
+# Solution - Trim & Fill
+```{r}
+PB_trimfill <- trimfill(PB_model_TS, estimator = "R0", maxiter = 100)
+
+PB_model_TS
+PB_trimfill
+
+funnel(PB_trimfill, xlab = "Effect Size Estimate")
+```
+
+# Moderators 
+list of variables 
+cat_country_0USA
+cat_lang_0Eng
+cat_pubtype_0article
+cat_design_0RCT
+treatment_type
+treatment
+ave_grade
+ave_age
+pct_struggle
+pct_disability
+pct_lowSES_FRPL
+pct_L2
+pct_boy
+pct_minority
+cat_int_1script
+cat_int_1smallgroup	
+cat_int_1schoolstaff	
+ave_int_dosage	
+ave_int_dosage_hr	
+ave_int_session	
+ave_int_length	
+cat_int_1fidelityreport
+```{r}
+ES_PBtest <- ES_raw
+ES_PBtest1 <- merge_rawES %>% 
+  mutate(study_year = as.numeric(study_year)) %>% 
+    mutate(pct_struggle = as.numeric(ave_grade))%>% 
+    mutate(ave_int_dosage = as.numeric(ave_int_dosage))
+
+( PB_test_raw <- rma(yi = final.delta, mod = ~ final.se, vi = final.v, data=ES_PBtest, test = "knha") )
+funnel(PB_test_raw)
+
+rma(yi = final.delta, mod = ~ final.se, vi = final.v, data=ES_PBtest1, test = "knha")
+
+rma(yi = final.delta, mod = ~ final.se  + treatment , 
+    vi = final.v, data=ES_PBtest1, test = "knha") # add moderators 
+
+rma(yi = final.delta, mod = ~ final.se  + treatment + ave_grade + pct_disability,
+    vi = final.v, data=ES_PBtest1, test = "knha") # add moderators 
+
+```
+

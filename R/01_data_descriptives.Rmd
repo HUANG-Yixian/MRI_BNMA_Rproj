@@ -1,0 +1,793 @@
+---
+title: "Data Clean and Descriptive Analysis"
+author: "Yixian Huang"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Description**:  
+This R Markdown document is designed for the initial data preparation and descriptive analysis of a meta-analytic dataset (see our project details at https://osf.io/pbd5c/). Key steps include:
+
+1. Cleaning and transforming raw data, including conversion of text labels into numeric values and applying consistent labeling.
+2. Handling missing data, including diagnostics and imputation.
+3. Producing descriptive statistics for study-, sample-, and condition-level characteristics.
+
+```{r}
+rm(list=ls())
+rprojroot::find_rstudio_root_file()
+```
+
+```{r, warning=FALSE, message = FALSE}
+library(readxl)
+library(dplyr)
+```
+
+# Data Import and Preparation
+```{r, warning=FALSE, message = FALSE}
+df_raw <- read_excel("../data/input/MRI_codebook_raw.xlsx", 
+                     sheet = "clean_data_info") %>% 
+          filter(EX_Identifier != "EX")
+df_raw[df_raw == "NA"] <- NA
+df_raw[df_raw == "NR"] <- NA
+```
+
+```{r}
+
+```
+
+
+```{r, warning=FALSE, message = FALSE}
+
+MOD_ANALcondition <- MOD_TRUEcondition %>% 
+                    distinct(ConditionID, .keep_all = TRUE) #if delta and se are identical, meaning those two groups are aggregrated
+
+ES_ANALcondition <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[2] ES Prep & Aggregate/[OUTPUT] ES Aggregate.csv")%>% 
+  select(ConditionID, delta.agg, se)
+
+# merge mod (one per TRUE condition) and agg ES (one per condition) 
+merge_TRUEcondition <- merge(MOD_TRUEcondition, ES_ANALcondition, by = "ConditionID", all.x = TRUE, all.y = TRUE) 
+merge_ANALcondition <- merge(MOD_ANALcondition, ES_ANALcondition, by = "ConditionID", all.x = TRUE, all.y = TRUE) 
+
+#Some int condition might be removed after removing outlier (SD>3), but still existing in the MOD original data
+# Logic. ALL int has a ES value. Only ctl groups are allowed to have no ES value. 
+filter(merge_TRUEcondition, (ConditionType != "ctl" & is.na(delta.agg)))
+filter(merge_ANALcondition, (ConditionType != "ctl" & is.na(delta.agg)))
+
+merge_TRUEcondition <- filter(merge_TRUEcondition, !(ConditionType != "ctl" & is.na(delta.agg)))
+merge_ANALcondition <- filter(merge_ANALcondition, !(ConditionType != "ctl" & is.na(delta.agg)))
+
+```
+MOD_condition includes all TRUE conditions (some need to be combined later)
+ES_condition includes all 84 available group comparison (after groups combination)
+
+## Prepare Data - StudyLevel
+```{r}
+# create a clean dataset with only one study per row
+merge_study <- merge_TRUEcondition %>% 
+                    distinct(StudyID, .keep_all = TRUE) 
+
+merge_sample <- merge_TRUEcondition %>% 
+                    distinct(SampleID, .keep_all = TRUE) 
+```
+
+## Prepare Data - ES level (mod + individual ES)
+ES_raw includes all 145 available effect size based on individual measures 
+```{r}
+ES_raw <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[2] ES Prep & Aggregate/[OUTPUT] ES Calc.csv") %>% 
+  select(ConditionID,
+         measure_names, measure_type_1std,
+         final.delta, final.v, final.se, final.n.total,
+         n_post_int, n_post_ctl,
+         m_pre_int, m_post_int, m_pre_ctl, m_post_ctl)
+
+# Including All ES & All conditions 
+merge_individualES <- merge(ES_raw, merge_TRUEcondition, by = "ConditionID", all.x = TRUE, all.y = TRUE) 
+
+
+merge_study <- filter(merge_ANALcondition, Unique_Study == TRUE) 
+```
+
+# Data Summary 
+## Blank list 
+Prapare a blank list to store data
+```{r}
+Unique_SampleID <- merge_ANALcondition %>% 
+                select(SampleID) %>% 
+                filter(!duplicated(SampleID) & !is.na(SampleID)) 
+
+Unique_ConditionID <- merge_ANALcondition %>% 
+                select(SampleID, ConditionID) %>% 
+                filter(!duplicated(ConditionID) & !is.na(ConditionID)) 
+
+Summary1_Studies <- data.frame(Descriptor = character(), Count = numeric(), Percent = numeric())
+Summary3_Condition <- data.frame(Descriptor = character(), Count = numeric(), Percent = numeric(), SampleSize = numeric())
+Summary2_Sample <- data.frame(Descriptor = character(), Count = numeric(), Percent = numeric())
+Summary4_ES <- data.frame(Descriptor = character(), Count = numeric(), Percent = numeric())
+  
+Study_details  <-Unique_SampleID
+```
+
+## > ES Level Data <
+### N of ES
+how many ES used in total? per study?
+```{r}
+esid_total <- data.frame(   Descriptor = "Number of Effect Sizes",               
+                            Count = length(unique(merge_individualES$esid)),
+                            Percent = NA) 
+
+esid_by_study <- merge_individualES %>%
+                 group_by(SampleID) %>%
+                 summarise(ES_per_study = n_distinct(esid))
+```
+
+#### [Sotre Data]
+```{r}
+Summary4_ES <- rbind(Summary4_ES, esid_total)
+Study_details <- merge(Study_details, esid_by_study, by = "SampleID", all.x = TRUE, all.y = TRUE) 
+```
+
+### N of Measure
+### N/% of STD/nonSTD Measure
+how many measures used in total? per study? 
+how many are STD and not STD? per study?
+```{r}
+# remove duplicated measures within a study 
+## - this happened when you have more than 2 groups and the comparison happened more then onice
+measures_filtered <- merge_individualES %>% 
+                      select(SampleID, measure_type_1std, measure_names) %>%
+                      group_by(SampleID) %>%
+                      filter(!duplicated(measure_names) & !is.na(measure_names)) %>%
+                      ungroup()
+
+# measure_summary_total
+measure_summary_total <- measures_filtered %>%
+  summarise(
+    Total_Measures_N = n(),                                 
+    STD_N = sum(measure_type_1std == 1),                    
+    STD_Percent = mean(measure_type_1std == 1),        
+    notSTD_N = sum(measure_type_1std == 0),                  
+    notSTD_Percent = mean(measure_type_1std == 0)    
+  ) %>%
+  reframe(
+    Descriptor = c("N of Measures", "Standardized Measure", "Non-Standardized Measure"),
+    Count = c(Total_Measures_N, STD_N, notSTD_N),
+    Percent = c(NA, STD_Percent, notSTD_Percent)  )
+
+# measure_summary_per_study
+measure_summary_per_study <- measures_filtered %>%
+  group_by(SampleID) %>%
+  summarise(
+    Total_Measures_N = n(),                                   
+    STD_N = sum(measure_type_1std == 1),                      
+    STD_Percent = mean(measure_type_1std == 1),        
+    notSTD_N = sum(measure_type_1std == 0),                 
+    notSTD_Percent = mean(measure_type_1std == 0)      
+  )
+```
+#### [Store Data]
+```{r}
+Summary4_ES <- rbind(Summary4_ES, measure_summary_total)
+Study_details <- merge(Study_details, esid_by_study, by = "SampleID", all.x = TRUE, all.y = TRUE) 
+```
+
+## > Condition Level Data <
+### TRUE conditions
+### Analytical conditions
+```{r}
+# N of conditions
+N_TRUEconditions <- data.frame(Descriptor = "Real Conditions",               
+                               Count = length(!is.na(merge_TRUEcondition$Unique_Condition)), #Marked as TRUE Condition 
+                               Percent = NA, SampleSize = NA) 
+
+N_ANALYTICALconditions <- data.frame(Descriptor = "ANALYTICAL Conditions",               
+                                     Count = length(unique(merge_ANALcondition$ConditionID)), #Marked as TRUE Condition 
+                                     Percent = NA, SampleSize = NA) 
+```
+
+```{r}
+conditions_per_study <- merge_ANALcondition %>%
+  group_by(SampleID) %>%
+  summarise(
+    Unique_Conditions = n_distinct(ConditionID)  # Count unique conditions
+  )
+```
+
+#### [Store Data]
+```{r}
+Summary3_Condition <- rbind(Summary3_Condition, N_TRUEconditions, N_ANALYTICALconditions)
+Study_details <- merge(Study_details, conditions_per_study, by = "SampleID", all.x = TRUE, all.y = TRUE) 
+```
+
+### MR, R, and BAU (Count & Sample Size)
+```{r}
+merge_ANALcondition <- merge_ANALcondition %>% 
+  mutate(sample_size_condition = as.numeric(sample_size_condition)) 
+
+# N of MR, R, and BAU & sample size
+Type_of_condition <- merge_ANALcondition %>%
+  group_by(treatment_type) %>%
+  summarise(
+    Count = n(),
+    SampleSize = sum(sample_size_condition, na.rm = TRUE)  # 求和时忽略 NA
+  ) %>%
+  mutate(
+    Descriptor = paste("Treatment:", treatment_type),
+    Percent = Count / sum(Count)
+  ) %>%
+  select(Descriptor, Count, Percent, SampleSize) %>%
+  ungroup() %>%
+  add_row(
+    Descriptor = "Treatment: Total",
+    Count = sum(.$Count),
+    Percent = 1,
+    SampleSize = sum(.$SampleSize),
+    .before = 1  # 将 Total 行添加到最前面
+  )
+
+# 打印结果
+Type_of_condition
+```
+
+#### [Store Data]
+```{r}
+Summary3_Condition <- rbind(Summary3_Condition, Type_of_condition)
+```
+
+### M Types (N, V, G, T)
+```{r}
+M_comp <- data.frame(Descriptor = c("Categories of motivational strategies", 
+                                      "Need", "Value", "Goal", "Attribution"),              
+                       Count = c(NA,
+                                  sum(merge_ANALcondition$Mcomp_N == "N", na.rm = TRUE),  # 统计 Mcomp_N 中等于 "N" 的数量
+                                  sum(merge_ANALcondition$Mcomp_V == "V", na.rm = TRUE),  # 统计 Mcomp_V 中等于 "V" 的数量
+                                  sum(merge_ANALcondition$Mcomp_G == "G", na.rm = TRUE),  # 统计 Mcomp_G 中等于 "G" 的数量
+                                  sum(merge_ANALcondition$Mcomp_T == "T", na.rm = TRUE) ))   # 统计 Mcomp_T 中等于 "T" 的数量
+                     
+M_comp$Percent <- c(NA, 
+                     sum(merge_ANALcondition$Mcomp_N == "N", na.rm = TRUE) / sum(merge_ANALcondition$treatment_type == "MR"), 
+                      sum(merge_ANALcondition$Mcomp_V == "V", na.rm = TRUE) / sum(merge_ANALcondition$treatment_type == "MR"), 
+                      sum(merge_ANALcondition$Mcomp_G == "G", na.rm = TRUE) / sum(merge_ANALcondition$treatment_type == "MR"), 
+                      sum(merge_ANALcondition$Mcomp_T == "T", na.rm = TRUE) / sum(merge_ANALcondition$treatment_type == "MR") 
+                      ) 
+                     
+M_comp$SampleSize <- NA
+
+M_comp
+
+```
+
+```{r}
+# N of single or multiple components
+N_of_Mcomp <- merge_ANALcondition %>%
+  filter(N_Mcomp != 0) %>%
+  group_by(N_Mcomp) %>%
+  summarise(
+    Count = n(),
+    SampleSize = sum(sample_size_condition, na.rm = TRUE)  # 忽略 NA 值
+  ) %>%
+  mutate(
+    Descriptor = paste("N of M used", N_Mcomp),  # 添加 Descriptor 列
+    Percent = Count / sum(Count)
+  ) %>%
+  select(Descriptor, Count, Percent, SampleSize)  # 调整列顺序
+
+# 查看结果
+print(N_of_Mcomp)
+
+```
+
+Frequency of Mcombination
+```{r}
+Frequency_Mcomb <- merge_ANALcondition %>% # this data set includes all REAL Conditions
+                    filter(code_M != ".") %>%   
+                    group_by(code_M) %>%
+                      summarise(
+                        Count = n(),                               
+                        SampleSize = sum(sample_size_condition) 
+                        )%>%
+                mutate(
+                  Descriptor = paste("M Combination:", code_M),  # 添加 Descriptor 列
+                  Percent = Count / sum(Count)  
+                ) %>%
+                select(Descriptor, Count, Percent, SampleSize)  # 调整列顺序
+
+Frequency_Mcomb
+
+
+```
+Frequency of All treatments
+```{r}
+Frequency_allT <- merge_ANALcondition %>% # this data set includes all REAL Conditions
+                    filter(treatment != ".") %>%   
+                    group_by(treatment) %>%
+                      summarise(
+                        Count = n(),                               
+                        SampleSize = sum(sample_size_condition) 
+                        )%>%
+                mutate(
+                  Descriptor = paste(treatment),  # 添加 Descriptor 列
+                  Percent = Count / sum(Count)  
+                ) %>%
+                select(Descriptor, Count, Percent, SampleSize)  # 调整列顺序
+
+Frequency_allT
+
+
+#### [Store Data]
+```
+
+```{r}
+Summary3_Condition <- rbind(Summary3_Condition, Type_of_condition, M_comp, N_of_Mcomp, Frequency_Mcomb, Frequency_allT)
+```
+
+## > Study level Data <
+### Study Info
+
+#### Function 1 (threshold) ...
+```{r}
+library(dplyr)
+
+# Define a function to calculate count, percentage, reclassify low-frequency, and add category name row
+summarize_column_with_other <- function(data, column, threshold = 1, category_name) {
+  # Summarize counts
+  summarized <- data %>%
+    group_by(across(all_of(column))) %>%
+    summarise(
+      Count = n(),
+      .groups = "drop"
+    ) %>%
+    rename(Value = !!column)
+  
+  # Reclassify low-frequency values as "Other"
+  summarized <- summarized %>%
+    mutate(Value = ifelse(Count <= threshold, "Other", Value)) %>%
+    group_by(Value) %>%
+    summarise(
+      Count = sum(Count),  # Combine counts for "Other"
+      .groups = "drop"
+    )
+  
+  # Calculate Percent based on the total count of the category
+  total_count <- sum(summarized$Count)  # Total count for the category
+  summarized <- summarized %>%
+    mutate(
+      Percent = (Count / total_count) * 100  # Percent based on the category total
+    )
+  
+  # Add a row for the category name
+  category_row <- tibble(
+    Value = category_name,
+    Count = NA,
+    Percent = NA
+  )
+  
+  # Combine category name row with summarized data
+  bind_rows(category_row, summarized)
+}
+```
+#### Study Info ...
+```{r}
+# Apply the function to relevant columns and combine results into one table
+study_descriptor_threshold <- bind_rows(
+  # Study Year
+  merge_study %>%
+    mutate(Year_Category = case_when(
+      study_year >= 180 & study_year < 2000 ~ "1987 to 2000",
+      study_year >= 2000 & study_year < 2010 ~ "2000 to 2010",
+      study_year >= 2010 & study_year < 2020 ~ "2010 to 2020",
+      study_year >= 2020 & study_year <= 2024 ~ "2020 to 2024",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column_with_other("Year_Category", threshold = 1, category_name = "Study year"),
+  
+  # Country with threshold
+  summarize_column_with_other(merge_study, "raw_country", threshold = 1, category_name = "Country of experiment")
+           ,
+  
+  # Language with threshold
+  summarize_column_with_other(merge_study, "raw_language", threshold = 1, category_name = "Language of experiment") 
+)
+
+# View combined table
+print(study_descriptor_threshold)
+
+```
+
+#### Function 2 ...
+```{r}
+library(dplyr)
+
+summarize_column <- function(data, column, category_name) {
+  # Summarize counts
+  summarized <- data %>%
+    group_by(across(all_of(column))) %>%
+    summarise(
+      Count = n(),
+      .groups = "drop"
+    ) %>%
+    rename(Value = !!column)
+  
+  # Calculate Percent based on the total count of the category
+  total_count <- sum(summarized$Count)  # Total count for the category
+  summarized <- summarized %>%
+    mutate(
+      Percent = (Count / total_count) * 100  # Percent based on the category total
+    )
+  
+  # Add a row for the category name
+  category_row <- tibble(
+    Value = category_name,
+    Count = NA,
+    Percent = NA
+  )
+  
+  # Combine category name row with summarized data
+  bind_rows(category_row, summarized)
+}
+```
+
+#### Study Info 2
+```{r}
+# Apply the function to relevant columns and combine results into one table
+study_descriptor <- bind_rows(
+  # Context
+  merge_study %>%  mutate(Context = case_when(
+                          cat_context_0school == 0 ~ "School-based program",
+                          cat_context_0school == 1 ~ "After school program",
+                          TRUE ~ "Unknown")) %>%
+        summarize_column("Context", category_name = "Context of Experiment"),
+      
+  # PubType
+  merge_study %>%  mutate(PubType = case_when(
+                          cat_pubtype_0article == 0 ~ "Peer-reviewed article",
+                          cat_pubtype_0article == 1 ~ "Grey literature",
+                          TRUE ~ "Unknown")) %>%
+        summarize_column("PubType", category_name = "Publication type"),
+  
+  # DesignType
+  merge_study %>% mutate(DesignType = case_when(
+                          cat_design_0RCT == 0 ~ "Randomized controlled trial",
+                          cat_design_0RCT == 1 ~ "Quasi-experimental design",
+                          TRUE ~ "Unknown")) %>%
+        summarize_column("DesignType", category_name = "Design type"),
+
+  # Edu Stage
+     merge_study %>% mutate(cat_grade = case_when(
+                          cat_grade_0elem == 1 ~ "Secondary grades",
+                          cat_grade_0elem == 0 ~ "Elementary grades",
+                          cat_grade_0elem == "NA" ~ "Not Reported",
+                          TRUE ~ "Not Reported")) %>%
+        summarize_column("cat_grade", category_name = "Grade level")
+  )
+
+print(study_descriptor)
+
+```
+
+#### [Store Data]
+```{r}
+Summary1_Studies <- rbind(study_descriptor_threshold, study_descriptor)
+```
+
+### Intervention Info
+Using funciton 2
+
+```{r}
+merge_INTcondition <- merge_ANALcondition %>%  
+            filter(treatment_type == "MR") %>%  # check only the MR groups' details
+            mutate(ave_int_dosage_hr = as.numeric(ave_int_dosage_hr))
+
+# Intervention Characteristics 
+intervention_descriptor <- bind_rows(
+  # group size
+  merge_INTcondition %>% mutate(cat_int_1smallgroup1 = case_when(
+                          cat_int_1smallgroup == 1 ~ "Individual or small group (n ≤ 7)",
+                          cat_int_1smallgroup == 0 ~ "classroom or large group (n > 7)",
+                          TRUE ~ "Not Reported")) %>%
+        summarize_column("cat_int_1smallgroup1", category_name = "Intervention group size"),
+
+  # Implementer
+  merge_INTcondition %>% mutate(cat_int_1schoolstaff1 = case_when(
+                          cat_int_1schoolstaff == 1 ~ "School staffs",
+                          cat_int_1schoolstaff == 0 ~ "Research staffs",
+                          TRUE ~ "Not Reported")) %>%
+        summarize_column("cat_int_1schoolstaff1", category_name = "Implementer"),
+
+  # Total Dosage
+  merge_INTcondition %>%
+  mutate(ave_int_dosage_hr1 = case_when(
+      ave_int_dosage_hr == "BAU" ~ "BAU",
+      ave_int_dosage_hr > 1 & ave_int_dosage_hr <= 10 ~ "(4, 10]",
+      ave_int_dosage_hr > 10 & ave_int_dosage_hr <= 50 ~ "(10, 50]",
+      ave_int_dosage_hr > 50 & ave_int_dosage_hr <= 100 ~ "(50, 100] ",
+      ave_int_dosage_hr > 100 & ave_int_dosage_hr <= 150 ~ "(100, 150] ",
+      ave_int_dosage_hr > 150 ~ "(100, 180] ",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("ave_int_dosage_hr1", category_name = "Total Dosage"),
+)
+
+print(intervention_descriptor)
+intervention_descriptor$SampleSize <- NA
+Summary3_Condition <- rbind(Summary3_Condition, intervention_descriptor)
+```
+### Sample Characteristics 
+
+```{r}
+# Sample Characteristics 
+
+
+sample_descriptor <- bind_rows(
+  # Grade Level
+   merge_sample %>% mutate(cat_grade = case_when(
+                          cat_grade_0elem == 1 ~ "Secondary grades (sample)",
+                          cat_grade_0elem == 0 ~ "Elementary grades (sample)",
+                          cat_grade_0elem == "NA" ~ "Not Reported",
+                          TRUE ~ "Not Reported")) %>%
+        summarize_column("cat_grade", category_name = "Grade level"),
+  
+  # Reading Difficulty Status
+  merge_sample %>%
+    mutate(pct_struggle1 = case_when(
+      pct_struggle == "NA" ~ "Not Reported",
+      pct_struggle >= .75 ~ "Predominately with reading difficulties",
+      pct_struggle > .25 
+      & pct_struggle < .75 ~ "Mixed sample",
+      pct_struggle <= .25 ~ "Predominately without reading difficulties",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("pct_struggle1", category_name = "Reading Difficulty Status"),
+
+  # Disabilities Status
+  merge_sample %>%
+    mutate(pct_disability1 = case_when(
+      pct_disability == "NA" ~ "Not Reported",
+      pct_disability >= .75 ~ "Predominately with disabilities",
+      pct_disability > .25 
+      & pct_disability < .75 ~ "Mixed sample",
+      pct_disability <= .25 ~ "Predominately without disabilities",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("pct_disability1", category_name = "Disabilities Status"),
+
+  # SES Status
+  merge_sample %>%
+    mutate(pct_lowSES_FRPL1 = case_when(
+      pct_lowSES_FRPL == "NA" ~ "Not Reported",
+      pct_lowSES_FRPL >= .75 ~ "Predominately low SES",
+      pct_lowSES_FRPL > .25 
+      & pct_lowSES_FRPL < .75 ~ "Mixed sample",
+      pct_lowSES_FRPL <= .25 ~ "Predominately middle or high SES",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("pct_lowSES_FRPL1", category_name = "SES Status"),
+
+  # pct_minority
+  merge_sample %>%
+    mutate(pct_minority1 = case_when(
+      pct_minority == "NA" ~ "Not Reported",
+      pct_minority >= .75 ~ "Predominately White",
+      pct_minority > .25 
+      & pct_minority < .75 ~ "Mixed sample",
+      pct_minority <= .25 ~ "Predominately other race/ethnicity group",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("pct_minority1", category_name = "Race/ethnicity"),
+
+  # Gender
+  merge_sample %>%
+    mutate(pct_boy1 = case_when(
+      pct_boy == "NA" ~ "Not Reported",
+      pct_boy >= .75 ~ "Predominately male",
+      pct_boy > .25 
+      & pct_boy < .75 ~ "Mixed sample",
+      pct_boy <= .25 ~ "Predominately female",
+      TRUE ~ "Not Reported"
+    )) %>%
+    summarize_column("pct_boy1", category_name = "Gender")
+)
+
+print(sample_descriptor)
+```
+
+#### [Store Data]
+```{r}
+Summary2_Sample <- rbind(Summary2_Sample, sample_descriptor)
+```
+
+
+
+# Double check
+
+## Understand your data
+```{r}
+# summary(merge_ALL)
+
+library(skimr)
+# skim(merge_ALL)
+
+library(summarytools)
+dfSummary(merge_study)
+```
+# Mod Play Around
+## Subset all mod data
+```{r}
+BNMA_mod_per_sample <- merge_ANALcondition %>% 
+  dplyr::filter(treatment_type == "MR" ) %>% 
+  dplyr::distinct(SampleID, .keep_all = TRUE) %>% 
+  dplyr::select(SampleID, study_year, 
+                starts_with("pct"), starts_with("ave"), starts_with("cat"), -pct_L2, -ave_int_dosage) %>%  
+  dplyr::mutate(across(c(study_year, starts_with("pct"), starts_with("ave")), as.numeric)) %>% 
+  dplyr::mutate(across(c(starts_with("cat")), as.factor)) %>% 
+  rename(study = SampleID) 
+
+str(BNMA_mod_per_sample)
+
+corr_data_sample <- BNMA_mod_per_sample %>% 
+    dplyr::select(-study, -study_year, -starts_with("cat"))
+
+```
+
+
+```{r}
+# cor_matrix <- cor(corr_data, use = "pairwise.complete.obs") # the sample size varies per pairwise comparison
+library(Hmisc)
+rcorr_result <- rcorr(as.matrix(corr_data_sample), type = "pearson")  # type = "pearson" 或 "spearman"
+# print the results: r, p, n
+r_matrix_corr <- rcorr_result$r
+r_matrix_n <- rcorr_result$n 
+r_matrix_p <- rcorr_result$P 
+r_matrix_p[is.na(r_matrix_p)] <- 0 # impute 0 to NA for self-correlation
+```
+
+##  PLOT 1 - corrplot
+```{r}
+library(corrplot)
+corrplot(r_matrix_corr, 
+         method = "ellipse",   # 可选：'circle', 'square', 'ellipse', 'number', etc.
+         type = "lower",     # 可选：'full', 'upper', 'lower'
+         order = "alphabet",   # 可选：'AOE', 'FPC', 'hclust', etc.
+         # col = colorRampPalette(c("blue", "white", "red"))(200), 
+         p.mat = r_matrix_p,                # 显著性矩阵
+         sig.level = 0.05,                # 显著性水平
+         insig = "blank",             # 不显著的格子留空
+         tl.col = "black",                # 标签颜色
+         tl.srt = 45,                     # 标签旋转角度
+         addCoef.col = "black",                # 添加相关系数，颜色为黑色
+         number.cex = 0.5)                     # 相关系数字体大小
+
+```
+##  PLOT 2 - metan
+```{r}
+library(metan)
+corr_metan <- metan::corr_coef(corr_data_sample)
+plot(corr_data_sample)
+```
+
+## APA Corr Table
+```{r}
+### APA Corr Table
+library(apaTables)
+apa.cor.table(corr_data_sample, filename = "Summary0 APA_Correlation_Table.doc",
+                  table.number = NA,
+                  show.conf.interval = FALSE,
+                  show.sig.stars = TRUE, 
+                  landscape = FALSE)
+write.csv(r_matrix_n, file = "Summary0 n for corr table.csv", row.names = FALSE)
+
+
+```
+
+# Multiple Inputation for studys
+## Check Missing Value
+```{r}
+# N of NA 
+colSums(is.na(BNMA_mod_per_sample))
+
+library(visdat)
+vis_dat(BNMA_mod_per_sample) 
+
+library(naniar)
+# MCAR = Missing Completely At Random (MCAR)
+ # mcar_test(BNMA_mod_per_sample[, 13:24]) #May data is not MCAR. Instead, it may be Missing At Random (MAR) or Not Missing At Random (NMAR)
+# Visualize missing data patterns
+vis_miss(BNMA_mod_per_sample)
+# Explore missing data as a function of observed variables
+gg_miss_upset(BNMA_mod_per_sample)
+
+# Generate a missing data pattern
+library(mice)
+md.pattern(BNMA_mod_per_sample)
+
+library(corrr)
+```
+## mice 
+```{r}
+library(mice)
+data_imputed <- mice(BNMA_mod_per_sample, m = 5, method = "pmm", seed = 2025)
+BNMA_Mod_imputed <- complete(data_imputed, 1)
+colSums(is.na(BNMA_Mod_imputed))
+```
+
+
+## write.csv
+## BNMA mod list
+```{r}
+write.csv(BNMA_mod_per_sample, file = "[OUTPUT] BNMA Mod Raw.csv", row.names = FALSE)
+write.csv(BNMA_Mod_imputed, file = "[OUTPUT] BNMA Mod Imputed.csv", row.names = FALSE)
+```
+
+## Study Summary 
+```{r}
+write.csv(Summary1_Studies, file = "Summary1_Studies.csv", row.names = FALSE)
+write.csv(Summary2_Sample, file = "Summary2_Sample.csv", row.names = FALSE)
+write.csv(Summary3_Condition, file = "Summary3_Condition.csv", row.names = FALSE)
+write.csv(Study_details, file = "Summary4_ConditionDetails.csv", row.names = FALSE)
+```
+
+
+
+# Mod_select [condition]
+## subset final mod list
+```{r}
+mod_per_condition <- merge_ANALcondition %>% 
+  distinct(ConditionID, .keep_all = TRUE) %>% 
+  select(SampleID, ConditionID, study_year, starts_with("cat"), starts_with("pct"), starts_with("ave")) %>%  
+  mutate(across(c(study_year, starts_with("pct"), starts_with("ave")), as.numeric)) %>% 
+  mutate(across(starts_with("cat"), as.factor)) %>% 
+  rename(study = SampleID) 
+
+str(mod_per_condition)
+```
+
+# Multiple Inputation for studys
+## Check Missing Value
+```{r}
+# N of NA 
+colSums(is.na(mod_per_condition))
+
+library(visdat)
+vis_dat(mod_per_condition) 
+
+library(naniar)
+# MCAR = Missing Completely At Random (MCAR)
+ # mcar_test(mod_per_condition[, 14:25]) #May data is not MCAR. Instead, it may be Missing At Random (MAR) or Not Missing At Random (NMAR)
+# Visualize missing data patterns
+vis_miss(mod_per_condition)
+# Explore missing data as a function of observed variables
+gg_miss_upset(mod_per_condition)
+
+# Generate a missing data pattern
+library(mice)
+md.pattern(mod_per_condition)
+
+library(corrr)
+```
+## mice 
+```{r}
+library(mice)
+data_imputed <- mice(mod_per_condition, m = 5, method = "pmm", seed = 2025)
+condition_Mod_imputed <- complete(data_imputed, 1)
+colSums(is.na(condition_Mod_imputed))
+```
+
+## write.csv
+## BNMA mod list
+```{r}
+write.csv(condition_Mod_imputed, file = "[OUTPUT] Condition Mod Imputed (for pub bias).csv", row.names = FALSE)
+```
+

@@ -1,0 +1,395 @@
+---
+title: ":BNMA Model"
+author: "Yixian Huang"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Main Analysis - BNMA
+
+## Load all functions 
+```{r message = FALSE}
+library(readxl)
+library(netmeta)
+library(gemtc)
+# library(rjags)
+library(dmetar)
+library(igraph)
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(scales)
+```
+
+## Data input and management 
+```{r}
+rm(list=ls())
+data_raw <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[2] ES Prep & Aggregate/[OUTPUT] BNMA_code_and_ES.csv") %>% 
+            filter(!is.na(treatment)) %>% 
+            mutate(study = as.factor(study))
+
+data_mod <- read.csv("/Users/yh_mac24/Desktop/BNMA data processing/[3] Pub Bias & Mod Prep/[OUTPUT] BNMA Mod Imputed.csv")
+            any(duplicated(data_mod$study))%>% 
+            mutate(study = as.factor(study))
+```
+## [SET UP] Data Subset
+```{r}
+merged_data <- merge(data_raw, data_mod, by ="study", all.x = TRUE, all.y = FALSE)
+sub_grade_elementary <- filter(merged_data, cat_grade_0elem == 0)
+sub_grade_secondary <- filter(merged_data, cat_grade_0elem == 1)
+
+sub_data_EXoldstudy <- filter(merged_data, study_year > 1990)
+
+sub_data_noSchunk95 <- filter(merged_data, study != "105")
+
+```
+
+## Build treatcode summary
+```{r}
+### SET UP THIS!! ###
+final.data <- data_raw
+#####################
+final.mod <- data_mod
+```
+
+Make sure final.mod and final.data has the same studies
+```{r}
+# 查看 `study.info` 和 `data` 的研究名称
+( data_names <- unique(final.data$study) )
+( study_info_names <- final.mod$study )
+
+# 找出未匹配的研究
+( missing_in_data <- setdiff(study_info_names, data_names) ) # `study.info` 中有但 `data` 中没有的研究
+( missing_in_study_info <- setdiff(data_names, study_info_names) ) # `data` 中有但 `study.info` 中没有的研究
+
+```
+
+```{r}
+treatcode_summary <- as.data.frame(table(final.data$treatment)) #count the frequency 
+
+data_treatcode <- data.frame(id=treatcode_summary[,1],
+                             description=treatcode_summary[,1],
+                             r=treatcode_summary[,2])
+
+BNMA_data <- list(data=final.data,
+                  study.info = final.mod,
+                  treat.codes = data_treatcode)
+
+BNMA_data[BNMA_data=="NA"] <- NA
+BNMA_data$data
+BNMA_data$study.info
+BNMA_data$treat.codes
+```
+
+
+## Define network object
+```{r}
+getmode <- function(v) {
+        uniqv <- unique(v)
+        uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+radian.rescale <- function(x, start=0, direction=1) {
+        c.rotate <- function(x) (x + start) %% (2 * pi) * direction
+        c.rotate(scales::rescale(x, c(0, 2 * pi), range(x)))
+}
+```
+
+```{r}
+network1 <- mtc.network(data.re = BNMA_data$data,
+                        treatments = BNMA_data$treat.codes)
+summary(network1)
+```
+
+## Estimating efficacy by MCMC method for decoding
+```{r}
+model <- mtc.model(network1, likelihood = "normal",
+                   link = "identity",
+                   linearModel = "random",
+                   n.chain = 4)
+
+```
+
+## Assessing consistency
+```{r}
+nodesplit <- mtc.nodesplit(network1,
+                           linearModel = "random",
+                           likelihood = "normal",
+                           link = "identity",
+                           n.adapt =10000,
+                           n.iter = 50000,
+                           thin = 10)
+summary(nodesplit)
+plot(summary(nodesplit))
+plot(network1)
+```
+# Model Building 
+
+## Sensitivity Analysis 
+
+```{r}
+# Initialize UHI values to test
+uhi_values <- c(1, 2, 5, 0.1, 0.5)
+
+# Initialize storage for results and DIC values
+dic_results_list <- list()
+dic_results_table <- data.frame(uhi = numeric(), DIC = numeric())
+
+# Loop through each UHI value
+for (uhi in uhi_values) {
+  # Create the model
+  model <- mtc.model(
+    network1,
+    likelihood = "normal",
+    link = "identity",
+    linearModel = "random",
+    n.chain = 4,
+    hy.prior = mtc.hy.prior("std.dev", "dunif", 0, uhi)
+  )
+  
+  # Run the model
+  mcmc2 <- mtc.run(model, n.adapt = 10000, n.iter = 50000, thin = 10)
+  
+  # Store the model results in the list
+  dic_results_list[[paste0("uhi_", uhi)]] <- summary(mcmc2)
+  
+  # Extract the DIC value from the model summary
+  dic_value <- summary(mcmc2)$DIC
+  
+  # Append the UHI value and DIC value to the data frame
+  dic_results_table <- rbind(dic_results_table, data.frame(uhi = uhi, DIC = dic_value))
+}
+
+# View the list of model results
+print(dic_results_list)
+
+# View the data frame of DIC results
+print(dic_results_table)
+
+```
+
+## Final model with lowest DIC
+```{r}
+uhi <- 1
+model <- mtc.model(network1,
+                   likelihood = "normal",
+                   link = "identity",
+                   linearModel = "random",
+                   n.chain = 4,
+                   hy.prior=mtc.hy.prior("std.dev", "dunif", 0, uhi))
+mcmc2 <- mtc.run(model, n.adapt = 10000, n.iter = 50000, thin = 10)
+summary(mcmc2)
+
+library(coda)
+gelman.diag(mcmc2, confidence = 0.95, transform=FALSE, autoburnin=TRUE,
+                   multivariate=TRUE)
+gelman.plot(mcmc2, bin.width = 10, max.bins = 50,
+                  confidence = 0.95, transform = FALSE, autoburnin=TRUE, auto.layout = TRUE)
+```
+
+
+
+## Computing SUCRA: The SUCRA is a (Bayesian) summary of the rank distribution 
+which can be interpreted as the estimated proportion of treatments worse than the treatment of interest 
+
+
+### SUCRA result 
+SUCRA is the surface under the cumulative ranking distribution defined in Salanti et al. (2011)
+
+```{r}
+library(gemtc)
+rank.probability <- rank.probability(mcmc2)
+#print(rank.probability)
+sucra1 <- sucra(rank.probability)
+sucra1
+```
+
+### SUCRA plot 
+
+```{r}
+rank.quantiles(rank.probability, probs=c("2.5%"=0.025, "50%"=0.5, "97.5%"=0.975))
+plot(rank.probability)
+plot(rank.probability, beside=TRUE)
+
+```
+
+## plot network
+
+```{r}
+
+##testing graph labeling
+library(igraph)
+library(ggplot2)
+library(scales)
+
+
+network1 <- mtc.network(data.re = BNMA_data$data,
+                        treatments = BNMA_data$treat.codes)
+summary(network1)
+networkop1 <- summary(network1)
+nodesr <- networkop1$`Studies per treatment`
+nodes2 <- scales::rescale(nodesr, to=c(1,5))
+set.seed(12345) 
+links <- networkop1$`Studies per treatment comparison`
+nodes <- networkop1$`Studies per treatment`
+nodesdf <- data.frame(node=row.names(as.data.frame(nodes)),
+                      nss=nodes)
+net <- igraph::graph_from_data_frame(d=links, vertices=nodesdf, directed=F)
+sn <- length(nodesr )
+lab.locs <- radian.rescale(x=1:sn, direction=-1, start=0)
+cols <- hue_pal()(2) 
+col <- ifelse(nodesdf$node %in% c("R"), "orange", cols[2])
+
+l <- layout.circle(net)
+par(mar=c(0,0,0,0))
+plot(net, 
+     vertex.color = col,
+     vertex.frame.color  = col,
+     vertex.size = nodes2*5, # size of the node
+     vertex.label.cex = .8, # node label size
+     vertex.label.dist = 1.5, # distance label-node center
+     vertex.label.degree = lab.locs,
+     edge.width = links$nr,
+     layout = l)
+
+```
+
+# Network Meta-Regression: Moderation Analysis
+```{r}
+BNMA_data$study.info
+network.mr <- mtc.network(data.re = BNMA_data$data,
+                          studies = BNMA_data$study.info,
+                          treatments = BNMA_data$treat.codes)
+
+```
+
+
+```{r}
+regressor <- list(coefficient = "shared",
+                  variable = "study_year",
+                  control = "R") 
+
+model <- mtc.model(network.mr,
+                      likelihood = "normal",
+                      link = "identity",
+                      type = "regression",
+                     regressor = regressor) # check if B (the last line contain ZERO)
+set.seed(1)
+seeds <- sample.int(4, n = .Machine$integer.max)
+seeds 
+# Apply JAGS RNG settings to each chain
+model$inits <- mapply(c, model$inits, list(
+        list(.RNG.name="base::Wichmann-Hill", .RNG.seed=seeds[1]),
+        list(.RNG.name="base::Marsaglia-Multicarry", .RNG.seed=seeds[2]),
+        list(.RNG.name="base::Super-Duper", .RNG.seed=seeds[3]),
+        list(.RNG.name="base::Mersenne-Twister", .RNG.seed=seeds[4])), SIMPLIFY=FALSE)
+mcmc3.1 <- mtc.run(model,
+                   n.adapt =10000,
+                   n.iter = 50000,
+                   thin = 10)
+
+summary(mcmc3.1)
+options(scipen=999)
+summary(mcmc3.1)$DIC # if the model with moderator indicate a significant change with the baseline model, you can say it is sig.
+summary(mcmc2)$DIC
+```
+## For Loop
+
+```{r}
+library(gemtc)
+
+# 初始化存储结果的列表
+results_list <- list()
+
+# 提取 `study.info` 中的列名（排除第一列 "study"）
+variable_names <- colnames(BNMA_data$study.info)[-1]  # 去除 "study"
+
+# 遍历每个列名
+for (variable in variable_names) {
+  tryCatch({
+    # 打印当前变量名以跟踪进度
+    cat("Running for variable:", variable, "\n")
+    
+    # 定义 regressor
+    regressor <- list(
+      coefficient = "shared",
+      variable = variable,
+      control = "R"
+    )
+    
+    # 定义模型
+    model <- mtc.model(
+      network.mr,
+      likelihood = "normal",
+      link = "identity",
+      type = "regression",
+      regressor = regressor
+    )
+    
+    # 设置随机种子并初始化模型
+    set.seed(1)
+    seeds <- sample(1:1e6, size = 4, replace = FALSE)  # 修复随机种子问题
+    model$inits <- mapply(c, model$inits, list(
+      list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = seeds[1]),
+      list(.RNG.name = "base::Marsaglia-Multicarry", .RNG.seed = seeds[2]),
+      list(.RNG.name = "base::Super-Duper", .RNG.seed = seeds[3]),
+      list(.RNG.name = "base::Mersenne-Twister", .RNG.seed = seeds[4])
+    ), SIMPLIFY = FALSE)
+    
+    # 运行模型
+    mcmc_result <- mtc.run(
+      model,
+      n.adapt = 10000,
+      n.iter = 50000,
+      thin = 10
+    )
+    
+    # 保存结果到列表
+    results_list[[variable]] <- list(
+      summary = summary(mcmc_result),
+      DIC = summary(mcmc_result)$DIC
+    )
+    
+    # 打印成功消息
+    cat("Completed for variable:", variable, "\n")
+  }, error = function(e) {
+    # 如果发生错误，打印错误消息并继续下一个变量
+    cat("Error for variable:", variable, "-", e$message, "\n")
+  })
+}
+```
+
+```{r}
+# 遍历 results_list 并打印结果
+for (variable in names(results_list)) {
+  # 检查该 variable 是否有结果
+  if (!is.null(results_list[[variable]])) {
+    # 打印变量名
+    cat("\nVariable:", variable, "\n")
+    
+    # 打印模型的 DIC 值
+    cat("DIC:", results_list[[variable]]$DIC, "\n")
+    
+    # 打印模型摘要
+    print(results_list[[variable]]$summary)
+  } else {
+    # 如果没有结果，打印跳过信息
+    cat("\nVariable:", variable, "- No results available (skipping)\n")
+  }
+}
+```
+
