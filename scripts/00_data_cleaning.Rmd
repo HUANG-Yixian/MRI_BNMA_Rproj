@@ -23,6 +23,7 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 library(purrr)
+library(tibble)
 ```
 
 # Data Import and Cleaning
@@ -88,47 +89,50 @@ df_raw <- df_raw %>%
 
 # Variable Dictionary 
 ```{r}
-# Step 1: Extract all variable names
+#  Extract variable names
 col_names <- names(df_raw)
 
-# Step 2: Define prefix dictionary
-prefix_dict <- list(
-  "id_"  = "Categorical - Identifier",
-  "pct_" = "Numeric - Percentage / proportion",
-  "ave_" = "Numeric - Average / mean value",
-  "is_"  = "Categorical - Binary (0/1) with labels",
-  "cat_" = "Categorical - multi-level factor)",
-  "chr_" = "Character",
-  "num_" = "Numeric - number",
-  "m_"   = "Numeric - Outcome: mean",
-  "sd_"  = "Numeric - Outcome: standard deviation",
-  "n_"   = "Numeric - Outcome: sample size",
-  "r_"   = "Numeric - Outcome: correlation (pre-post)"
+#Define prefix mapping with data_type and description
+prefix_df <- tribble(
+  ~prefix, ~data_type,    ~description,
+  "id_",   "Categorical", "Identifier",
+  "pct_",  "Numeric",     "Percentage / proportion",
+  "ave_",  "Numeric",     "Average / mean value",
+  "is_",   "Categorical", "Binary (0/1) with labels",
+  "cat_",  "Categorical", "Multi-level factor",
+  "chr_",  "Character",   "Free text",
+  "num_",  "Numeric",     "Raw number",
+  "m_",    "Numeric",     "Outcome: mean",
+  "sd_",   "Numeric",     "Outcome: standard deviation",
+  "n_",    "Numeric",     "Outcome: sample size",
+  "r_",    "Numeric",     "Outcome: correlation (pre-post)"
 )
 
-# Step 3: Define data levels by variable ranges
-study_vars        <- col_names[which(col_names == "chr_authorname") : which(col_names == "is_RCT")]
-sample_vars       <- c("id_sample",
-                      col_names[which(col_names == "chr_grade") : which(col_names == "pct_minority")])
-intervention_vars <- c(col_names[which(col_names == "id_sample") : which(col_names == "chr_condition_name")],
-                      col_names[which(col_names == "is_scripted") : which(col_names == "is_fidelity")])
-es_vars           <- c("id_es", 
-                       col_names[which(col_names == "chr_measure_name") : which(col_names == "r_pre_delay")])
+# Define variable groups for data_level
+study_vars <- col_names[which(col_names == "chr_authorname") : which(col_names == "is_RCT")]
+sample_vars <- c("id_sample", col_names[which(col_names == "chr_grade") : which(col_names == "pct_minority")])
+intervention_vars <- c(
+  col_names[which(col_names == "id_sample") : which(col_names == "chr_condition_name")],
+  col_names[which(col_names == "is_scripted") : which(col_names == "is_fidelity")]
+)
+es_vars <- c("id_es", col_names[which(col_names == "chr_measure_name") : which(col_names == "r_pre_delay")])
 
-# Step 4: Classification function
+# --- Step 4: Classification function ---
 classify_variable <- function(var) {
-  # Match prefix
-  matched_prefix <- NA
-  matched_cat <- "Unclassified"
-  for (p in names(prefix_dict)) {
-    if (startsWith(var, p)) {
-      matched_prefix <- p
-      matched_cat <- prefix_dict[[p]]
-      break
-    }
+  matched <- prefix_df %>%
+    filter(str_starts(var, prefix)) %>%
+    slice(1)
+
+  if (nrow(matched) == 0) {
+    data_type <- "Unclassified"
+    description <- "Unclassified"
+    matched_prefix <- NA
+  } else {
+    data_type <- matched$data_type
+    description <- matched$description
+    matched_prefix <- matched$prefix
   }
 
-  # Match data level
   level <- case_when(
     var %in% study_vars        ~ "Study level",
     var %in% sample_vars       ~ "Sample level",
@@ -137,16 +141,23 @@ classify_variable <- function(var) {
     TRUE                       ~ "Unclassified"
   )
 
-  return(data.frame(variable = var, prefix = matched_prefix, category = matched_cat, data_level = level))
+  return(data.frame(
+    variable = var,
+    prefix = matched_prefix,
+    data_type = data_type,
+    description = description,
+    data_level = level,
+    stringsAsFactors = FALSE
+  ))
 }
 
-# Step 5: Apply to all variables
+#  Apply function to all variables 
 variable_dict <- do.call(rbind, lapply(col_names, classify_variable))
 
-# View variable dictionary
+# View result 
 print(variable_dict)
 
-# Clean temporary variables (all except final results)
+# clean temp 
 rm(list = setdiff(ls(), c("df_raw", "variable_dict")))
 ```
 
@@ -183,15 +194,15 @@ df_clean <- df_raw %>%
 # Apply R data classes based on variable dictionary
 df_clean <- df_clean %>%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == "numeric"],
+    .cols = variable_dict$variable[variable_dict$data_type == "Numeric"],
     .fns  = as.numeric
   )) %>%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == "categorical"],
+    .cols = variable_dict$variable[variable_dict$data_type == "Categorical"],
     .fns  = as.factor
   )) %>%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == "character"],
+    .cols = variable_dict$variable[variable_dict$data_type == "Character"],
     .fns  = as.character
   ))
 ```

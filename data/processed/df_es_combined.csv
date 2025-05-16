@@ -1,193 +1,193 @@
 "id_sample","id_condition_int","cat_condition_type_int","id_es_int","chr_measure_name","is_measure_std_int","m_pre_int","sd_pre_int","n_pre_int","id_condition_ctl","cat_condition_type_ctl","id_es_ctl","m_pre_ctl","sd_pre_ctl","n_pre_ctl","m_post_int","m_post_ctl","sd_post_int","sd_post_ctl","n_post_int","n_post_ctl","m_delayed_int","m_delayed_ctl","sd_delayed_int","sd_delayed_ctl","n_delayed_int","n_delayed_ctl","num_month_of_delayed_int","num_month_of_delayed_ctl"
-"101","101Ncm","1",2,"SRI PC = Standard Reading Inventory, Passage Comprehension;","YES - standardized",8.17,2.51,24,"101cm","ctl",3,8,2.24,23,9.54,8.17,2.93,2.31,24,23,NA,NA,NA,NA,NA,NA,NA,NA
-"102","102c","1",4,"WJIII PC","YES - standardized",88.91,8.96,34,"102bau","ctl",8,87.19,6.97,37,88.91,89.06,8.91,6.59,34,36,NA,NA,NA,NA,NA,NA,NA,NA
-"102","102c","1",5,"GMRT-RC","YES - standardized",88.86,12.3,34,"102bau","ctl",9,91.31,9.97,36,91.98,90.8,9.34,7.82,34,36,NA,NA,NA,NA,NA,NA,NA,NA
-"102","102GTc","2",6,"WJIII PC","YES - standardized",86.79,6.96,38,"102bau","ctl",8,87.19,6.97,37,91.16,89.06,7.53,6.59,38,36,NA,NA,NA,NA,NA,NA,NA,NA
-"102","102GTc","2",7,"GMRT-RC","YES - standardized",89.3,10.49,38,"102bau","ctl",9,91.31,9.97,36,91.88,90.8,6.38,7.82,38,36,NA,NA,NA,NA,NA,NA,NA,NA
-"103","103c","2",10,"WRAT4 - Sentence comprehension","YES - standardized",98.33,10.6,18,"103bau","ctl",12,90.36,10.61,22,97.17,94.91,7.9,14.33,18,21,NA,NA,NA,NA,NA,NA,NA,NA
-"103","103Tc","1",11,"WRAT4 - Sentence comprehension","YES - standardized",94.89,9.64,19,"103bau","ctl",12,90.36,10.61,22,100.47,94.91,9.97,14.33,19,21,NA,NA,NA,NA,NA,NA,NA,NA
-"104","104NTm","1",13,"Summary test","NO - Not standardized",3.8,1.28,20,"104Gcm","ctl",17,3.95,1.46,20,7.5,4.83,2.18,1.52,20,20,"6.61","4",2.91,1.4,20,20,1.5,1.5
-"104","104NTm","1",14,"Passage test","NO - Not standardized",6.55,2.28,20,"104Gcm","ctl",18,5.8,2.34,20,8.95,8.45,3.49,3.83,20,20,"9.5299999999999994","8.4",4.01,4.69,20,20,1.5,1.5
-"104","104Nm","2",15,"Summary test","NO - Not standardized",3.61,1.72,19,"104Gcm","ctl",17,3.95,1.46,20,6.4,4.83,1.81,1.52,19,20,"5.47","4",2.72,1.4,19,20,1.5,1.5
-"104","104Nm","2",16,"Passage test","NO - Not standardized",5.89,2.16,19,"104Gcm","ctl",18,5.8,2.34,20,7.84,8.45,3.83,3.83,19,20,"8.6300000000000008","8.4",4.87,4.69,19,20,1.5,1.5
-"105","105Gm","1",19,"Comprehension Skill","NO - Not standardized",7.8,2.5,11,"105m","ctl",21,7.6,2.9,11,12.5,8.5,3.7,2.2,11,11,NA,NA,NA,NA,NA,NA,NA,NA
-"105","105Gm","2",20,"Comprehension Skill","NO - Not standardized",7.8,1.9,11,"105m","ctl",21,7.6,2.9,11,11.5,8.5,3.4,2.2,11,11,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107Tm","1",25,"Post 1-Paragraph Summarization","NO - Not standardized",5.67,3.9,17,"107bau","ctl",31,7.9,3.99,21,12.72,9.81,5.18,5.34,17,21,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107Tm","1",26,"Post 2-Paragraph Summarization","NO - Not standardized",5.67,3.9,17,"107bau","ctl",32,7.9,3.99,21,13.44,8.66,4.91,3.95,17,21,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107Tm","2",27,"Post 1-Paragraph Summarization","NO - Not standardized",6.81,4.81,16,"107bau","ctl",31,7.9,3.99,21,11.41,9.81,6.61,5.34,16,21,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107Tm","2",28,"Post 2-Paragraph Summarization","NO - Not standardized",6.81,4.81,16,"107bau","ctl",32,7.9,3.99,21,11.56,8.66,6.55,3.95,16,21,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107m","3",29,"Post 1-Paragraph Summarization","NO - Not standardized",7,3.84,19,"107bau","ctl",31,7.9,3.99,21,9.73,9.81,4.49,5.34,19,21,NA,NA,NA,NA,NA,NA,NA,NA
-"107","107m","3",30,"Post 2-Paragraph Summarization","NO - Not standardized",7,3.84,19,"107bau","ctl",32,7.9,3.99,21,9.36,8.66,5.62,3.95,19,21,NA,NA,NA,NA,NA,NA,NA,NA
-"108","108Ncm","1",33,"GRADE Reading Comprehension","YES - standardized",NA,NA,NA,"108bau","ctl",34,NA,NA,NA,32.1,31.6,14.33,14.11,462,389,NA,NA,NA,NA,NA,NA,NA,NA
-"109_1","109_1Ncm","1",35,"* GRADE = Group Reading and Diagnostic Evaluation","YES - standardized",21.11,9.49,605,"109_1bau","ctl",36,21.66,9.32,530,32.3,30.7,13.92,13.86,605,530,NA,NA,NA,NA,NA,NA,NA,NA
-"109_2","109_2Ncm","1",37,"* GRADE = Group Reading and Diagnostic Evaluation","YES - standardized",23.59,8.05,593,"109_2bau","ctl",38,23.56,8.34,535,33.7,32.3,14.87,13.83,593,535,NA,NA,NA,NA,NA,NA,NA,NA
-"110","110NVGm","1",39,"NAPLAN Reading  test (National Assessment Program of Literacy and Numeracy)","YES - standardized",21,3.35,25.3333333333333,"110bau","ctl",43,18.05,4.94,25.3333333333333,24.54,17.8,2.98,4.93,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
-"110","110NVGm","1",40,"Reading  comprehension  test","NO - Not standardized",34.67,24.15,25.3333333333333,"110bau","ctl",44,30.81,28.05,25.3333333333333,66.63,45.08,30.28,35.48,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
-"110","110m","2",41,"NAPLAN Reading  test (National Assessment Program of Literacy and Numeracy)","YES - standardized",17.13,7.93,25.3333333333333,"110bau","ctl",43,18.05,4.94,25.3333333333333,21.65,17.8,6.14,4.93,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
-"110","110m","2",42,"Reading  comprehension  test","NO - Not standardized",13.84,13.17,25.3333333333333,"110bau","ctl",44,30.81,28.05,25.3333333333333,30.32,45.08,22.26,35.48,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
-"111","111Nm","1",45,"Post RC test","NO - Not standardized",NA,NA,NA,"111bau","ctl",46,NA,NA,NA,82.22,47.18,18.12,23.85,32,34,NA,NA,NA,NA,NA,NA,NA,NA
-"112","112Nm","1",47,"Reading Comprehension Test","YES - standardized",17.8,5.58,155,"112m","ctl",48,18.18,5.88,172,21.47,21.66,5.75,6.02,155,172,NA,NA,NA,NA,NA,NA,NA,NA
-"113","113Nm","1",49,"Gates Comprehension Test (level 4)","YES - standardized",NA,NA,NA,"113bau","ctl",53,NA,NA,NA,516.6,484,28.39,8.72,164,98.4,NA,NA,NA,NA,NA,NA,NA,NA
-"113","113Nm","1",50,"Multiple text comprehension","NO - Not standardized",NA,NA,NA,"113bau","ctl",54,NA,NA,NA,4.3,2.67,0.67,0.58,164,98.4,NA,NA,NA,NA,NA,NA,NA,NA
-"113","113m","2",51,"Gates Comprehension Test (level 4)","YES - standardized",NA,NA,NA,"113bau","ctl",53,NA,NA,NA,484.86,484,16.78,8.72,229.6,98.4,NA,NA,NA,NA,NA,NA,NA,NA
-"113","113m","2",52,"Multiple text comprehension","NO - Not standardized",NA,NA,NA,"113bau","ctl",54,NA,NA,NA,3,2.67,0,0.58,229.6,98.4,NA,NA,NA,NA,NA,NA,NA,NA
-"114","114Ncm","1",55,"Reading comprehension  Accuracy (from RAMA-the Israeli National Authority for Measurement and Evaluation (2015))","YES - standardized",NA,NA,NA,"114bau","ctl",56,NA,NA,NA,84.55,60.67,8.77,22.73,29,29,NA,NA,NA,NA,NA,NA,NA,NA
-"115","115NVm","1",57,"RC  (SRT) pretest ONLY - Sentence Reading Test","YES - standardized",15.47,4.43,103,"115bau","ctl",61,16.46,5.28,113,NA,NA,NA,NA,89,90,NA,NA,NA,NA,NA,NA,NA,NA
-"115","115NVm","1",58,"RC  (maze)","NO - Not standardized",NA,NA,NA,"115bau","ctl",62,NA,NA,NA,22.04,23.21,7.19,7.33,89,90,NA,NA,NA,NA,NA,NA,NA,NA
-"115","115NVm","1",59,"RC (NLCT)","YES - standardized",NA,NA,NA,"115bau","ctl",63,NA,NA,NA,6.01,6.25,2.13,1.98,89,90,NA,NA,NA,NA,NA,NA,NA,NA
-"115","115NVm","1",60,"RC (RGT)","NO - Not standardized",NA,NA,NA,"115bau","ctl",64,NA,NA,NA,6.24,5.89,3.09,2.92,89,90,NA,NA,NA,NA,NA,NA,NA,NA
-"117","117Nm","1",80,"(T4) Multiple text comprehension","NO - Not standardized",3.13,1.1,148,"117m","ctl",82,2.19,0.78,213,3.65,2.87,1.04,0.51,148,213,NA,NA,NA,NA,NA,NA,NA,NA
-"117","117Nm","1",81,"(T4) Passage comprehension","NO - Not standardized",0.31,0.18,148,"117m","ctl",83,0.15,0.15,213,0.56,0.31,0.14,0.16,148,213,NA,NA,NA,NA,NA,NA,NA,NA
-"118","118Nm","1",84,"Passage comprehension (Pre/post)","NO - Not standardized",0.33,0.11,191,"118bau","ctl",88,0.32,0.049,76,0.46,0.35,0.098,0.04,191,76,NA,NA,NA,NA,NA,NA,NA,NA
-"118","118Nm","1",85,"Gates-MacGinitie Reading Comprehension Test","YES - standardized",NA,NA,NA,"118bau","ctl",89,NA,NA,NA,498.6,483.33,22.57,11.93,191,76,NA,NA,NA,NA,NA,NA,NA,NA
-"118","118Nm","2",86,"Passage comprehension (Pre/post)","NO - Not standardized",0.32,0.074,257,"118bau","ctl",88,0.32,0.049,76,0.38,0.35,0.054,0.04,257,76,NA,NA,NA,NA,NA,NA,NA,NA
-"118","118Nm","2",87,"Gates-MacGinitie Reading Comprehension Test","YES - standardized",NA,NA,NA,"118bau","ctl",89,NA,NA,NA,468.57,483.33,15.85,11.93,257,76,NA,NA,NA,NA,NA,NA,NA,NA
-"119","119NGcm","1",90,"Computerized Reading Comprehension","NO - Not standardized",0.53,0.14142135623731,50,"119bau","ctl",92,0.47,0.150996688705415,57,0.56,0.53,0.13114877048604,0.13856406460551,43,48,"0.61","0.56000000000000005",0.00291729982995789,0.00282842712474619,47,50,7,7
-"119","119Ncm","2",91,"Computerized Reading Comprehension","NO - Not standardized",0.51,0.13856406460551,48,"119bau","ctl",92,0.47,0.150996688705415,57,0.57,0.53,0.12328828005938,0.13856406460551,38,48,"0.6","0.56000000000000005",0.00468521285665818,0.00282842712474619,41,50,7,7
-"120","120NGm","1",93,"MAP RC","NO - Not standardized",171.92,15.81,319,"120bau","ctl",95,173.76,15.97,165,176.59,175.88,15.58,17.13,403,204,NA,NA,NA,NA,NA,NA,NA,NA
-"120","120NGm","1",94,"*DIBLE (Combined - word reading fluency, oral reading fluency, and retell ability)","YES - standardized",189.37,101.26,425,"120bau","ctl",96,191.19,112.27,212,188.05,186.26,85.78,93.54,431,214,NA,NA,NA,NA,NA,NA,NA,NA
-"121","121NGm","1",97,"Reading comprehension scores (maximum scores: 36)","NO - Not standardized",NA,NA,NA,"121bau","ctl",99,NA,NA,NA,20.43,18.94,3.04,3.62,94,86,"19.07","18.329999999999998",3.292,3.29,94,96,3,3
-"121","121Nm","2",98,"Reading comprehension scores (maximum scores: 36)","NO - Not standardized",NA,NA,NA,"121bau","ctl",99,NA,NA,NA,19.38,18.94,2.8,3.62,99,86,"19.12","18.329999999999998",3.18,3.29,99,96,3,3
-"123","123Nm","1",102,"History reading comprehension","NO - Not standardized",12.48,6.1,103,"123bau","ctl",103,12.14,6.1,100,15.63,14.27,5.35,5.58,103,100,NA,NA,NA,NA,NA,NA,NA,NA
-"124","124Nm","1",108,"parallel reading comprehension tests","YES - standardized",50.3,9.89,168,"124bau","ctl",109,49.71,10.12,174,55.62,44.57,8.22,8.45,168,174,NA,NA,NA,NA,NA,NA,NA,NA
-"125_1","125_1Nm","1",110,"Information Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_1m","ctl",113,NA,NA,NA,6.28,5.57,1.33,1.64,32,28,NA,NA,NA,NA,NA,NA,NA,NA
-"125_1","125_1Nm","1",111,"Narrative Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_1m","ctl",114,NA,NA,NA,6.03,5.59,1.73,1.64,32,28,NA,NA,NA,NA,NA,NA,NA,NA
-"125_1","125_1Nm","1",112,"Pretest ONLY. Standardized reading","YES - standardized",47.79,25.35,32,"125_1m","ctl",115,43.32,34.25,28,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"125_2","125_2Nm","1",116,"Information Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_2m","ctl",119,NA,NA,NA,8.09,7.88,1.59,1.72,33,27,NA,NA,NA,NA,NA,NA,NA,NA
-"125_2","125_2Nm","1",117,"Narrative Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_2m","ctl",120,NA,NA,NA,4.76,4,1.2,0.87,33,27,NA,NA,NA,NA,NA,NA,NA,NA
-"125_2","125_2Nm","1",118,"Pretest ONLY. Standardized reading","YES - standardized",53.35,30.29,33,"125_2m","ctl",121,38.31,35.56,27,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"125_3","125_3Nm","1",122,"Information Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_3m","ctl",125,NA,NA,NA,7.92,7.35,1.54,1.54,23,24,NA,NA,NA,NA,NA,NA,NA,NA
-"125_3","125_3Nm","1",123,"Narrative Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_3m","ctl",126,NA,NA,NA,5.4,4.44,1.34,1.34,23,24,NA,NA,NA,NA,NA,NA,NA,NA
-"125_3","125_3Nm","1",124,"Pretest ONLY. Standardized reading","YES - standardized",43.29,11.77,23,"125_3m","ctl",127,37.46,12.6,24,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"125_4","125_4Nm","1",128,"Information Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_4m","ctl",131,NA,NA,NA,6.74,6.37,1.9,1.59,26,28,NA,NA,NA,NA,NA,NA,NA,NA
-"125_4","125_4Nm","1",129,"Narrative Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_4m","ctl",132,NA,NA,NA,4.96,5.13,1.25,1.51,26,28,NA,NA,NA,NA,NA,NA,NA,NA
-"125_4","125_4Nm","1",130,"Pretest ONLY. Standardized reading","YES - standardized",42.23,8.99,26,"125_4m","ctl",133,37.54,10.3,28,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"126_1","126_1Ncm","1",134,"Gates-MacGinitie","YES - standardized",455.54,9.71,41,"126_1cm","ctl",136,450.7,3.69,22,476.72,459.03,11.1,15.72,41,22,NA,NA,NA,NA,NA,NA,NA,NA
-"126_1","126_1Ncm","1",135,"Inferencing (Gates)","NO - Not standardized",8,0.46,41,"126_1cm","ctl",137,7.97,0.58,22,8.88,7.73,0.68,1.3,41,22,NA,NA,NA,NA,NA,NA,NA,NA
-"126_2","126_2Ncm","1",138,"Gates-MacGinitie","YES - standardized",515.33,15.58,53,"126_2cm","ctl",140,509.13,1.36,40,528.57,514.23,16.5,8.75,53,40,NA,NA,NA,NA,NA,NA,NA,NA
-"126_2","126_2Ncm","1",139,"Inferencing (Gates)","NO - Not standardized",8.77,1.53,53,"126_2cm","ctl",141,9.03,0.55,40,9.58,9.67,0.82,0.32,53,40,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",146,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl",147,505.65,31.49,84,501.99,510.28,31.33,32.59,176,84,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",146,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl",153,498.09,29.08,47,501.99,494.35,31.33,30.34,176,47,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",146,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl",159,475.49,37.8,53,501.99,495.55,31.33,35.87,176,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",152,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl",147,505.65,31.49,84,511.67,510.28,26.68,32.59,49,84,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",152,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl",153,498.09,29.08,47,511.67,494.35,26.68,30.34,49,47,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",152,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl",159,475.49,37.8,53,511.67,495.55,26.68,35.87,49,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",158,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl",147,505.65,31.49,84,507.61,510.28,29.89,32.59,109,84,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",158,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl",153,498.09,29.08,47,507.61,494.35,29.89,30.34,109,47,NA,NA,NA,NA,NA,NA,NA,NA
-"127_6","127_6Nm","1",158,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl",159,475.49,37.8,53,507.61,495.55,29.89,35.87,109,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",142,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl",143,519.68,28.78,143,515.58,518.19,28.22,30.19,154,143,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",142,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl",149,517.99,28.76,78,515.58,521.44,28.22,30.89,154,78,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",142,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl",155,516.22,27.44,36,515.58,518.08,28.22,26.45,154,36,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",142,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl",161,508.19,32.15,53,515.58,515.25,28.22,27.47,154,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",148,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl",143,519.68,28.78,143,526.38,518.19,28.99,30.19,196,143,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",148,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl",149,517.99,28.76,78,526.38,521.44,28.99,30.89,196,78,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",148,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl",155,516.22,27.44,36,526.38,518.08,28.99,26.45,196,36,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",148,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl",161,508.19,32.15,53,526.38,515.25,28.99,27.47,196,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",154,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl",143,519.68,28.78,143,546.68,518.19,30.07,30.19,40,143,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",154,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl",149,517.99,28.76,78,546.68,521.44,30.07,30.89,40,78,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",154,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl",155,516.22,27.44,36,546.68,518.08,30.07,26.45,40,36,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",154,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl",161,508.19,32.15,53,546.68,515.25,30.07,27.47,40,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",160,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl",143,519.68,28.78,143,531.49,518.19,36.54,30.19,58,143,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",160,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl",149,517.99,28.76,78,531.49,521.44,36.54,30.89,58,78,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",160,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl",155,516.22,27.44,36,531.49,518.08,36.54,26.45,58,36,NA,NA,NA,NA,NA,NA,NA,NA
-"127_7","127_7Nm","1",160,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl",161,508.19,32.15,53,531.49,515.25,36.54,27.47,58,53,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",144,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl",145,522.34,33.23,134,522.23,522.43,27.7,31.16,117,134,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",144,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl",151,530.72,27.92,106,522.23,519.06,27.7,36.21,117,106,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",144,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl",157,532.76,21.61,41,522.23,535.55,27.7,31.68,117,41,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",144,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl",163,521.79,23.65,55,522.23,506.16,27.7,30.25,117,55,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",150,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl",145,522.34,33.23,134,535.59,522.43,31.14,31.16,200,134,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",150,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl",151,530.72,27.92,106,535.59,519.06,31.14,36.21,200,106,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",150,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl",157,532.76,21.61,41,535.59,535.55,31.14,31.68,200,41,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",150,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl",163,521.79,23.65,55,535.59,506.16,31.14,30.25,200,55,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",156,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl",145,522.34,33.23,134,535.42,522.43,27.69,31.16,43,134,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",156,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl",151,530.72,27.92,106,535.42,519.06,27.69,36.21,43,106,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",156,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl",157,532.76,21.61,41,535.42,535.55,27.69,31.68,43,41,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",156,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl",163,521.79,23.65,55,535.42,506.16,27.69,30.25,43,55,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",162,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl",145,522.34,33.23,134,509.12,522.43,31.63,31.16,56,134,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",162,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl",151,530.72,27.92,106,509.12,519.06,31.63,36.21,56,106,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",162,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl",157,532.76,21.61,41,509.12,535.55,31.63,31.68,56,41,NA,NA,NA,NA,NA,NA,NA,NA
-"127_8","127_8Nm","1",162,"GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl",163,521.79,23.65,55,509.12,506.16,31.63,30.25,56,55,NA,NA,NA,NA,NA,NA,NA,NA
-"128","128NVcm","1",164,"Informational text comprehension","NO - Not standardized",54.06,15.41,269,"128m","ctl",165,53.19,14.1,288,56.94,53.6,16.7,17.55,269,288,NA,NA,NA,NA,NA,NA,NA,NA
-"129_1","129_1Nm","1",166,"text comprehension - total (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl",171,NA,NA,NA,13.52,13.73,2.77,2.45,48,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_1","129_1Nm","1",167,"text comprehension - story (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl",172,NA,NA,NA,6,6.46,1.62,1.41,48,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_1","129_1Nm","1",168,"text comprehension - informational text (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl",173,NA,NA,NA,7.42,7.02,1.54,1.87,48,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_1","129_1Nm","1",169,"Past achievement (pretest ONLY, BOY)","NO - Not standardized",5.77,2.56,48,"129_1m","ctl",174,6.51,2.6,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"129_1","129_1Nm","1",170,"Literacy level (pretest ONLY, BOY)","NO - Not standardized",2.87,1.2,48,"129_1m","ctl",175,3.23,1.49,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"129_2","129_2Nm","1",176,"text comprehension - total (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl",181,NA,NA,NA,14.61,13.61,2.67,1.98,40,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_2","129_2Nm","1",177,"text comprehension - story (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl",182,NA,NA,NA,5.9,4.67,1.61,1.44,40,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_2","129_2Nm","1",178,"text comprehension - informational text (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl",183,NA,NA,NA,8.71,8.65,1.47,1.51,40,42,NA,NA,NA,NA,NA,NA,NA,NA
-"129_2","129_2Nm","1",179,"Past achievement (pretest ONLY, BOY)","NO - Not standardized",7.06,2.56,40,"129_2m","ctl",184,6.65,1.87,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"129_2","129_2Nm","1",180,"Literacy level (pretest ONLY, BOY)","NO - Not standardized",3.31,1.49,40,"129_2m","ctl",185,3.35,0.89,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"130","130Nm","1",186,"reading comprehension (Vlaamse
-Test Begrijpend Lezen version grade 6)","YES - standardized",12.73,4.38,40,"130bau","ctl",187,13.14,4.52,50,13.77,11.96,4.94,5.32,40,50,NA,NA,NA,NA,NA,NA,NA,NA
-"131","131Vm","1",188,"comprehension skill test","NO - Not standardized",4.5,2.7,10,"131m","ctl",191,4.3,2.2,10,6.3,6.3,3.1,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
-"131","131Vm","2",189,"comprehension skill test","NO - Not standardized",4.5,2.8,10,"131m","ctl",191,4.3,2.2,10,6.2,6.3,4.9,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
-"131","131Vm","3",190,"comprehension skill test","NO - Not standardized",4.9,1.9,10,"131m","ctl",191,4.3,2.2,10,11.2,6.3,4.9,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
-"132","132Vm","1",192,"comprehension skill test","NO - Not standardized",4.5,2,10,"132Tm","ctl",193,5.9,2.3,10,8.1,7.7,2.6,3.1,10,10,NA,NA,NA,NA,NA,NA,NA,NA
-"132","132VTm","2",194,"comprehension skill test","NO - Not standardized",5.5,1.5,10,"132Tm","ctl",193,5.9,2.3,10,13.5,7.7,2.3,3.1,10,10,NA,NA,NA,NA,NA,NA,NA,NA
-"133","133NGc","1",195,"Passage Comprehension (SRI)","YES - standardized",7.75,2.41,12,"133c","ctl",196,8.25,2.41,12,7.75,8.5,2.56,2.28,12,12,NA,NA,NA,NA,NA,NA,NA,NA
-"135","135NVGcm","1",199,"Sentence Comprehension (SC)","YES - standardized",4.85,2.11,20,"135m","ctl",202,4.4,2.19,20,7.8,5.2,2.61,1.85,20,20,NA,NA,NA,NA,NA,NA,NA,NA
-"135","135NVGcm","1",200,"Passage Comprehension (PCO)","YES - standardized",7.65,2.5,20,"135m","ctl",203,8.5,3.02,20,12,7.8,4.44,4.7,20,20,NA,NA,NA,NA,NA,NA,NA,NA
-"135","135NVGcm","1",201,"* MAP composite","YES - standardized",186.2,11.12,20,"135m","ctl",204,185.47,9.02,20,195.79,188.94,6.9,9.4,20,20,"201.17","199.33",7.17,8.58,20,20,12,12
-"136","136m","1",205,"comprehension skill test","NO - Not standardized",5.6,1.4,11,"136m","ctl",208,5.5,3.2,11,12.1,7.1,2.6,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
-"136","136VTm","2",206,"comprehension skill test","NO - Not standardized",5.4,1.2,11,"136m","ctl",208,5.5,3.2,11,10,7.1,1.9,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
-"136","136VTm","3",207,"comprehension skill test","NO - Not standardized",5.8,1.5,11,"136m","ctl",208,5.5,3.2,11,13.1,7.1,2.4,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
-"137","137Nm","1",209,"comprehension skill test","NO - Not standardized",5.7,1.7,11,"137m","ctl",211,6.5,2.9,11,7.9,7.2,3.1,3.3,11,11,"7.8","7.5",2.6,2.8,11,11,2.5,2.5
-"137","137NVTm","2",210,"comprehension skill test","NO - Not standardized",6.4,1.7,11,"137m","ctl",211,6.5,2.9,11,10.8,7.2,2.2,3.3,11,11,"10.6","7.5",2.6,2.8,11,11,2.5,2.5
-"138","138Nm","1",212,"PIRLS Read comprehension","NO - Not standardized",7.33,3.09,248,"138m","ctl",213,6.93,2.96,293,9.26,9.62,3.43,3.41,243,291,NA,NA,NA,NA,NA,NA,NA,NA
-"139","139NGTcm","1",214,"GRADE Sentence Comprehension subtest","YES - standardized",2.55,0.93,14,"139cm","ctl",215,1.86,0.95,11,2.36,2.29,1.03,1.2,14,11,NA,NA,NA,NA,NA,NA,NA,NA
-"140_1","140_1Ncm","1",216,"Reading Comprehension Tests","NO - Not standardized",7.82,3.7,17,"140_1bau","ctl",217,7.64,3.65,14,8.47,8,3.52,3.4,17,14,NA,NA,NA,NA,NA,NA,NA,NA
-"140_2","140_2Ncm","1",218,"Reading Comprehension Tests","NO - Not standardized",9.67,3.42,12,"140_2bau","ctl",219,9.64,3.47,14,11.58,10.86,3.94,4.05,12,14,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141NTm","1",220,"Main Idea Test","YES - standardized",3.82,1.31,22,"141cm","ctl",228,3.79,1.61,21,7.39,4.93,2.17,1.55,22,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141NTm","1",221,"Passage Specific Test - Passage Production Subtest","NO - Not standardized",2.14,1.36,22,"141cm","ctl",229,1.71,1.19,21,3.41,3.05,1.99,2.11,22,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141NTm","1",222,"Passage Specific Test - Passage Identification Subtest","NO - Not standardized",4.32,1.52,22,"141cm","ctl",230,4.1,1.22,21,5.45,5.19,1.65,2.02,22,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141NTm","1",223,"Passage Specific Test - Total Score","NO - Not standardized",6.45,2.24,22,"141cm","ctl",231,5.81,2.18,21,8.86,8.24,3.39,3.86,22,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141Nm","2",224,"Main Idea Test","YES - standardized",3.7,1.73,20,"141cm","ctl",228,3.79,1.61,21,6.35,4.93,1.78,1.55,20,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141Nm","2",225,"Passage Specific Test - Passage Production Subtest","NO - Not standardized",1.55,1.4,20,"141cm","ctl",229,1.71,1.19,21,3,3.05,2.18,2.11,20,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141Nm","2",226,"Passage Specific Test - Passage Identification Subtest","NO - Not standardized",4.2,1.44,20,"141cm","ctl",230,4.1,1.22,21,4.95,5.19,1.79,2.02,20,21,NA,NA,NA,NA,NA,NA,NA,NA
-"141","141Nm","2",227,"Passage Specific Test - Total Score","NO - Not standardized",5.75,2.2,20,"141cm","ctl",231,5.81,2.18,21,7.95,8.24,3.76,3.86,20,21,NA,NA,NA,NA,NA,NA,NA,NA
-"142_1","142_1Tm","1",232,"reading comprehension","NO - Not standardized",4.18,2.6,11,"142_1m","ctl",235,4.44,2.92,9,8.18,4.56,1.72,2.01,11,9,"6.64","#",3.11,2.35,11,9,1,1
-"142_1","142_1Tm","2",233,"reading comprehension","NO - Not standardized",4.38,2.5,9,"142_1m","ctl",235,4.44,2.92,9,4.88,4.56,3.52,2.01,9,9,"5.13","#",2.48,2.35,9,9,1,1
-"142_2","142_2Tm","1",236,"reading comprehension","NO - Not standardized",7.94,2.78,18,"142_2m","ctl",239,8.2,1.97,15,9.56,8.8,2.33,2.01,18,15,"7.33","8.07",1.75,2.58,18,15,1,1
-"142_2","142_2Tm","2",237,"reading comprehension","NO - Not standardized",7.91,2.12,11,"142_2m","ctl",239,8.2,1.97,15,9.73,8.8,1.62,2.01,11,15,"6.64","8.07",1.91,2.58,11,15,1,1
-"143","143Nm","1",240,"General Comprehension Scores","NO - Not standardized",8.2,3.302,50.75,"143bau","ctl",243,8.316,2.286,50.75,7.65,6.947,2.681,2.677,50.75,50.75,"9","8.58",3.27,2.53,50.75,50.75,2,2
-"143","143Nm","1",240,"General Comprehension Scores","NO - Not standardized",8.2,3.302,50.75,"143bau","ctl",247,7.44,3.28,50.75,7.65,10.48,2.681,11.106,50.75,50.75,"9","8.81",3.27,3.61,50.75,50.75,2,2
-"143","143NGTm","2",241,"General Comprehension Scores","NO - Not standardized",7.5,2.686,50.75,"143bau","ctl",243,8.316,2.286,50.75,7.455,6.947,3.035,2.677,50.75,50.75,"10.71","8.58",2.36,2.53,50.75,50.75,2,2
-"143","143NGTm","2",241,"General Comprehension Scores","NO - Not standardized",7.5,2.686,50.75,"143bau","ctl",247,7.44,3.28,50.75,7.455,10.48,3.035,11.106,50.75,50.75,"10.71","8.81",2.36,3.61,50.75,50.75,2,2
-"143","143Nm","1",244,"General Comprehension Scores","NO - Not standardized",9.381,2.991,50.75,"143bau","ctl",243,8.316,2.286,50.75,8.476,6.947,3.444,2.677,50.75,50.75,"9.3800000000000008","8.58",3.46,2.53,50.75,50.75,2,2
-"143","143Nm","1",244,"General Comprehension Scores","NO - Not standardized",9.381,2.991,50.75,"143bau","ctl",247,7.44,3.28,50.75,8.476,10.48,3.444,11.106,50.75,50.75,"9.3800000000000008","8.81",3.46,3.61,50.75,50.75,2,2
-"143","143GTm","2",245,"General Comprehension Scores","NO - Not standardized",8.739,3.208,50.75,"143bau","ctl",243,8.316,2.286,50.75,8.565,6.947,2.967,2.677,50.75,50.75,"9.64","8.58",2.9,2.53,50.75,50.75,2,2
-"143","143GTm","2",245,"General Comprehension Scores","NO - Not standardized",8.739,3.208,50.75,"143bau","ctl",247,7.44,3.28,50.75,8.565,10.48,2.967,11.106,50.75,50.75,"9.64","8.81",2.9,3.61,50.75,50.75,2,2
-"145","145NGm","1",257,"reading comprehension achievement test (RCAT)","NO - Not standardized",52.09,20.9,31,"145bau","ctl",258,56.77,14.3,31,57.9,56.93,18.7,15.8,31,31,NA,NA,NA,NA,NA,NA,NA,NA
-"146","146NVGTm","1",259,"Reading comprehension","YES - standardized",5.69,2.59,95,"146bau","ctl",262,5.13,2.58,84,7.65,7.15,2.08,2.03,95,84,"10.49","9.36",1.71,2.39,95,84,6,6
-"146","146NVm","2",260,"Reading comprehension","YES - standardized",5.76,2.73,146,"146bau","ctl",262,5.13,2.58,84,7.26,7.15,1.78,2.03,146,84,"10.119999999999999","9.36",1.95,2.39,146,84,6,6
-"146","146m","3",261,"Reading comprehension","YES - standardized",5.97,2.59,89,"146bau","ctl",262,5.13,2.58,84,7.89,7.15,2.13,2.03,89,84,"11.02","9.36",1.57,2.39,89,84,6,6
-"147","147NVm","1",264,"FLVT Reading comprehension","YES - standardized",49.76,8.93,62,"147m","ctl",263,50.2,8.22,62,49.99,49.32,9.02,7.05,127,127,"50.61","50.33",9.55,7.49,117,117,2,2
-"147","147NVGTm","2",265,"FLVT Reading comprehension","YES - standardized",48.75,7.91,62,"147m","ctl",263,50.2,8.22,62,52.14,49.32,8.93,7.05,127,127,"53.73","50.33",9.19,7.49,117,117,2,2
-"148","148NVGm","1",267,"FLVT 5-6 Reading Comprehension","YES - standardized",50.81,9.19,129,"148Nm","ctl",266,49.31,8.22,133,52.18,50.43,7.95,8.08,129,133,"54.3","50.53",8.79,8.87,129,133,2,2
-"148","148NVGm","2",268,"FLVT 5-6 Reading Comprehension","YES - standardized",48.57,12.32,126,"148Nm","ctl",266,49.31,8.22,133,52.41,50.43,9.43,8.08,126,133,"52.56","50.53",10.25,8.87,126,133,2,2
-"148","148NGm","3",269,"FLVT 5-6 Reading Comprehension","YES - standardized",48.54,8.87,146,"148Nm","ctl",266,49.31,8.22,133,50.65,50.43,8.4,8.08,146,133,"51.65","50.53",7.43,8.87,146,133,2,2
-"149","149NGm","1",270,"(immediate) 1. Main idea","NO - Not standardized",2.5,1.83,16,"149Nm","ctl",286,2.19,1.52,16,4.38,1.88,1.18,1.2,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",271,"(immediate) 2. Summary","NO - Not standardized",2.94,1.77,16,"149Nm","ctl",287,3.88,1.93,16,5.06,4.19,1.81,1.68,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",272,"(immediate) 3. Oral retell quality","NO - Not standardized",2.56,0.96,16,"149Nm","ctl",288,3.06,1.24,16,4.06,3,0.93,0.89,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",273,"(immediate) 4. Oral retell information units","NO - Not standardized",3.56,1.67,16,"149Nm","ctl",289,4,2,16,6.63,4.5,2.96,2.07,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",274,"(immediate) 5. Oral retell main ideas","NO - Not standardized",2.06,1,16,"149Nm","ctl",290,2.44,0.96,16,3.25,2.56,0.86,0.96,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",275,"(immediate) 6. Written retell quality","NO - Not standardized",2.75,1,16,"149Nm","ctl",291,3,1.03,16,3,3.19,0.89,1.28,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",276,"(immediate) 7. Written retell information units","NO - Not standardized",2.69,2.06,16,"149Nm","ctl",292,4.06,2.08,16,3.63,3.69,2.06,2.5,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",277,"(immediate) 8. Written retell main ideas","NO - Not standardized",1.81,1.22,16,"149Nm","ctl",293,2.07,1.12,16,2.75,2.63,1.44,1.26,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",278,"(3 week) 1. Main idea","NO - Not standardized",2.5,1.83,16,"149Nm","ctl",294,2.19,1.52,16,4.13,2.4,1.55,1.35,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",279,"(3 week) 2. Summary","NO - Not standardized",2.94,1.77,16,"149Nm","ctl",295,3.88,1.93,16,4.67,3.93,1.59,1.62,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",280,"(3 week) 3. Oral retell quality","NO - Not standardized",2.56,0.96,16,"149Nm","ctl",296,3.06,1.24,16,3.87,3.33,1.25,1.29,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",281,"(3 week) 4. Oral retell information units","NO - Not standardized",3.56,1.67,16,"149Nm","ctl",297,4,2,16,4.8,3.6,1.7,2.41,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",282,"(3 week) 5. Oral retell main ideas","NO - Not standardized",2.06,1,16,"149Nm","ctl",298,2.44,0.96,16,2.27,1.53,1.1,1.36,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",283,"(3 week) 6. Written retell quality","NO - Not standardized",2.75,1,16,"149Nm","ctl",299,3,1.03,16,3.87,3.35,1.07,1.35,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",284,"(3 week) 7. Written retell information units","NO - Not standardized",2.69,2.06,16,"149Nm","ctl",300,4.06,2.08,16,3.96,3.35,1.7,1.61,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"149","149NGm","1",285,"(3 week) 8. Written retell main ideas","NO - Not standardized",1.81,1.22,16,"149Nm","ctl",301,2.07,1.12,16,2.78,2.59,1.4,1.36,16,16,NA,NA,NA,NA,NA,NA,NA,NA
-"150","150cm","1",303,"Posttest Unrelated","NO - Not standardized",NA,NA,NA,"150bau","ctl",302,NA,NA,NA,0.47,0.49,0.23,0.23,24,27,NA,NA,NA,NA,NA,NA,NA,NA
-"150","150Gcm","2",304,"Posttest Unrelated","NO - Not standardized",NA,NA,NA,"150bau","ctl",302,NA,NA,NA,0.5,0.49,0.27,0.23,24,27,NA,NA,NA,NA,NA,NA,NA,NA
-"151","151NVGm","1",305,"Retell Quality","NO - Not standardized",1.5,1.1,9,"151Nm","ctl",309,1.6,1.2,9,2.9,4.2,1.4,1.3,9,9,NA,NA,NA,NA,NA,NA,NA,NA
-"151","151NVGm","1",306,"Retell Main Idea","NO - Not standardized",0.5,0.4,9,"151Nm","ctl",310,0.6,0.6,9,0.9,1.4,0.5,0.4,9,9,NA,NA,NA,NA,NA,NA,NA,NA
-"151","151NVGm","1",307,"Multiple Choice","NO - Not standardized",5.2,1.8,9,"151Nm","ctl",311,5.8,1.9,9,6.2,7.4,2.2,2.7,9,9,NA,NA,NA,NA,NA,NA,NA,NA
-"151","151NVGm","1",308,"WJ Passage Comprehension","YES - standardized",79.2,7.5,9,"151Nm","ctl",312,70.3,17.4,9,78.7,75.6,8.7,14.5,9,9,NA,NA,NA,NA,NA,NA,NA,NA
-"152","152Nm","1",313,"GMRT-4 Comprehension","YES - standardized",19.74,10.05,38,"152m","ctl",314,23.16,8,38,28.37,26.5,6.9,7.28,38,38,NA,NA,NA,NA,NA,NA,NA,NA
-"153","153Nm","1",315,"GMRT-4 Comprehension","YES - standardized",17.78,8.27,23,"153m","ctl",316,18.61,7.02,23,28.09,22.61,7.35,6.45,23,23,NA,NA,NA,NA,NA,NA,NA,NA
+"101","101Ncm","1","2","SRI PC = Standard Reading Inventory, Passage Comprehension;","YES - standardized",8.17,2.51,24,"101cm","ctl","3",8,2.24,23,9.54,8.17,2.93,2.31,24,23,NA,NA,NA,NA,NA,NA,NA,NA
+"102","102c","1","4","WJIII PC","YES - standardized",88.91,8.96,34,"102bau","ctl","8",87.19,6.97,37,88.91,89.06,8.91,6.59,34,36,NA,NA,NA,NA,NA,NA,NA,NA
+"102","102c","1","5","GMRT-RC","YES - standardized",88.86,12.3,34,"102bau","ctl","9",91.31,9.97,36,91.98,90.8,9.34,7.82,34,36,NA,NA,NA,NA,NA,NA,NA,NA
+"102","102GTc","2","6","WJIII PC","YES - standardized",86.79,6.96,38,"102bau","ctl","8",87.19,6.97,37,91.16,89.06,7.53,6.59,38,36,NA,NA,NA,NA,NA,NA,NA,NA
+"102","102GTc","2","7","GMRT-RC","YES - standardized",89.3,10.49,38,"102bau","ctl","9",91.31,9.97,36,91.88,90.8,6.38,7.82,38,36,NA,NA,NA,NA,NA,NA,NA,NA
+"103","103c","2","10","WRAT4 - Sentence comprehension","YES - standardized",98.33,10.6,18,"103bau","ctl","12",90.36,10.61,22,97.17,94.91,7.9,14.33,18,21,NA,NA,NA,NA,NA,NA,NA,NA
+"103","103Tc","1","11","WRAT4 - Sentence comprehension","YES - standardized",94.89,9.64,19,"103bau","ctl","12",90.36,10.61,22,100.47,94.91,9.97,14.33,19,21,NA,NA,NA,NA,NA,NA,NA,NA
+"104","104NTm","1","13","Summary test","NO - Not standardized",3.8,1.28,20,"104Gcm","ctl","17",3.95,1.46,20,7.5,4.83,2.18,1.52,20,20,6.61,4,2.91,1.4,20,20,1.5,1.5
+"104","104NTm","1","14","Passage test","NO - Not standardized",6.55,2.28,20,"104Gcm","ctl","18",5.8,2.34,20,8.95,8.45,3.49,3.83,20,20,9.53,8.4,4.01,4.69,20,20,1.5,1.5
+"104","104Nm","2","15","Summary test","NO - Not standardized",3.61,1.72,19,"104Gcm","ctl","17",3.95,1.46,20,6.4,4.83,1.81,1.52,19,20,5.47,4,2.72,1.4,19,20,1.5,1.5
+"104","104Nm","2","16","Passage test","NO - Not standardized",5.89,2.16,19,"104Gcm","ctl","18",5.8,2.34,20,7.84,8.45,3.83,3.83,19,20,8.63,8.4,4.87,4.69,19,20,1.5,1.5
+"105","105Gm","1","19","Comprehension Skill","NO - Not standardized",7.8,2.5,11,"105m","ctl","21",7.6,2.9,11,12.5,8.5,3.7,2.2,11,11,NA,NA,NA,NA,NA,NA,NA,NA
+"105","105Gm","2","20","Comprehension Skill","NO - Not standardized",7.8,1.9,11,"105m","ctl","21",7.6,2.9,11,11.5,8.5,3.4,2.2,11,11,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107Tm","1","25","Post 1-Paragraph Summarization","NO - Not standardized",5.67,3.9,17,"107bau","ctl","31",7.9,3.99,21,12.72,9.81,5.18,5.34,17,21,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107Tm","1","26","Post 2-Paragraph Summarization","NO - Not standardized",5.67,3.9,17,"107bau","ctl","32",7.9,3.99,21,13.44,8.66,4.91,3.95,17,21,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107Tm","2","27","Post 1-Paragraph Summarization","NO - Not standardized",6.81,4.81,16,"107bau","ctl","31",7.9,3.99,21,11.41,9.81,6.61,5.34,16,21,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107Tm","2","28","Post 2-Paragraph Summarization","NO - Not standardized",6.81,4.81,16,"107bau","ctl","32",7.9,3.99,21,11.56,8.66,6.55,3.95,16,21,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107m","3","29","Post 1-Paragraph Summarization","NO - Not standardized",7,3.84,19,"107bau","ctl","31",7.9,3.99,21,9.73,9.81,4.49,5.34,19,21,NA,NA,NA,NA,NA,NA,NA,NA
+"107","107m","3","30","Post 2-Paragraph Summarization","NO - Not standardized",7,3.84,19,"107bau","ctl","32",7.9,3.99,21,9.36,8.66,5.62,3.95,19,21,NA,NA,NA,NA,NA,NA,NA,NA
+"108","108Ncm","1","33","GRADE Reading Comprehension","YES - standardized",NA,NA,NA,"108bau","ctl","34",NA,NA,NA,32.1,31.6,14.33,14.11,462,389,NA,NA,NA,NA,NA,NA,NA,NA
+"109_1","109_1Ncm","1","35","* GRADE = Group Reading and Diagnostic Evaluation","YES - standardized",21.11,9.49,605,"109_1bau","ctl","36",21.66,9.32,530,32.3,30.7,13.92,13.86,605,530,NA,NA,NA,NA,NA,NA,NA,NA
+"109_2","109_2Ncm","1","37","* GRADE = Group Reading and Diagnostic Evaluation","YES - standardized",23.59,8.05,593,"109_2bau","ctl","38",23.56,8.34,535,33.7,32.3,14.87,13.83,593,535,NA,NA,NA,NA,NA,NA,NA,NA
+"110","110NVGm","1","39","NAPLAN Reading  test (National Assessment Program of Literacy and Numeracy)","YES - standardized",21,3.35,25.3333333333333,"110bau","ctl","43",18.05,4.94,25.3333333333333,24.54,17.8,2.98,4.93,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
+"110","110NVGm","1","40","Reading  comprehension  test","NO - Not standardized",34.67,24.15,25.3333333333333,"110bau","ctl","44",30.81,28.05,25.3333333333333,66.63,45.08,30.28,35.48,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
+"110","110m","2","41","NAPLAN Reading  test (National Assessment Program of Literacy and Numeracy)","YES - standardized",17.13,7.93,25.3333333333333,"110bau","ctl","43",18.05,4.94,25.3333333333333,21.65,17.8,6.14,4.93,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
+"110","110m","2","42","Reading  comprehension  test","NO - Not standardized",13.84,13.17,25.3333333333333,"110bau","ctl","44",30.81,28.05,25.3333333333333,30.32,45.08,22.26,35.48,25.3333333333333,25.3333333333333,NA,NA,NA,NA,NA,NA,NA,NA
+"111","111Nm","1","45","Post RC test","NO - Not standardized",NA,NA,NA,"111bau","ctl","46",NA,NA,NA,82.22,47.18,18.12,23.85,32,34,NA,NA,NA,NA,NA,NA,NA,NA
+"112","112Nm","1","47","Reading Comprehension Test","YES - standardized",17.8,5.58,155,"112m","ctl","48",18.18,5.88,172,21.47,21.66,5.75,6.02,155,172,NA,NA,NA,NA,NA,NA,NA,NA
+"113","113Nm","1","49","Gates Comprehension Test (level 4)","YES - standardized",NA,NA,NA,"113bau","ctl","53",NA,NA,NA,516.6,484,28.39,8.72,164,98.4,NA,NA,NA,NA,NA,NA,NA,NA
+"113","113Nm","1","50","Multiple text comprehension","NO - Not standardized",NA,NA,NA,"113bau","ctl","54",NA,NA,NA,4.3,2.67,0.67,0.58,164,98.4,NA,NA,NA,NA,NA,NA,NA,NA
+"113","113m","2","51","Gates Comprehension Test (level 4)","YES - standardized",NA,NA,NA,"113bau","ctl","53",NA,NA,NA,484.86,484,16.78,8.72,229.6,98.4,NA,NA,NA,NA,NA,NA,NA,NA
+"113","113m","2","52","Multiple text comprehension","NO - Not standardized",NA,NA,NA,"113bau","ctl","54",NA,NA,NA,3,2.67,0,0.58,229.6,98.4,NA,NA,NA,NA,NA,NA,NA,NA
+"114","114Ncm","1","55","Reading comprehension  Accuracy (from RAMA-the Israeli National Authority for Measurement and Evaluation (2015))","YES - standardized",NA,NA,NA,"114bau","ctl","56",NA,NA,NA,84.55,60.67,8.77,22.73,29,29,NA,NA,NA,NA,NA,NA,NA,NA
+"115","115NVm","1","57","RC  (SRT) pretest ONLY - Sentence Reading Test","YES - standardized",15.47,4.43,103,"115bau","ctl","61",16.46,5.28,113,NA,NA,NA,NA,89,90,NA,NA,NA,NA,NA,NA,NA,NA
+"115","115NVm","1","58","RC  (maze)","NO - Not standardized",NA,NA,NA,"115bau","ctl","62",NA,NA,NA,22.04,23.21,7.19,7.33,89,90,NA,NA,NA,NA,NA,NA,NA,NA
+"115","115NVm","1","59","RC (NLCT)","YES - standardized",NA,NA,NA,"115bau","ctl","63",NA,NA,NA,6.01,6.25,2.13,1.98,89,90,NA,NA,NA,NA,NA,NA,NA,NA
+"115","115NVm","1","60","RC (RGT)","NO - Not standardized",NA,NA,NA,"115bau","ctl","64",NA,NA,NA,6.24,5.89,3.09,2.92,89,90,NA,NA,NA,NA,NA,NA,NA,NA
+"117","117Nm","1","80","(T4) Multiple text comprehension","NO - Not standardized",3.13,1.1,148,"117m","ctl","82",2.19,0.78,213,3.65,2.87,1.04,0.51,148,213,NA,NA,NA,NA,NA,NA,NA,NA
+"117","117Nm","1","81","(T4) Passage comprehension","NO - Not standardized",0.31,0.18,148,"117m","ctl","83",0.15,0.15,213,0.56,0.31,0.14,0.16,148,213,NA,NA,NA,NA,NA,NA,NA,NA
+"118","118Nm","1","84","Passage comprehension (Pre/post)","NO - Not standardized",0.33,0.11,191,"118bau","ctl","88",0.32,0.049,76,0.46,0.35,0.098,0.04,191,76,NA,NA,NA,NA,NA,NA,NA,NA
+"118","118Nm","1","85","Gates-MacGinitie Reading Comprehension Test","YES - standardized",NA,NA,NA,"118bau","ctl","89",NA,NA,NA,498.6,483.33,22.57,11.93,191,76,NA,NA,NA,NA,NA,NA,NA,NA
+"118","118Nm","2","86","Passage comprehension (Pre/post)","NO - Not standardized",0.32,0.074,257,"118bau","ctl","88",0.32,0.049,76,0.38,0.35,0.054,0.04,257,76,NA,NA,NA,NA,NA,NA,NA,NA
+"118","118Nm","2","87","Gates-MacGinitie Reading Comprehension Test","YES - standardized",NA,NA,NA,"118bau","ctl","89",NA,NA,NA,468.57,483.33,15.85,11.93,257,76,NA,NA,NA,NA,NA,NA,NA,NA
+"119","119NGcm","1","90","Computerized Reading Comprehension","NO - Not standardized",0.53,0.14142135623731,50,"119bau","ctl","92",0.47,0.150996688705415,57,0.56,0.53,0.13114877048604,0.13856406460551,43,48,0.61,0.56,0.00291729982995789,0.00282842712474619,47,50,7,7
+"119","119Ncm","2","91","Computerized Reading Comprehension","NO - Not standardized",0.51,0.13856406460551,48,"119bau","ctl","92",0.47,0.150996688705415,57,0.57,0.53,0.12328828005938,0.13856406460551,38,48,0.6,0.56,0.00468521285665818,0.00282842712474619,41,50,7,7
+"120","120NGm","1","93","MAP RC","NO - Not standardized",171.92,15.81,319,"120bau","ctl","95",173.76,15.97,165,176.59,175.88,15.58,17.13,403,204,NA,NA,NA,NA,NA,NA,NA,NA
+"120","120NGm","1","94","*DIBLE (Combined - word reading fluency, oral reading fluency, and retell ability)","YES - standardized",189.37,101.26,425,"120bau","ctl","96",191.19,112.27,212,188.05,186.26,85.78,93.54,431,214,NA,NA,NA,NA,NA,NA,NA,NA
+"121","121NGm","1","97","Reading comprehension scores (maximum scores: 36)","NO - Not standardized",NA,NA,NA,"121bau","ctl","99",NA,NA,NA,20.43,18.94,3.04,3.62,94,86,19.07,18.33,3.292,3.29,94,96,3,3
+"121","121Nm","2","98","Reading comprehension scores (maximum scores: 36)","NO - Not standardized",NA,NA,NA,"121bau","ctl","99",NA,NA,NA,19.38,18.94,2.8,3.62,99,86,19.12,18.33,3.18,3.29,99,96,3,3
+"123","123Nm","1","102","History reading comprehension","NO - Not standardized",12.48,6.1,103,"123bau","ctl","103",12.14,6.1,100,15.63,14.27,5.35,5.58,103,100,NA,NA,NA,NA,NA,NA,NA,NA
+"124","124Nm","1","108","parallel reading comprehension tests","YES - standardized",50.3,9.89,168,"124bau","ctl","109",49.71,10.12,174,55.62,44.57,8.22,8.45,168,174,NA,NA,NA,NA,NA,NA,NA,NA
+"125_1","125_1Nm","1","110","Information Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_1m","ctl","113",NA,NA,NA,6.28,5.57,1.33,1.64,32,28,NA,NA,NA,NA,NA,NA,NA,NA
+"125_1","125_1Nm","1","111","Narrative Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_1m","ctl","114",NA,NA,NA,6.03,5.59,1.73,1.64,32,28,NA,NA,NA,NA,NA,NA,NA,NA
+"125_1","125_1Nm","1","112","Pretest ONLY. Standardized reading","YES - standardized",47.79,25.35,32,"125_1m","ctl","115",43.32,34.25,28,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"125_2","125_2Nm","1","116","Information Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_2m","ctl","119",NA,NA,NA,8.09,7.88,1.59,1.72,33,27,NA,NA,NA,NA,NA,NA,NA,NA
+"125_2","125_2Nm","1","117","Narrative Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_2m","ctl","120",NA,NA,NA,4.76,4,1.2,0.87,33,27,NA,NA,NA,NA,NA,NA,NA,NA
+"125_2","125_2Nm","1","118","Pretest ONLY. Standardized reading","YES - standardized",53.35,30.29,33,"125_2m","ctl","121",38.31,35.56,27,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"125_3","125_3Nm","1","122","Information Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_3m","ctl","125",NA,NA,NA,7.92,7.35,1.54,1.54,23,24,NA,NA,NA,NA,NA,NA,NA,NA
+"125_3","125_3Nm","1","123","Narrative Text - Pond/desert","NO - Not standardized",NA,NA,NA,"125_3m","ctl","126",NA,NA,NA,5.4,4.44,1.34,1.34,23,24,NA,NA,NA,NA,NA,NA,NA,NA
+"125_3","125_3Nm","1","124","Pretest ONLY. Standardized reading","YES - standardized",43.29,11.77,23,"125_3m","ctl","127",37.46,12.6,24,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"125_4","125_4Nm","1","128","Information Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_4m","ctl","131",NA,NA,NA,6.74,6.37,1.9,1.59,26,28,NA,NA,NA,NA,NA,NA,NA,NA
+"125_4","125_4Nm","1","129","Narrative Text - Volcano/river","NO - Not standardized",NA,NA,NA,"125_4m","ctl","132",NA,NA,NA,4.96,5.13,1.25,1.51,26,28,NA,NA,NA,NA,NA,NA,NA,NA
+"125_4","125_4Nm","1","130","Pretest ONLY. Standardized reading","YES - standardized",42.23,8.99,26,"125_4m","ctl","133",37.54,10.3,28,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"126_1","126_1Ncm","1","134","Gates-MacGinitie","YES - standardized",455.54,9.71,41,"126_1cm","ctl","136",450.7,3.69,22,476.72,459.03,11.1,15.72,41,22,NA,NA,NA,NA,NA,NA,NA,NA
+"126_1","126_1Ncm","1","135","Inferencing (Gates)","NO - Not standardized",8,0.46,41,"126_1cm","ctl","137",7.97,0.58,22,8.88,7.73,0.68,1.3,41,22,NA,NA,NA,NA,NA,NA,NA,NA
+"126_2","126_2Ncm","1","138","Gates-MacGinitie","YES - standardized",515.33,15.58,53,"126_2cm","ctl","140",509.13,1.36,40,528.57,514.23,16.5,8.75,53,40,NA,NA,NA,NA,NA,NA,NA,NA
+"126_2","126_2Ncm","1","139","Inferencing (Gates)","NO - Not standardized",8.77,1.53,53,"126_2cm","ctl","141",9.03,0.55,40,9.58,9.67,0.82,0.32,53,40,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","146","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl","147",505.65,31.49,84,501.99,510.28,31.33,32.59,176,84,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","146","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl","153",498.09,29.08,47,501.99,494.35,31.33,30.34,176,47,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","146","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",498.84,35.16,176,"127_6m","ctl","159",475.49,37.8,53,501.99,495.55,31.33,35.87,176,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","152","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl","147",505.65,31.49,84,511.67,510.28,26.68,32.59,49,84,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","152","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl","153",498.09,29.08,47,511.67,494.35,26.68,30.34,49,47,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","152","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",509.06,28.54,49,"127_6m","ctl","159",475.49,37.8,53,511.67,495.55,26.68,35.87,49,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","158","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl","147",505.65,31.49,84,507.61,510.28,29.89,32.59,109,84,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","158","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl","153",498.09,29.08,47,507.61,494.35,29.89,30.34,109,47,NA,NA,NA,NA,NA,NA,NA,NA
+"127_6","127_6Nm","1","158","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",507.52,27.64,109,"127_6m","ctl","159",475.49,37.8,53,507.61,495.55,29.89,35.87,109,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","142","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl","143",519.68,28.78,143,515.58,518.19,28.22,30.19,154,143,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","142","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl","149",517.99,28.76,78,515.58,521.44,28.22,30.89,154,78,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","142","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl","155",516.22,27.44,36,515.58,518.08,28.22,26.45,154,36,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","142","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",514.79,25.49,154,"127_7m","ctl","161",508.19,32.15,53,515.58,515.25,28.22,27.47,154,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","148","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl","143",519.68,28.78,143,526.38,518.19,28.99,30.19,196,143,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","148","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl","149",517.99,28.76,78,526.38,521.44,28.99,30.89,196,78,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","148","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl","155",516.22,27.44,36,526.38,518.08,28.99,26.45,196,36,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","148","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",523.13,26.26,196,"127_7m","ctl","161",508.19,32.15,53,526.38,515.25,28.99,27.47,196,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","154","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl","143",519.68,28.78,143,546.68,518.19,30.07,30.19,40,143,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","154","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl","149",517.99,28.76,78,546.68,521.44,30.07,30.89,40,78,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","154","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl","155",516.22,27.44,36,546.68,518.08,30.07,26.45,40,36,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","154","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",534.12,27.62,40,"127_7m","ctl","161",508.19,32.15,53,546.68,515.25,30.07,27.47,40,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","160","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl","143",519.68,28.78,143,531.49,518.19,36.54,30.19,58,143,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","160","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl","149",517.99,28.76,78,531.49,521.44,36.54,30.89,58,78,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","160","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl","155",516.22,27.44,36,531.49,518.08,36.54,26.45,58,36,NA,NA,NA,NA,NA,NA,NA,NA
+"127_7","127_7Nm","1","160","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",526.86,35.8,58,"127_7m","ctl","161",508.19,32.15,53,531.49,515.25,36.54,27.47,58,53,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","144","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl","145",522.34,33.23,134,522.23,522.43,27.7,31.16,117,134,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","144","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl","151",530.72,27.92,106,522.23,519.06,27.7,36.21,117,106,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","144","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl","157",532.76,21.61,41,522.23,535.55,27.7,31.68,117,41,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","144","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",521.98,27.12,117,"127_8m","ctl","163",521.79,23.65,55,522.23,506.16,27.7,30.25,117,55,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","150","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl","145",522.34,33.23,134,535.59,522.43,31.14,31.16,200,134,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","150","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl","151",530.72,27.92,106,535.59,519.06,31.14,36.21,200,106,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","150","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl","157",532.76,21.61,41,535.59,535.55,31.14,31.68,200,41,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","150","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",535.06,30.68,200,"127_8m","ctl","163",521.79,23.65,55,535.59,506.16,31.14,30.25,200,55,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","156","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl","145",522.34,33.23,134,535.42,522.43,27.69,31.16,43,134,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","156","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl","151",530.72,27.92,106,535.42,519.06,27.69,36.21,43,106,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","156","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl","157",532.76,21.61,41,535.42,535.55,27.69,31.68,43,41,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","156","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",524.51,21.49,43,"127_8m","ctl","163",521.79,23.65,55,535.42,506.16,27.69,30.25,43,55,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","162","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl","145",522.34,33.23,134,509.12,522.43,31.63,31.16,56,134,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","162","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl","151",530.72,27.92,106,509.12,519.06,31.63,36.21,56,106,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","162","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl","157",532.76,21.61,41,509.12,535.55,31.63,31.68,56,41,NA,NA,NA,NA,NA,NA,NA,NA
+"127_8","127_8Nm","1","162","GMRT = Gates–MacGinitie Reading Tests","YES - standardized",515.45,27.74,56,"127_8m","ctl","163",521.79,23.65,55,509.12,506.16,31.63,30.25,56,55,NA,NA,NA,NA,NA,NA,NA,NA
+"128","128NVcm","1","164","Informational text comprehension","NO - Not standardized",54.06,15.41,269,"128m","ctl","165",53.19,14.1,288,56.94,53.6,16.7,17.55,269,288,NA,NA,NA,NA,NA,NA,NA,NA
+"129_1","129_1Nm","1","166","text comprehension - total (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl","171",NA,NA,NA,13.52,13.73,2.77,2.45,48,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_1","129_1Nm","1","167","text comprehension - story (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl","172",NA,NA,NA,6,6.46,1.62,1.41,48,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_1","129_1Nm","1","168","text comprehension - informational text (April, EOY)","NO - Not standardized",NA,NA,NA,"129_1m","ctl","173",NA,NA,NA,7.42,7.02,1.54,1.87,48,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_1","129_1Nm","1","169","Past achievement (pretest ONLY, BOY)","NO - Not standardized",5.77,2.56,48,"129_1m","ctl","174",6.51,2.6,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"129_1","129_1Nm","1","170","Literacy level (pretest ONLY, BOY)","NO - Not standardized",2.87,1.2,48,"129_1m","ctl","175",3.23,1.49,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"129_2","129_2Nm","1","176","text comprehension - total (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl","181",NA,NA,NA,14.61,13.61,2.67,1.98,40,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_2","129_2Nm","1","177","text comprehension - story (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl","182",NA,NA,NA,5.9,4.67,1.61,1.44,40,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_2","129_2Nm","1","178","text comprehension - informational text (April, EOY)","NO - Not standardized",NA,NA,NA,"129_2m","ctl","183",NA,NA,NA,8.71,8.65,1.47,1.51,40,42,NA,NA,NA,NA,NA,NA,NA,NA
+"129_2","129_2Nm","1","179","Past achievement (pretest ONLY, BOY)","NO - Not standardized",7.06,2.56,40,"129_2m","ctl","184",6.65,1.87,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"129_2","129_2Nm","1","180","Literacy level (pretest ONLY, BOY)","NO - Not standardized",3.31,1.49,40,"129_2m","ctl","185",3.35,0.89,42,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"130","130Nm","1","186","reading comprehension (Vlaamse
+Test Begrijpend Lezen version grade 6)","YES - standardized",12.73,4.38,40,"130bau","ctl","187",13.14,4.52,50,13.77,11.96,4.94,5.32,40,50,NA,NA,NA,NA,NA,NA,NA,NA
+"131","131Vm","1","188","comprehension skill test","NO - Not standardized",4.5,2.7,10,"131m","ctl","191",4.3,2.2,10,6.3,6.3,3.1,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
+"131","131Vm","2","189","comprehension skill test","NO - Not standardized",4.5,2.8,10,"131m","ctl","191",4.3,2.2,10,6.2,6.3,4.9,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
+"131","131Vm","3","190","comprehension skill test","NO - Not standardized",4.9,1.9,10,"131m","ctl","191",4.3,2.2,10,11.2,6.3,4.9,2.5,10,10,NA,NA,NA,NA,NA,NA,NA,NA
+"132","132Vm","1","192","comprehension skill test","NO - Not standardized",4.5,2,10,"132Tm","ctl","193",5.9,2.3,10,8.1,7.7,2.6,3.1,10,10,NA,NA,NA,NA,NA,NA,NA,NA
+"132","132VTm","2","194","comprehension skill test","NO - Not standardized",5.5,1.5,10,"132Tm","ctl","193",5.9,2.3,10,13.5,7.7,2.3,3.1,10,10,NA,NA,NA,NA,NA,NA,NA,NA
+"133","133NGc","1","195","Passage Comprehension (SRI)","YES - standardized",7.75,2.41,12,"133c","ctl","196",8.25,2.41,12,7.75,8.5,2.56,2.28,12,12,NA,NA,NA,NA,NA,NA,NA,NA
+"135","135NVGcm","1","199","Sentence Comprehension (SC)","YES - standardized",4.85,2.11,20,"135m","ctl","202",4.4,2.19,20,7.8,5.2,2.61,1.85,20,20,NA,NA,NA,NA,NA,NA,NA,NA
+"135","135NVGcm","1","200","Passage Comprehension (PCO)","YES - standardized",7.65,2.5,20,"135m","ctl","203",8.5,3.02,20,12,7.8,4.44,4.7,20,20,NA,NA,NA,NA,NA,NA,NA,NA
+"135","135NVGcm","1","201","* MAP composite","YES - standardized",186.2,11.12,20,"135m","ctl","204",185.47,9.02,20,195.79,188.94,6.9,9.4,20,20,201.17,199.33,7.17,8.58,20,20,12,12
+"136","136m","1","205","comprehension skill test","NO - Not standardized",5.6,1.4,11,"136m","ctl","208",5.5,3.2,11,12.1,7.1,2.6,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
+"136","136VTm","2","206","comprehension skill test","NO - Not standardized",5.4,1.2,11,"136m","ctl","208",5.5,3.2,11,10,7.1,1.9,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
+"136","136VTm","3","207","comprehension skill test","NO - Not standardized",5.8,1.5,11,"136m","ctl","208",5.5,3.2,11,13.1,7.1,2.4,2.1,11,11,NA,NA,NA,NA,NA,NA,NA,NA
+"137","137Nm","1","209","comprehension skill test","NO - Not standardized",5.7,1.7,11,"137m","ctl","211",6.5,2.9,11,7.9,7.2,3.1,3.3,11,11,7.8,7.5,2.6,2.8,11,11,2.5,2.5
+"137","137NVTm","2","210","comprehension skill test","NO - Not standardized",6.4,1.7,11,"137m","ctl","211",6.5,2.9,11,10.8,7.2,2.2,3.3,11,11,10.6,7.5,2.6,2.8,11,11,2.5,2.5
+"138","138Nm","1","212","PIRLS Read comprehension","NO - Not standardized",7.33,3.09,248,"138m","ctl","213",6.93,2.96,293,9.26,9.62,3.43,3.41,243,291,NA,NA,NA,NA,NA,NA,NA,NA
+"139","139NGTcm","1","214","GRADE Sentence Comprehension subtest","YES - standardized",2.55,0.93,14,"139cm","ctl","215",1.86,0.95,11,2.36,2.29,1.03,1.2,14,11,NA,NA,NA,NA,NA,NA,NA,NA
+"140_1","140_1Ncm","1","216","Reading Comprehension Tests","NO - Not standardized",7.82,3.7,17,"140_1bau","ctl","217",7.64,3.65,14,8.47,8,3.52,3.4,17,14,NA,NA,NA,NA,NA,NA,NA,NA
+"140_2","140_2Ncm","1","218","Reading Comprehension Tests","NO - Not standardized",9.67,3.42,12,"140_2bau","ctl","219",9.64,3.47,14,11.58,10.86,3.94,4.05,12,14,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141NTm","1","220","Main Idea Test","YES - standardized",3.82,1.31,22,"141cm","ctl","228",3.79,1.61,21,7.39,4.93,2.17,1.55,22,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141NTm","1","221","Passage Specific Test - Passage Production Subtest","NO - Not standardized",2.14,1.36,22,"141cm","ctl","229",1.71,1.19,21,3.41,3.05,1.99,2.11,22,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141NTm","1","222","Passage Specific Test - Passage Identification Subtest","NO - Not standardized",4.32,1.52,22,"141cm","ctl","230",4.1,1.22,21,5.45,5.19,1.65,2.02,22,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141NTm","1","223","Passage Specific Test - Total Score","NO - Not standardized",6.45,2.24,22,"141cm","ctl","231",5.81,2.18,21,8.86,8.24,3.39,3.86,22,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141Nm","2","224","Main Idea Test","YES - standardized",3.7,1.73,20,"141cm","ctl","228",3.79,1.61,21,6.35,4.93,1.78,1.55,20,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141Nm","2","225","Passage Specific Test - Passage Production Subtest","NO - Not standardized",1.55,1.4,20,"141cm","ctl","229",1.71,1.19,21,3,3.05,2.18,2.11,20,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141Nm","2","226","Passage Specific Test - Passage Identification Subtest","NO - Not standardized",4.2,1.44,20,"141cm","ctl","230",4.1,1.22,21,4.95,5.19,1.79,2.02,20,21,NA,NA,NA,NA,NA,NA,NA,NA
+"141","141Nm","2","227","Passage Specific Test - Total Score","NO - Not standardized",5.75,2.2,20,"141cm","ctl","231",5.81,2.18,21,7.95,8.24,3.76,3.86,20,21,NA,NA,NA,NA,NA,NA,NA,NA
+"142_1","142_1Tm","1","232","reading comprehension","NO - Not standardized",4.18,2.6,11,"142_1m","ctl","235",4.44,2.92,9,8.18,4.56,1.72,2.01,11,9,6.64,NA,3.11,2.35,11,9,1,1
+"142_1","142_1Tm","2","233","reading comprehension","NO - Not standardized",4.38,2.5,9,"142_1m","ctl","235",4.44,2.92,9,4.88,4.56,3.52,2.01,9,9,5.13,NA,2.48,2.35,9,9,1,1
+"142_2","142_2Tm","1","236","reading comprehension","NO - Not standardized",7.94,2.78,18,"142_2m","ctl","239",8.2,1.97,15,9.56,8.8,2.33,2.01,18,15,7.33,8.07,1.75,2.58,18,15,1,1
+"142_2","142_2Tm","2","237","reading comprehension","NO - Not standardized",7.91,2.12,11,"142_2m","ctl","239",8.2,1.97,15,9.73,8.8,1.62,2.01,11,15,6.64,8.07,1.91,2.58,11,15,1,1
+"143","143Nm","1","240","General Comprehension Scores","NO - Not standardized",8.2,3.302,50.75,"143bau","ctl","243",8.316,2.286,50.75,7.65,6.947,2.681,2.677,50.75,50.75,9,8.58,3.27,2.53,50.75,50.75,2,2
+"143","143Nm","1","240","General Comprehension Scores","NO - Not standardized",8.2,3.302,50.75,"143bau","ctl","247",7.44,3.28,50.75,7.65,10.48,2.681,11.106,50.75,50.75,9,8.81,3.27,3.61,50.75,50.75,2,2
+"143","143NGTm","2","241","General Comprehension Scores","NO - Not standardized",7.5,2.686,50.75,"143bau","ctl","243",8.316,2.286,50.75,7.455,6.947,3.035,2.677,50.75,50.75,10.71,8.58,2.36,2.53,50.75,50.75,2,2
+"143","143NGTm","2","241","General Comprehension Scores","NO - Not standardized",7.5,2.686,50.75,"143bau","ctl","247",7.44,3.28,50.75,7.455,10.48,3.035,11.106,50.75,50.75,10.71,8.81,2.36,3.61,50.75,50.75,2,2
+"143","143Nm","1","244","General Comprehension Scores","NO - Not standardized",9.381,2.991,50.75,"143bau","ctl","243",8.316,2.286,50.75,8.476,6.947,3.444,2.677,50.75,50.75,9.38,8.58,3.46,2.53,50.75,50.75,2,2
+"143","143Nm","1","244","General Comprehension Scores","NO - Not standardized",9.381,2.991,50.75,"143bau","ctl","247",7.44,3.28,50.75,8.476,10.48,3.444,11.106,50.75,50.75,9.38,8.81,3.46,3.61,50.75,50.75,2,2
+"143","143GTm","2","245","General Comprehension Scores","NO - Not standardized",8.739,3.208,50.75,"143bau","ctl","243",8.316,2.286,50.75,8.565,6.947,2.967,2.677,50.75,50.75,9.64,8.58,2.9,2.53,50.75,50.75,2,2
+"143","143GTm","2","245","General Comprehension Scores","NO - Not standardized",8.739,3.208,50.75,"143bau","ctl","247",7.44,3.28,50.75,8.565,10.48,2.967,11.106,50.75,50.75,9.64,8.81,2.9,3.61,50.75,50.75,2,2
+"145","145NGm","1","257","reading comprehension achievement test (RCAT)","NO - Not standardized",52.09,20.9,31,"145bau","ctl","258",56.77,14.3,31,57.9,56.93,18.7,15.8,31,31,NA,NA,NA,NA,NA,NA,NA,NA
+"146","146NVGTm","1","259","Reading comprehension","YES - standardized",5.69,2.59,95,"146bau","ctl","262",5.13,2.58,84,7.65,7.15,2.08,2.03,95,84,10.49,9.36,1.71,2.39,95,84,6,6
+"146","146NVm","2","260","Reading comprehension","YES - standardized",5.76,2.73,146,"146bau","ctl","262",5.13,2.58,84,7.26,7.15,1.78,2.03,146,84,10.12,9.36,1.95,2.39,146,84,6,6
+"146","146m","3","261","Reading comprehension","YES - standardized",5.97,2.59,89,"146bau","ctl","262",5.13,2.58,84,7.89,7.15,2.13,2.03,89,84,11.02,9.36,1.57,2.39,89,84,6,6
+"147","147NVm","1","264","FLVT Reading comprehension","YES - standardized",49.76,8.93,62,"147m","ctl","263",50.2,8.22,62,49.99,49.32,9.02,7.05,127,127,50.61,50.33,9.55,7.49,117,117,2,2
+"147","147NVGTm","2","265","FLVT Reading comprehension","YES - standardized",48.75,7.91,62,"147m","ctl","263",50.2,8.22,62,52.14,49.32,8.93,7.05,127,127,53.73,50.33,9.19,7.49,117,117,2,2
+"148","148NVGm","1","267","FLVT 5-6 Reading Comprehension","YES - standardized",50.81,9.19,129,"148Nm","ctl","266",49.31,8.22,133,52.18,50.43,7.95,8.08,129,133,54.3,50.53,8.79,8.87,129,133,2,2
+"148","148NVGm","2","268","FLVT 5-6 Reading Comprehension","YES - standardized",48.57,12.32,126,"148Nm","ctl","266",49.31,8.22,133,52.41,50.43,9.43,8.08,126,133,52.56,50.53,10.25,8.87,126,133,2,2
+"148","148NGm","3","269","FLVT 5-6 Reading Comprehension","YES - standardized",48.54,8.87,146,"148Nm","ctl","266",49.31,8.22,133,50.65,50.43,8.4,8.08,146,133,51.65,50.53,7.43,8.87,146,133,2,2
+"149","149NGm","1","270","(immediate) 1. Main idea","NO - Not standardized",2.5,1.83,16,"149Nm","ctl","286",2.19,1.52,16,4.38,1.88,1.18,1.2,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","271","(immediate) 2. Summary","NO - Not standardized",2.94,1.77,16,"149Nm","ctl","287",3.88,1.93,16,5.06,4.19,1.81,1.68,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","272","(immediate) 3. Oral retell quality","NO - Not standardized",2.56,0.96,16,"149Nm","ctl","288",3.06,1.24,16,4.06,3,0.93,0.89,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","273","(immediate) 4. Oral retell information units","NO - Not standardized",3.56,1.67,16,"149Nm","ctl","289",4,2,16,6.63,4.5,2.96,2.07,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","274","(immediate) 5. Oral retell main ideas","NO - Not standardized",2.06,1,16,"149Nm","ctl","290",2.44,0.96,16,3.25,2.56,0.86,0.96,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","275","(immediate) 6. Written retell quality","NO - Not standardized",2.75,1,16,"149Nm","ctl","291",3,1.03,16,3,3.19,0.89,1.28,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","276","(immediate) 7. Written retell information units","NO - Not standardized",2.69,2.06,16,"149Nm","ctl","292",4.06,2.08,16,3.63,3.69,2.06,2.5,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","277","(immediate) 8. Written retell main ideas","NO - Not standardized",1.81,1.22,16,"149Nm","ctl","293",2.07,1.12,16,2.75,2.63,1.44,1.26,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","278","(3 week) 1. Main idea","NO - Not standardized",2.5,1.83,16,"149Nm","ctl","294",2.19,1.52,16,4.13,2.4,1.55,1.35,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","279","(3 week) 2. Summary","NO - Not standardized",2.94,1.77,16,"149Nm","ctl","295",3.88,1.93,16,4.67,3.93,1.59,1.62,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","280","(3 week) 3. Oral retell quality","NO - Not standardized",2.56,0.96,16,"149Nm","ctl","296",3.06,1.24,16,3.87,3.33,1.25,1.29,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","281","(3 week) 4. Oral retell information units","NO - Not standardized",3.56,1.67,16,"149Nm","ctl","297",4,2,16,4.8,3.6,1.7,2.41,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","282","(3 week) 5. Oral retell main ideas","NO - Not standardized",2.06,1,16,"149Nm","ctl","298",2.44,0.96,16,2.27,1.53,1.1,1.36,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","283","(3 week) 6. Written retell quality","NO - Not standardized",2.75,1,16,"149Nm","ctl","299",3,1.03,16,3.87,3.35,1.07,1.35,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","284","(3 week) 7. Written retell information units","NO - Not standardized",2.69,2.06,16,"149Nm","ctl","300",4.06,2.08,16,3.96,3.35,1.7,1.61,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"149","149NGm","1","285","(3 week) 8. Written retell main ideas","NO - Not standardized",1.81,1.22,16,"149Nm","ctl","301",2.07,1.12,16,2.78,2.59,1.4,1.36,16,16,NA,NA,NA,NA,NA,NA,NA,NA
+"150","150cm","1","303","Posttest Unrelated","NO - Not standardized",NA,NA,NA,"150bau","ctl","302",NA,NA,NA,0.47,0.49,0.23,0.23,24,27,NA,NA,NA,NA,NA,NA,NA,NA
+"150","150Gcm","2","304","Posttest Unrelated","NO - Not standardized",NA,NA,NA,"150bau","ctl","302",NA,NA,NA,0.5,0.49,0.27,0.23,24,27,NA,NA,NA,NA,NA,NA,NA,NA
+"151","151NVGm","1","305","Retell Quality","NO - Not standardized",1.5,1.1,9,"151Nm","ctl","309",1.6,1.2,9,2.9,4.2,1.4,1.3,9,9,NA,NA,NA,NA,NA,NA,NA,NA
+"151","151NVGm","1","306","Retell Main Idea","NO - Not standardized",0.5,0.4,9,"151Nm","ctl","310",0.6,0.6,9,0.9,1.4,0.5,0.4,9,9,NA,NA,NA,NA,NA,NA,NA,NA
+"151","151NVGm","1","307","Multiple Choice","NO - Not standardized",5.2,1.8,9,"151Nm","ctl","311",5.8,1.9,9,6.2,7.4,2.2,2.7,9,9,NA,NA,NA,NA,NA,NA,NA,NA
+"151","151NVGm","1","308","WJ Passage Comprehension","YES - standardized",79.2,7.5,9,"151Nm","ctl","312",70.3,17.4,9,78.7,75.6,8.7,14.5,9,9,NA,NA,NA,NA,NA,NA,NA,NA
+"152","152Nm","1","313","GMRT-4 Comprehension","YES - standardized",19.74,10.05,38,"152m","ctl","314",23.16,8,38,28.37,26.5,6.9,7.28,38,38,NA,NA,NA,NA,NA,NA,NA,NA
+"153","153Nm","1","315","GMRT-4 Comprehension","YES - standardized",17.78,8.27,23,"153m","ctl","316",18.61,7.02,23,28.09,22.61,7.35,6.45,23,23,NA,NA,NA,NA,NA,NA,NA,NA

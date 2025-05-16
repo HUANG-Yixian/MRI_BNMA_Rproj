@@ -1,11 +1,9 @@
 getwd()
 
 # render.R
-library(rmarkdown)
-
 rmarkdown::render(
-  input = "scripts/00_data_preprocessing.Rmd",
-  output_file = "00_data_preprocessing.html",
+  input = "scripts/00_data_cleaning.Rmd",
+  output_file = "00_data_cleaning.html",
   output_dir = "scripts/R_knit_html"
 )
 

@@ -1490,7 +1490,8 @@ border-radius: 0px;
 library(tidyr)
 library(dplyr)
 library(stringr)
-library(purrr)</code></pre>
+library(purrr)
+library(tibble)</code></pre>
 </div>
 <div id="data-import-and-cleaning" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Data Import and
@@ -1562,47 +1563,50 @@ binary variable</h3>
 <div id="variable-dictionary" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Variable
 Dictionary</h1>
-<pre class="r"><code># Step 1: Extract all variable names
+<pre class="r"><code>#  Extract variable names
 col_names &lt;- names(df_raw)
 
-# Step 2: Define prefix dictionary
-prefix_dict &lt;- list(
-  &quot;id_&quot;  = &quot;Categorical - Identifier&quot;,
-  &quot;pct_&quot; = &quot;Numeric - Percentage / proportion&quot;,
-  &quot;ave_&quot; = &quot;Numeric - Average / mean value&quot;,
-  &quot;is_&quot;  = &quot;Categorical - Binary (0/1) with labels&quot;,
-  &quot;cat_&quot; = &quot;Categorical - multi-level factor)&quot;,
-  &quot;chr_&quot; = &quot;Character&quot;,
-  &quot;num_&quot; = &quot;Numeric - number&quot;,
-  &quot;m_&quot;   = &quot;Numeric - Outcome: mean&quot;,
-  &quot;sd_&quot;  = &quot;Numeric - Outcome: standard deviation&quot;,
-  &quot;n_&quot;   = &quot;Numeric - Outcome: sample size&quot;,
-  &quot;r_&quot;   = &quot;Numeric - Outcome: correlation (pre-post)&quot;
+#Define prefix mapping with data_type and description
+prefix_df &lt;- tribble(
+  ~prefix, ~data_type,    ~description,
+  &quot;id_&quot;,   &quot;Categorical&quot;, &quot;Identifier&quot;,
+  &quot;pct_&quot;,  &quot;Numeric&quot;,     &quot;Percentage / proportion&quot;,
+  &quot;ave_&quot;,  &quot;Numeric&quot;,     &quot;Average / mean value&quot;,
+  &quot;is_&quot;,   &quot;Categorical&quot;, &quot;Binary (0/1) with labels&quot;,
+  &quot;cat_&quot;,  &quot;Categorical&quot;, &quot;Multi-level factor&quot;,
+  &quot;chr_&quot;,  &quot;Character&quot;,   &quot;Free text&quot;,
+  &quot;num_&quot;,  &quot;Numeric&quot;,     &quot;Raw number&quot;,
+  &quot;m_&quot;,    &quot;Numeric&quot;,     &quot;Outcome: mean&quot;,
+  &quot;sd_&quot;,   &quot;Numeric&quot;,     &quot;Outcome: standard deviation&quot;,
+  &quot;n_&quot;,    &quot;Numeric&quot;,     &quot;Outcome: sample size&quot;,
+  &quot;r_&quot;,    &quot;Numeric&quot;,     &quot;Outcome: correlation (pre-post)&quot;
 )
 
-# Step 3: Define data levels by variable ranges
-study_vars        &lt;- col_names[which(col_names == &quot;chr_authorname&quot;) : which(col_names == &quot;is_RCT&quot;)]
-sample_vars       &lt;- c(&quot;id_sample&quot;,
-                      col_names[which(col_names == &quot;chr_grade&quot;) : which(col_names == &quot;pct_minority&quot;)])
-intervention_vars &lt;- c(col_names[which(col_names == &quot;id_sample&quot;) : which(col_names == &quot;chr_condition_name&quot;)],
-                      col_names[which(col_names == &quot;is_scripted&quot;) : which(col_names == &quot;is_fidelity&quot;)])
-es_vars           &lt;- c(&quot;id_es&quot;, 
-                       col_names[which(col_names == &quot;chr_measure_name&quot;) : which(col_names == &quot;r_pre_delay&quot;)])
+# Define variable groups for data_level
+study_vars &lt;- col_names[which(col_names == &quot;chr_authorname&quot;) : which(col_names == &quot;is_RCT&quot;)]
+sample_vars &lt;- c(&quot;id_sample&quot;, col_names[which(col_names == &quot;chr_grade&quot;) : which(col_names == &quot;pct_minority&quot;)])
+intervention_vars &lt;- c(
+  col_names[which(col_names == &quot;id_sample&quot;) : which(col_names == &quot;chr_condition_name&quot;)],
+  col_names[which(col_names == &quot;is_scripted&quot;) : which(col_names == &quot;is_fidelity&quot;)]
+)
+es_vars &lt;- c(&quot;id_es&quot;, col_names[which(col_names == &quot;chr_measure_name&quot;) : which(col_names == &quot;r_pre_delay&quot;)])
 
-# Step 4: Classification function
+# --- Step 4: Classification function ---
 classify_variable &lt;- function(var) {
-  # Match prefix
-  matched_prefix &lt;- NA
-  matched_cat &lt;- &quot;Unclassified&quot;
-  for (p in names(prefix_dict)) {
-    if (startsWith(var, p)) {
-      matched_prefix &lt;- p
-      matched_cat &lt;- prefix_dict[[p]]
-      break
-    }
+  matched &lt;- prefix_df %&gt;%
+    filter(str_starts(var, prefix)) %&gt;%
+    slice(1)
+
+  if (nrow(matched) == 0) {
+    data_type &lt;- &quot;Unclassified&quot;
+    description &lt;- &quot;Unclassified&quot;
+    matched_prefix &lt;- NA
+  } else {
+    data_type &lt;- matched$data_type
+    description &lt;- matched$description
+    matched_prefix &lt;- matched$prefix
   }
 
-  # Match data level
   level &lt;- case_when(
     var %in% study_vars        ~ &quot;Study level&quot;,
     var %in% sample_vars       ~ &quot;Sample level&quot;,
@@ -1611,62 +1615,69 @@ classify_variable &lt;- function(var) {
     TRUE                       ~ &quot;Unclassified&quot;
   )
 
-  return(data.frame(variable = var, prefix = matched_prefix, category = matched_cat, data_level = level))
+  return(data.frame(
+    variable = var,
+    prefix = matched_prefix,
+    data_type = data_type,
+    description = description,
+    data_level = level,
+    stringsAsFactors = FALSE
+  ))
 }
 
-# Step 5: Apply to all variables
+#  Apply function to all variables 
 variable_dict &lt;- do.call(rbind, lapply(col_names, classify_variable))
 
-# View variable dictionary
+# View result 
 print(variable_dict)</code></pre>
-<pre><code>##                     variable prefix                                  category         data_level
-## 1                      id_es    id_                  Categorical - Identifier  Effect size level
-## 2             chr_authorname   chr_                                 Character        Study level
-## 3                   id_study    id_                  Categorical - Identifier        Study level
-## 4                chr_country   chr_                                 Character        Study level
-## 5                     is_USA    is_    Categorical - Binary (0/1) with labels        Study level
-## 6               chr_language   chr_                                 Character        Study level
-## 7                 is_English    is_    Categorical - Binary (0/1) with labels        Study level
-## 8          is_school_context    is_    Categorical - Binary (0/1) with labels        Study level
-## 9                 is_article    is_    Categorical - Binary (0/1) with labels        Study level
-## 10                    is_RCT    is_    Categorical - Binary (0/1) with labels        Study level
-## 11                 id_sample    id_                  Categorical - Identifier       Sample level
-## 12              id_condition    id_                  Categorical - Identifier Intervention level
-## 13                cat_M_type   cat_         Categorical - multi-level factor) Intervention level
-## 14                cat_R_type   cat_         Categorical - multi-level factor) Intervention level
-## 15        cat_condition_type   cat_         Categorical - multi-level factor) Intervention level
-## 16        chr_condition_name   chr_                                 Character Intervention level
-## 17                 chr_grade   chr_                                 Character       Sample level
-## 18              is_secondary    is_    Categorical - Binary (0/1) with labels       Sample level
-## 19                   ave_age   ave_            Numeric - Average / mean value       Sample level
-## 20       pct_struggle_reader   pct_         Numeric - Percentage / proportion       Sample level
-## 21            pct_disability   pct_         Numeric - Percentage / proportion       Sample level
-## 22                pct_lowSES   pct_         Numeric - Percentage / proportion       Sample level
-## 23                   pct_SLL   pct_         Numeric - Percentage / proportion       Sample level
-## 24                   pct_boy   pct_         Numeric - Percentage / proportion       Sample level
-## 25              pct_minority   pct_         Numeric - Percentage / proportion       Sample level
-## 26               is_scripted    is_    Categorical - Binary (0/1) with labels Intervention level
-## 27            is_small_group    is_    Categorical - Binary (0/1) with labels Intervention level
-## 28           is_school_staff    is_    Categorical - Binary (0/1) with labels Intervention level
-## 29          num_dosage_total   num_                          Numeric - number Intervention level
-## 30    num_dosage_session_num   num_                          Numeric - number Intervention level
-## 31 num_dosage_session_length   num_                          Numeric - number Intervention level
-## 32               is_fidelity    is_    Categorical - Binary (0/1) with labels Intervention level
-## 33          chr_measure_name   chr_                                 Character  Effect size level
-## 34            is_measure_std    is_    Categorical - Binary (0/1) with labels  Effect size level
-## 35                     m_pre     m_                   Numeric - Outcome: mean  Effect size level
-## 36                    sd_pre    sd_     Numeric - Outcome: standard deviation  Effect size level
-## 37                     n_pre     n_            Numeric - Outcome: sample size  Effect size level
-## 38                    m_post     m_                   Numeric - Outcome: mean  Effect size level
-## 39                   sd_post    sd_     Numeric - Outcome: standard deviation  Effect size level
-## 40                    n_post     n_            Numeric - Outcome: sample size  Effect size level
-## 41                 m_delayed     m_                   Numeric - Outcome: mean  Effect size level
-## 42                sd_delayed    sd_     Numeric - Outcome: standard deviation  Effect size level
-## 43                 n_delayed     n_            Numeric - Outcome: sample size  Effect size level
-## 44      num_month_of_delayed   num_                          Numeric - number  Effect size level
-## 45                r_pre_post     r_ Numeric - Outcome: correlation (pre-post)  Effect size level
-## 46               r_pre_delay     r_ Numeric - Outcome: correlation (pre-post)  Effect size level</code></pre>
-<pre class="r"><code># Clean temporary variables (all except final results)
+<pre><code>##                     variable prefix   data_type                     description         data_level
+## 1                      id_es    id_ Categorical                      Identifier  Effect size level
+## 2             chr_authorname   chr_   Character                       Free text        Study level
+## 3                   id_study    id_ Categorical                      Identifier        Study level
+## 4                chr_country   chr_   Character                       Free text        Study level
+## 5                     is_USA    is_ Categorical        Binary (0/1) with labels        Study level
+## 6               chr_language   chr_   Character                       Free text        Study level
+## 7                 is_English    is_ Categorical        Binary (0/1) with labels        Study level
+## 8          is_school_context    is_ Categorical        Binary (0/1) with labels        Study level
+## 9                 is_article    is_ Categorical        Binary (0/1) with labels        Study level
+## 10                    is_RCT    is_ Categorical        Binary (0/1) with labels        Study level
+## 11                 id_sample    id_ Categorical                      Identifier       Sample level
+## 12              id_condition    id_ Categorical                      Identifier Intervention level
+## 13                cat_M_type   cat_ Categorical              Multi-level factor Intervention level
+## 14                cat_R_type   cat_ Categorical              Multi-level factor Intervention level
+## 15        cat_condition_type   cat_ Categorical              Multi-level factor Intervention level
+## 16        chr_condition_name   chr_   Character                       Free text Intervention level
+## 17                 chr_grade   chr_   Character                       Free text       Sample level
+## 18              is_secondary    is_ Categorical        Binary (0/1) with labels       Sample level
+## 19                   ave_age   ave_     Numeric            Average / mean value       Sample level
+## 20       pct_struggle_reader   pct_     Numeric         Percentage / proportion       Sample level
+## 21            pct_disability   pct_     Numeric         Percentage / proportion       Sample level
+## 22                pct_lowSES   pct_     Numeric         Percentage / proportion       Sample level
+## 23                   pct_SLL   pct_     Numeric         Percentage / proportion       Sample level
+## 24                   pct_boy   pct_     Numeric         Percentage / proportion       Sample level
+## 25              pct_minority   pct_     Numeric         Percentage / proportion       Sample level
+## 26               is_scripted    is_ Categorical        Binary (0/1) with labels Intervention level
+## 27            is_small_group    is_ Categorical        Binary (0/1) with labels Intervention level
+## 28           is_school_staff    is_ Categorical        Binary (0/1) with labels Intervention level
+## 29          num_dosage_total   num_     Numeric                      Raw number Intervention level
+## 30    num_dosage_session_num   num_     Numeric                      Raw number Intervention level
+## 31 num_dosage_session_length   num_     Numeric                      Raw number Intervention level
+## 32               is_fidelity    is_ Categorical        Binary (0/1) with labels Intervention level
+## 33          chr_measure_name   chr_   Character                       Free text  Effect size level
+## 34            is_measure_std    is_ Categorical        Binary (0/1) with labels  Effect size level
+## 35                     m_pre     m_     Numeric                   Outcome: mean  Effect size level
+## 36                    sd_pre    sd_     Numeric     Outcome: standard deviation  Effect size level
+## 37                     n_pre     n_     Numeric            Outcome: sample size  Effect size level
+## 38                    m_post     m_     Numeric                   Outcome: mean  Effect size level
+## 39                   sd_post    sd_     Numeric     Outcome: standard deviation  Effect size level
+## 40                    n_post     n_     Numeric            Outcome: sample size  Effect size level
+## 41                 m_delayed     m_     Numeric                   Outcome: mean  Effect size level
+## 42                sd_delayed    sd_     Numeric     Outcome: standard deviation  Effect size level
+## 43                 n_delayed     n_     Numeric            Outcome: sample size  Effect size level
+## 44      num_month_of_delayed   num_     Numeric                      Raw number  Effect size level
+## 45                r_pre_post     r_     Numeric Outcome: correlation (pre-post)  Effect size level
+## 46               r_pre_delay     r_     Numeric Outcome: correlation (pre-post)  Effect size level</code></pre>
+<pre class="r"><code># clean temp 
 rm(list = setdiff(ls(), c(&quot;df_raw&quot;, &quot;variable_dict&quot;)))</code></pre>
 </div>
 <div id="data-formatting" class="section level1" number="4">
@@ -1704,17 +1715,23 @@ classes</h3>
 <pre class="r"><code># Apply R data classes based on variable dictionary
 df_clean &lt;- df_clean %&gt;%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == &quot;numeric&quot;],
+    .cols = variable_dict$variable[variable_dict$data_type == &quot;Numeric&quot;],
     .fns  = as.numeric
   )) %&gt;%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == &quot;categorical&quot;],
+    .cols = variable_dict$variable[variable_dict$data_type == &quot;Categorical&quot;],
     .fns  = as.factor
   )) %&gt;%
   mutate(across(
-    .cols = variable_dict$variable[variable_dict$data_type == &quot;character&quot;],
+    .cols = variable_dict$variable[variable_dict$data_type == &quot;Character&quot;],
     .fns  = as.character
   ))</code></pre>
+<pre><code>## Warning: There were 2 warnings in `mutate()`.
+## The first warning was:
+## ℹ In argument: `across(...)`.
+## Caused by warning:
+## ! NAs introduced by coercion
+## ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</code></pre>
 </div>
 </div>
 <div id="separate-data-by-hierarchical-levels" class="section level1" number="5">
@@ -1761,11 +1778,11 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">4</td>
+<td align="left">3</td>
 </tr>
 <tr class="odd">
 <td align="left">factor</td>
-<td align="left">5</td>
+<td align="left">6</td>
 </tr>
 <tr class="even">
 <td align="left">________________________</td>
@@ -1813,16 +1830,6 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">id_study</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">0</td>
-<td align="right">48</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="left">chr_country</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1832,7 +1839,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">11</td>
 <td align="right">0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">chr_language</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1847,12 +1854,12 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <p><strong>Variable type: factor</strong></p>
 <table>
 <colgroup>
-<col width="21%" />
+<col width="20%" />
 <col width="11%" />
-<col width="16%" />
-<col width="9%" />
+<col width="15%" />
+<col width="8%" />
 <col width="10%" />
-<col width="29%" />
+<col width="34%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1866,6 +1873,14 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">id_study</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">48</td>
+<td align="left">109: 2, 129: 2, 140: 2, 142: 2</td>
+</tr>
+<tr class="even">
 <td align="left">is_USA</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1873,7 +1888,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">USA: 36, non: 17</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">is_English</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1881,7 +1896,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">Eng: 41, non: 12</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">is_school_context</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1889,7 +1904,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">Sch: 51, Aft: 2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">is_article</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1897,7 +1912,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">pee: 46, dis: 7</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">is_RCT</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -1933,15 +1948,15 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">3</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">factor</td>
-<td align="left">1</td>
+<td align="left">2</td>
 </tr>
 <tr class="even">
 <td align="left">numeric</td>
-<td align="left">6</td>
+<td align="left">7</td>
 </tr>
 <tr class="odd">
 <td align="left">________________________</td>
@@ -1954,9 +1969,9 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="20%" />
+<col width="19%" />
 <col width="13%" />
 <col width="19%" />
 <col width="5%" />
@@ -1979,46 +1994,26 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">id_sample</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">58</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
 <td align="left">chr_grade</td>
 <td align="right">0</td>
-<td align="right">1.00</td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="right">9</td>
 <td align="right">0</td>
 <td align="right">16</td>
 <td align="right">0</td>
 </tr>
-<tr class="odd">
-<td align="left">pct_disability</td>
-<td align="right">103</td>
-<td align="right">0.36</td>
-<td align="right">1</td>
-<td align="right">21</td>
-<td align="right">0</td>
-<td align="right">27</td>
-<td align="right">0</td>
-</tr>
 </tbody>
 </table>
 <p><strong>Variable type: factor</strong></p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="19%" />
-<col width="13%" />
-<col width="19%" />
+<col width="16%" />
+<col width="11%" />
+<col width="16%" />
+<col width="9%" />
 <col width="10%" />
-<col width="12%" />
-<col width="24%" />
+<col width="36%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2032,6 +2027,14 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">id_sample</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">58</td>
+<td align="left">127: 8, 127: 8, 127: 6, 143: 6</td>
+</tr>
+<tr class="even">
 <td align="left">is_secondary</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -2099,6 +2102,19 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="left">▆▁▁▁▇</td>
 </tr>
 <tr class="odd">
+<td align="left">pct_disability</td>
+<td align="right">111</td>
+<td align="right">0.31</td>
+<td align="right">0.37</td>
+<td align="right">0.42</td>
+<td align="right">0.0</td>
+<td align="right">0.03</td>
+<td align="right">0.16</td>
+<td align="right">0.94</td>
+<td align="right">1.00</td>
+<td align="left">▇▂▁▁▅</td>
+</tr>
+<tr class="even">
 <td align="left">pct_lowSES</td>
 <td align="right">76</td>
 <td align="right">0.53</td>
@@ -2111,7 +2127,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">1.00</td>
 <td align="left">▂▁▃▇▆</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pct_SLL</td>
 <td align="right">93</td>
 <td align="right">0.43</td>
@@ -2124,7 +2140,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">1.00</td>
 <td align="left">▇▅▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pct_boy</td>
 <td align="right">33</td>
 <td align="right">0.80</td>
@@ -2137,7 +2153,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">1.00</td>
 <td align="left">▁▁▇▂▁</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pct_minority</td>
 <td align="right">58</td>
 <td align="right">0.64</td>
@@ -2178,11 +2194,11 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">6</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">factor</td>
-<td align="left">4</td>
+<td align="left">9</td>
 </tr>
 <tr class="even">
 <td align="left">numeric</td>
@@ -2224,59 +2240,9 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">id_sample</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">58</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">id_condition</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">4</td>
-<td align="right">8</td>
-<td align="right">0</td>
-<td align="right">134</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">cat_M_type</td>
-<td align="right">69</td>
-<td align="right">0.57</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">13</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">cat_R_type</td>
-<td align="right">25</td>
-<td align="right">0.85</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">cat_condition_type</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
 <td align="left">chr_condition_name</td>
 <td align="right">0</td>
-<td align="right">1.00</td>
+<td align="right">1</td>
 <td align="right">2</td>
 <td align="right">74</td>
 <td align="right">0</td>
@@ -2288,12 +2254,12 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <p><strong>Variable type: factor</strong></p>
 <table>
 <colgroup>
-<col width="17%" />
-<col width="11%" />
+<col width="20%" />
+<col width="10%" />
 <col width="15%" />
 <col width="8%" />
-<col width="10%" />
-<col width="36%" />
+<col width="9%" />
+<col width="35%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2307,6 +2273,46 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">id_sample</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">FALSE</td>
+<td align="right">58</td>
+<td align="left">127: 8, 127: 8, 127: 6, 143: 6</td>
+</tr>
+<tr class="even">
+<td align="left">id_condition</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">FALSE</td>
+<td align="right">134</td>
+<td align="left">127: 4, 127: 4, 127: 4, 127: 4</td>
+</tr>
+<tr class="odd">
+<td align="left">cat_M_type</td>
+<td align="right">69</td>
+<td align="right">0.57</td>
+<td align="left">FALSE</td>
+<td align="right">13</td>
+<td align="left">N: 49, T: 8, NG: 7, NVG: 5</td>
+</tr>
+<tr class="even">
+<td align="left">cat_R_type</td>
+<td align="right">25</td>
+<td align="right">0.85</td>
+<td align="left">FALSE</td>
+<td align="right">3</td>
+<td align="left">m: 109, cm: 22, c: 6</td>
+</tr>
+<tr class="odd">
+<td align="left">cat_condition_type</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">FALSE</td>
+<td align="right">4</td>
+<td align="left">1: 67, ctl: 67, 2: 23, 3: 5</td>
+</tr>
+<tr class="even">
 <td align="left">is_scripted</td>
 <td align="right">36</td>
 <td align="right">0.78</td>
@@ -2314,7 +2320,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">No : 84, Yes: 42</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">is_small_group</td>
 <td align="right">36</td>
 <td align="right">0.78</td>
@@ -2322,7 +2328,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">cla: 71, sma: 55, Cla: 0, cla: 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">is_school_staff</td>
 <td align="right">34</td>
 <td align="right">0.79</td>
@@ -2330,7 +2336,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">2</td>
 <td align="left">Sch: 79, Res: 49</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">is_fidelity</td>
 <td align="right">43</td>
 <td align="right">0.73</td>
@@ -2438,11 +2444,11 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">5</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">factor</td>
-<td align="left">1</td>
+<td align="left">5</td>
 </tr>
 <tr class="even">
 <td align="left">numeric</td>
@@ -2459,15 +2465,15 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="24%" />
-<col width="12%" />
+<col width="22%" />
+<col width="13%" />
 <col width="18%" />
 <col width="5%" />
 <col width="5%" />
-<col width="7%" />
-<col width="11%" />
+<col width="8%" />
+<col width="12%" />
 <col width="14%" />
 </colgroup>
 <thead>
@@ -2484,53 +2490,13 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">id_sample</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">58</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">id_condition</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">4</td>
-<td align="right">8</td>
-<td align="right">0</td>
-<td align="right">134</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">cat_condition_type</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
 <td align="left">chr_measure_name</td>
 <td align="right">0</td>
-<td align="right">1.00</td>
+<td align="right">1</td>
 <td align="right">6</td>
 <td align="right">112</td>
 <td align="right">0</td>
 <td align="right">87</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">m_delayed</td>
-<td align="right">236</td>
-<td align="right">0.14</td>
-<td align="right">1</td>
-<td align="right">19</td>
-<td align="right">0</td>
-<td align="right">39</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -2539,11 +2505,11 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <table>
 <colgroup>
 <col width="20%" />
-<col width="13%" />
-<col width="18%" />
 <col width="10%" />
-<col width="12%" />
-<col width="25%" />
+<col width="14%" />
+<col width="8%" />
+<col width="9%" />
+<col width="36%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2557,6 +2523,38 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">id_sample</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">58</td>
+<td align="left">149: 32, 141: 12, 129: 10, 129: 10</td>
+</tr>
+<tr class="even">
+<td align="left">id_condition</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">134</td>
+<td align="left">149: 16, 149: 16, 129: 5, 129: 5</td>
+</tr>
+<tr class="odd">
+<td align="left">cat_condition_type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">4</td>
+<td align="left">1: 119, ctl: 119, 2: 32, 3: 6</td>
+</tr>
+<tr class="even">
+<td align="left">id_es</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">276</td>
+<td align="left">2: 1, 3: 1, 4: 1, 5: 1</td>
+</tr>
+<tr class="odd">
 <td align="left">is_measure_std</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -2569,15 +2567,15 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <p><strong>Variable type: numeric</strong></p>
 <table style="width:100%;">
 <colgroup>
-<col width="21%" />
+<col width="22%" />
 <col width="10%" />
 <col width="14%" />
-<col width="7%" />
+<col width="6%" />
 <col width="7%" />
 <col width="5%" />
 <col width="6%" />
-<col width="7%" />
-<col width="7%" />
+<col width="6%" />
+<col width="6%" />
 <col width="7%" />
 <col width="6%" />
 </colgroup>
@@ -2598,19 +2596,6 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">id_es</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">161.92</td>
-<td align="right">91.60</td>
-<td align="right">2.00</td>
-<td align="right">88.75</td>
-<td align="right">163.50</td>
-<td align="right">235.25</td>
-<td align="right">316.00</td>
-<td align="left">▇▅▇▆▇</td>
-</tr>
-<tr class="even">
 <td align="left">m_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
@@ -2623,7 +2608,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">535.06</td>
 <td align="left">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">sd_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
@@ -2636,7 +2621,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">112.27</td>
 <td align="left">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">n_pre</td>
 <td align="right">55</td>
 <td align="right">0.80</td>
@@ -2649,7 +2634,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">605.00</td>
 <td align="left">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">m_post</td>
 <td align="right">18</td>
 <td align="right">0.93</td>
@@ -2662,7 +2647,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">546.68</td>
 <td align="left">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">sd_post</td>
 <td align="right">18</td>
 <td align="right">0.93</td>
@@ -2675,7 +2660,7 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">93.54</td>
 <td align="left">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">n_post</td>
 <td align="right">16</td>
 <td align="right">0.94</td>
@@ -2687,6 +2672,19 @@ df_clean_es           &lt;- df_clean %&gt;% select(id_sample, id_condition, cat_
 <td align="right">84.00</td>
 <td align="right">605.00</td>
 <td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">m_delayed</td>
+<td align="right">237</td>
+<td align="right">0.14</td>
+<td align="right">26.20</td>
+<td align="right">44.47</td>
+<td align="right">0.56</td>
+<td align="right">7.42</td>
+<td align="right">9.38</td>
+<td align="right">19.09</td>
+<td align="right">201.17</td>
+<td align="left">▇▂▁▁▁</td>
 </tr>
 <tr class="even">
 <td align="left">sd_delayed</td>
