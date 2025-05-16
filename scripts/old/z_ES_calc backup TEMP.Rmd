@@ -56,17 +56,17 @@ What variable do we need?
                     
 ## ES naming schame (for current study)
                     
-| Type                    | Effect Size Column | Variance Column  |
-|-------------------------|--------------------|------------------|
-| Pretest only            | `g_pre`            | `v_pre`          |
-| Posttest only           | `g_post`           | `v_post`         |
-| delayed only            | `g_delayed`          | `v_delayed`        |
-| Pre → Post (r = 0.5)    | `g_p2post_r05`     | `v_p2post_r05`   |
-| Pre → Post (r = 0.7)    | `g_p2post_r07`     | `v_p2post_r07`   |
-| Pre → Post (r = 0.9)    | `g_p2post_r09`     | `v_p2post_r09`   |
-| Pre → delayed (r = 0.5) | `g_p2delayed_r05`    | `v_p2delayed_r05`  |
-| Pre → delayed (r = 0.7) | `g_p2delayed_r07`    | `v_p2delayed_r07`  |
-| Pre → delayed (r = 0.9) | `g_p2delayed_r09`    | `v_p2delayed_r09`  | 
+| Type                    | Effect Size Column | Variance Column   |
+|-------------------------|--------------------|-------------------|
+| Pretest only            | `g_pre`            | `v_pre`           |
+| Posttest only           | `g_post`           | `v_post`          |
+| delayed only            | `g_delayed`          | `v_delayed`     |
+| Pre → Post (r = 0.5)    | `g_p2post_r05`     | `v_p2post_r05`    |
+| Pre → Post (r = 0.7)    | `g_p2post_r07`     | `v_p2post_r07`    |
+| Pre → Post (r = 0.9)    | `g_p2post_r09`     | `v_p2post_r09`    |
+| Pre → delayed (r = 0.5) | `g_p2delayed_r05`  | `v_p2delayed_r05` |
+| Pre → delayed (r = 0.7) | `g_p2delayed_r07`  | `v_p2delayed_r07` |
+| Pre → delayed (r = 0.9) | `g_p2delayed_r09`  | `v_p2delayed_r09` | 
                     
 # ES Calculation
 ## IG data (pre, post, delayed)
@@ -228,7 +228,7 @@ ES_combined <- ES_combined %>%
     by = "id_es_int"
   )
 ```
-## Fill missing IGRM post/delayed ES values with corresponding g_post / g_delayed
+## Fill missing IGRM
 Missing values in g_p2post_rXX and g_p2delayed_rXX were imputed using g_post and g_delayed respectively, under the assumption that single-group posttest estimates can approximate the missing repeated-measure contrast when no pretest data were available.
 
 ```{r}
@@ -241,19 +241,14 @@ ES_filled <- ES_combined %>%
   )
 ```
 
-# Check Outliers 
+# write.csv 
 
-
-# ES Aggregation
-## FE
 ```{r}
+write.csv(ES_combined, file = "../data/processed/df_es_calc.csv", row.names = FALSE)
+write.csv(ES_filled, file = "../data/processed/df_es_filled.csv", row.names = FALSE)
 
 ```
 
-## REML
-```{r}
-
-```
 
 # --------------------OLD -----------------
 

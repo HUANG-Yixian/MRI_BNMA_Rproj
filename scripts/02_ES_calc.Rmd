@@ -1,0 +1,250 @@
+---
+title: "01_effectsize_calc_aggregate"
+author: "Yixian Huang"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Set up
+## check working directory
+```{r, echo=FALSE}
+rm(list=ls())
+rprojroot::find_rstudio_root_file()
+```
+
+## Load packages  
+```{r, warning=FALSE, message = FALSE}
+library(metafor)
+library(psych)
+library(plyr)
+library(dplyr)
+library(readxl)     
+library(BSDA)
+options(scipen = 999)
+options(digits = 6) 
+```
+
+## Read Data 
+```{r}
+IGRMdata <- read.csv("../data/processed/df_msdn_combined.csv")
+str(IGRMdata)
+```
+
+# Preparation
+## Types of ES calculation
+What variable do we need? 
+1. IGrm (2 groups): m_pre_int,  sd_pre_int,   n_pre_int
+                    m_post_int,  sd_post_int, n_post_int
+                    m_pre_ctl, sd_pre_ctl,  n_pre_ctl
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+                    
+2. RM (1 group):    m_diff, sd_diff, r_pre_post, n_diff
+
+3. IG (2 groups):   m_post_int,  sd_post_int, n_post_int
+                    m_post_ctl, sd_post_ctl, n_post_ctl
+                    
+## ES naming schame (for current study)
+                    
+| Type                    | Effect Size Column | Variance Column   |
+|-------------------------|--------------------|-------------------|
+| Pretest only            | `g_pre`            | `v_pre`           |
+| Posttest only           | `g_post`           | `v_post`          |
+| delayed only            | `g_delayed`          | `v_delayed`     |
+| Pre → Post (r = 0.5)    | `g_p2post_r05`     | `v_p2post_r05`    |
+| Pre → Post (r = 0.7)    | `g_p2post_r07`     | `v_p2post_r07`    |
+| Pre → Post (r = 0.9)    | `g_p2post_r09`     | `v_p2post_r09`    |
+| Pre → delayed (r = 0.5) | `g_p2delayed_r05`  | `v_p2delayed_r05` |
+| Pre → delayed (r = 0.7) | `g_p2delayed_r07`  | `v_p2delayed_r07` |
+| Pre → delayed (r = 0.9) | `g_p2delayed_r09`  | `v_p2delayed_r09` | 
+                    
+# ES Calculation
+## IG data (pre, post, delayed)
+```{r}
+IGRMdata <- escalc(
+  measure = "SMD",
+  m1i = m_pre_int, sd1i = sd_pre_int, n1i = n_pre_int,
+  m2i = m_pre_ctl, sd2i = sd_pre_ctl, n2i = n_pre_ctl,
+  data = IGRMdata, replace = TRUE,
+  var.names = c("g_pre", "v_pre"), vtype = "LS2"
+)
+
+IGRMdata <- escalc(
+  measure = "SMD",
+  m1i = m_post_int, sd1i = sd_post_int, n1i = n_post_int,
+  m2i = m_post_ctl, sd2i = sd_post_ctl, n2i = n_post_ctl,
+  data = IGRMdata, replace = TRUE,
+  var.names = c("g_post", "v_post"), vtype = "LS2"
+)
+
+IGRMdata <- escalc(
+  measure = "SMD",
+  m1i = m_delayed_int, sd1i = sd_delayed_int, n1i = n_delayed_int,
+  m2i = m_delayed_ctl, sd2i = sd_delayed_ctl, n2i = n_delayed_ctl,
+  data = IGRMdata, replace = TRUE,
+  var.names = c("g_delayed", "v_delayed"), vtype = "LS2"
+)
+```
+
+## IGRM data (pre-post, pre-delayed)
+### Pooled Pre-test SD
+```{r}
+IGRMdata <- IGRMdata %>%
+  mutate(
+    s2_pre_pooled = ((sd_pre_int^2) * (n_pre_int - 1) + (sd_pre_ctl^2) * (n_pre_ctl - 1)) / 
+                     (n_pre_int + n_pre_ctl - 2),
+    s_pre_pooled = sqrt(s2_pre_pooled)
+  )
+```
+
+### Compute IGRM ESs with r = .5, .7, .9 (pre to post & pre to delayed)
+#### Filter Valid Data 
+```{r}
+complete_pre2post <- IGRMdata %>%
+  filter(complete.cases(m_pre_int, m_post_int, n_post_int,
+                        m_pre_ctl, m_post_ctl, n_post_ctl, 
+                        s_pre_pooled))
+
+complete_pre2delayed <- IGRMdata %>%
+  filter(complete.cases(m_pre_int, m_delayed_int, n_delayed_int,
+                        m_pre_ctl, m_delayed_ctl, n_delayed_ctl, 
+                        s_pre_pooled))
+```
+
+#### Pre 2 Post
+```{r}
+complete_pre2post <- complete_pre2post %>%
+  mutate(
+    r05 = 0.5,
+    r06 = 0.6,
+    r07 = 0.7,
+  )
+
+for (r_label in c("05", "06", "07")) {
+
+  ri_vector <- complete_pre2post[[paste0("r", r_label)]]
+
+  # Step 1: Treatment group
+  complete_pre2post <- escalc(
+    measure = "SMCR",
+    m1i = m_post_int, m2i = m_pre_int,
+    sd1i = s2_pre_pooled, ni = n_post_int, ri = ri_vector,
+    data = complete_pre2post,
+    var.names = c(paste0("g_int_p2post_", r_label), paste0("v_int_p2post_", r_label)),
+    vtype = "LS2"
+  )
+
+  # Step 2: Control group
+  complete_pre2post <- escalc(
+    measure = "SMCR",
+    m1i = m_post_ctl, m2i = m_pre_ctl,
+    sd1i = s2_pre_pooled, ni = n_post_ctl, ri = ri_vector,
+    data = complete_pre2post,
+    var.names = c(paste0("g_ctl_p2post_", r_label), paste0("v_ctl_p2post_", r_label)),
+    vtype = "LS2"
+  )
+
+  # Step 3: Subtract & combine variance
+  g_col <- paste0("g_p2post_", r_label)
+  v_col <- paste0("v_p2post_", r_label)
+  g_int_col <- paste0("g_int_p2post_", r_label)
+  g_ctl_col <- paste0("g_ctl_p2post_", r_label)
+  v_int_col <- paste0("v_int_p2post_", r_label)
+  v_ctl_col <- paste0("v_ctl_p2post_", r_label)
+
+  complete_pre2post[[g_col]] <- complete_pre2post[[g_int_col]] - complete_pre2post[[g_ctl_col]]
+  complete_pre2post[[v_col]] <- complete_pre2post[[v_int_col]] + complete_pre2post[[v_ctl_col]]
+}
+```
+
+#### Pre 2 delayed
+```{r}
+complete_pre2delayed <- complete_pre2delayed %>%
+  mutate(
+    r05 = 0.5,
+    r06 = 0.6,
+    r07 = 0.7,
+   )
+
+for (r_label in c("05", "06", "07")) {
+  
+  ri_vector <- complete_pre2delayed[[paste0("r", r_label)]]
+  
+  # Step 1: Treatment group
+  complete_pre2delayed <- escalc(
+    measure = "SMCR",
+    m1i = m_delayed_int, m2i = m_pre_int,
+    sd1i = s2_pre_pooled, ni = n_delayed_int, ri = ri_vector,
+    data = complete_pre2delayed,
+    var.names = c(paste0("g_int_p2delayed_", r_label), paste0("v_int_p2delayed_", r_label)),
+    vtype = "LS2"
+  )
+  
+  # Step 2: Control group
+  complete_pre2delayed <- escalc(
+    measure = "SMCR",
+    m1i = m_delayed_ctl, m2i = m_pre_ctl,
+    sd1i = s2_pre_pooled, ni = n_delayed_ctl, ri = ri_vector,
+    data = complete_pre2delayed,
+    var.names = c(paste0("g_ctl_p2delayed_", r_label), paste0("v_ctl_p2delayed_", r_label)),
+    vtype = "LS2"
+  )
+  
+  # Step 3: Subtract & combine variance
+  g_col <- paste0("g_p2delayed_", r_label)
+  v_col <- paste0("v_p2delayed_", r_label)
+  g_int_col <- paste0("g_int_p2delayed_", r_label)
+  g_ctl_col <- paste0("g_ctl_p2delayed_", r_label)
+  v_int_col <- paste0("v_int_p2delayed_", r_label)
+  v_ctl_col <- paste0("v_ctl_p2delayed_", r_label)
+  
+  complete_pre2delayed[[g_col]] <- complete_pre2delayed[[g_int_col]] - complete_pre2delayed[[g_ctl_col]]
+  complete_pre2delayed[[v_col]] <- complete_pre2delayed[[v_int_col]] + complete_pre2delayed[[v_ctl_col]]
+}
+```
+
+## Combine data
+```{r}
+ES_combined <- IGRMdata %>% 
+  select(id_sample, id_es_int, starts_with("g_"),starts_with("v_"))
+
+ES_combined <- ES_combined %>%
+  left_join(
+    complete_pre2post %>% select(id_es_int, starts_with("g_p2post_"), starts_with("v_p2post_")),
+    by = "id_es_int"
+  ) %>%
+  left_join(
+    complete_pre2delayed %>% select(id_es_int, starts_with("g_p2delayed_"), starts_with("v_p2delayed_")),
+    by = "id_es_int"
+  )
+```
+## Fill missing IGRM
+Missing values in g_p2post_rXX and g_p2delayed_rXX were imputed using g_post and g_delayed respectively, under the assumption that single-group posttest estimates can approximate the missing repeated-measure contrast when no pretest data were available.
+
+```{r}
+ES_filled <- ES_combined %>%
+  mutate(
+    across(starts_with("g_p2post_"), ~ ifelse(is.na(.), g_post, .)),
+    across(starts_with("v_p2post_"), ~ ifelse(is.na(.), v_post, .)),
+    across(starts_with("g_p2delayed_"), ~ ifelse(is.na(.), g_delayed, .)),
+    across(starts_with("v_p2delayed_"), ~ ifelse(is.na(.), v_delayed, .))
+  )
+```
+
+# write.csv 
+
+```{r}
+write.csv(ES_combined, file = "../data/processed/df_es_calc.csv", row.names = FALSE)
+write.csv(ES_filled, file = "../data/processed/df_es_filled.csv", row.names = FALSE)
+
+```

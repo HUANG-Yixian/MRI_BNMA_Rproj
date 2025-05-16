@@ -221,12 +221,12 @@ es_level_vars        <- variable_dict %>% filter(data_level == "Effect size leve
 df_clean_study       <- df_clean %>% select(any_of(study_level_vars)) %>% filter(!is.na(id_study))
 df_clean_sample       <- df_clean %>% select(any_of(sample_level_vars)) %>% filter(!is.na(id_sample))
 df_clean_intervention <- df_clean %>% select(id_sample, any_of(c(intervention_level_vars))) %>% filter(!is.na(id_condition))
-df_clean_es           <- df_clean %>% select(id_sample, id_condition, cat_condition_type,
+df_clean_msdn           <- df_clean %>% select(id_sample, id_condition, cat_condition_type,
                                              any_of(c(es_level_vars))) %>% filter(!is.na(id_es)) %>% filter(!is.na(id_es))
 ```
 
 ```{r}
-df_clean_es <- df_clean_es %>%
+df_clean_msdn <- df_clean_msdn %>%
   fill(id_sample, id_condition, cat_condition_type, .direction = "down")
 ```
 
@@ -234,7 +234,7 @@ df_clean_es <- df_clean_es %>%
 skimr::skim(df_clean_study)
 skimr::skim(df_clean_sample)
 skimr::skim(df_clean_intervention)
-skimr::skim(df_clean_es)
+skimr::skim(df_clean_msdn)
 ```
 # Prepare Final dfs
 ## "df_moderators"
@@ -277,21 +277,21 @@ df_moderator <- df_clean_sample %>%
   left_join(df_intervention_summary, by = "id_sample")
 ```
 ## df_es
-"df_es_pre"
-"df_es_post"
-"df_es_delay"
+"df_msdn_pre"
+"df_msdn_post"
+"df_msdn_delay"
 ```{r}
 # Select common columns 
 common_cols <- c("id_sample", "id_condition", "cat_condition_type", "id_es", "chr_measure_name", "is_measure_std")
 
 # Create each timepoint-specific dataframe
-df_temp_pre <- df_clean_es %>%
+df_temp_pre <- df_clean_msdn %>%
   select(all_of(common_cols), m_pre, sd_pre, n_pre)
 
-df_temp_post <- df_clean_es %>%
+df_temp_post <- df_clean_msdn %>%
   select(all_of(common_cols), m_post, sd_post, n_post)
 
-df_temp_delayed <- df_clean_es %>%
+df_temp_delayed <- df_clean_msdn %>%
   select(all_of(common_cols), m_delayed, sd_delayed, n_delayed, num_month_of_delayed)
 ```
 
@@ -339,29 +339,29 @@ match_int_vs_ctl <- function(df_long) {
 Apply the function to all 3 timepoint datasets
 ```{r}
 # Pre-test
-df_es_pre <- match_int_vs_ctl(df_temp_pre) 
+df_msdn_pre <- match_int_vs_ctl(df_temp_pre) 
 
 # Post-test
-df_es_post <- match_int_vs_ctl(df_temp_post)
+df_msdn_post <- match_int_vs_ctl(df_temp_post)
 
 # Delayed-test
-df_es_delayed <- match_int_vs_ctl(df_temp_delayed)
+df_msdn_delayed <- match_int_vs_ctl(df_temp_delayed)
 ```
 
 ```{r}
-# Keep df_es_pre as the main table, remove irrelevant columns
-df_es_combined <- df_es_pre %>%
+# Keep df_msdn_pre as the main table, remove irrelevant columns
+df_msdn_combined <- df_msdn_pre %>%
   select(-is_measure_std_ctl)
 
 # Manually select columns from post and delayed tables
-df_post_selected <- df_es_post %>%
+df_post_selected <- df_msdn_post %>%
   select(starts_with("m_"), starts_with("sd_"), starts_with("n_"))
 
-df_delayed_selected <- df_es_delayed %>%
+df_delayed_selected <- df_msdn_delayed %>%
   select(starts_with("m_"), starts_with("sd_"), starts_with("n_"), starts_with("num_"))
 
 # Bind all together
-df_es_combined <- bind_cols(df_es_combined, df_post_selected, df_delayed_selected)
+df_msdn_combined <- bind_cols(df_msdn_combined, df_post_selected, df_delayed_selected)
 ```
 
 
@@ -370,15 +370,15 @@ df_es_combined <- bind_cols(df_es_combined, df_post_selected, df_delayed_selecte
 # List of all target data frames and their names
 dfs_to_save <- list(
   df_clean = df_clean,
-  df_clean_es = df_clean_es,
+  df_clean_msdn = df_clean_msdn, # mean, sd, n
   df_clean_intervention = df_clean_intervention,
   df_clean_sample = df_clean_sample,
   df_clean_study = df_clean_study,
-  df_es_pre = df_es_pre,
-  df_es_post = df_es_post,
-  df_es_delayed = df_es_delayed,
-  df_moderator = df_moderator,
-  df_es_combined = df_es_combined
+#  df_msdn_pre = df_msdn_pre,
+#  df_msdn_post = df_msdn_post,
+#  df_msdn_delayed = df_msdn_delayed,
+  df_msdn_combined = df_msdn_combined,
+  df_moderator = df_moderator
 )
 
 # Write each as a CSV to the "data/process/" folder
